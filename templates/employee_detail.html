@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .profile-container {
+            display: flex; /* Enable flexbox layout */
+            border-radius: 10px;
+            padding: 20px;
+            width: 95%;
+        }
+
+        .sidebar2 {
+            width: 200px; /* Fixed width for sidebar */
+            margin-right: 20px; /* Spacing between sidebar and content */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background: white;
+            padding: 20px;
+
+        }
+
+        .sidebar2 a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #0c005a;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar2 a:hover {
+            background-color: #1e1a78; /* Change hover color */
+        }
+
+        .content {
+            flex-grow: 1; /* Take remaining space */
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background: white;
+            overflow-y: scroll;  
+            height: 650px; 
+         }
+
+        .profile-picture {
+            display: block;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            display: none; /* Hide all sections by default */
+            margin-bottom: 30px;
+        }
+
+        .section.active {
+            display: block; /* Show active section */
+        }
+        .edit{
+            margin-left: 550px;
+            font-size: 24px;
+        }
+        .employee-heading{
+            text-align: center;
+        }
+        h1{
+            background-color: #0c005a;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+{% extends 'base.html' %}
+<body>
+    {% block content %}
+    <div class="main-content">
+        <div class="employee-heading">
+        <h1>{{ employee.first_name }} {{ employee.middle_name }} {{ employee.last_name }}'s Details</h1>
+        </div>
+        <div class="profile-container">
+            <div class="sidebar2">
+                <a href="#" onclick="showSection('basic-info')">Basic Information</a>
+                <a href="#" onclick="showSection('personal-details')">Personal Details</a>
+                <a href="#" onclick="showSection('pan-details')">PAN Details</a>
+                <a href="#" onclick="showSection('aadhar-details')">Aadhar Details</a>
+                <a href="#" onclick="showSection('pf-info')">Provident Fund Information</a>
+                <a href="#" onclick="showSection('job-info')">Job Information</a>
+                <a href="#" onclick="showSection('education')">Educational Qualifications</a>
+                <a href="#" onclick="showSection('emergency-contact')">Emergency Contact Information</a>
+                <a href="#" onclick="showSection('previous-experience')">Previous Experience</a>
+                <a href="#" onclick="showSection('references')">References</a>
+                <a href="#" onclick="showSection('bank-info')">Bank Information</a>
+                <a href="#" onclick="showSection('files-upload')">Files Upload for Current Employment</a>
+            </div>
+            <div class="content">
+                <!-- Edit button -->
+                 <div class="edit">
+                <a href="{% url 'edit_employee' employee.pk %}" class="edit-icon">✎</a></div>
+                {% if employee.profile_picture %}
+                <img src="{{ employee.profile_picture.url }}" alt="Profile Picture" class="profile-picture" width="150" height="150"> 
+                {% endif %}
+
+                <div id="basic-info" class="section active"> <!-- Default to active -->
+                    <h2>Basic Information</h2>
+                    <p class="field"><strong>Employee ID:</strong> {{ employee.employee_id }}</p>
+                    <p class="field"><strong>Date of Joining:</strong> {{ employee.date_of_joining }}</p>
+                    <p class="field"><strong>Position:</strong> {{ employee.position }}</p>
+                    <p class="field"><strong>Department:</strong> {{ employee.department }}</p>
+                </div>
+
+                <div id="personal-details" class="section">
+                    <h2>Personal Details</h2>
+                    <p class="field"><strong>First Name:</strong> {{ employee.first_name }}</p>
+                    <p class="field"><strong>Middle Name:</strong> {{ employee.middle_name }}</p>
+                    <p class="field"><strong>Last Name:</strong> {{ employee.last_name }}</p>
+                  
+                    <p class="field"><strong>Date of Birth:</strong> {{ employee.dob }}</p>
+                    <p class="field"><strong>Place of Birth:</strong> {{ employee.place_of_birth }}</p>
+                    <p class="field"><strong>Employee Status:</strong> {{ employee.employee_status }}</p>
+                    <p class="field"><strong>Father's Name:</strong> {{ employee.father_name }}</p>
+                    <p class="field"><strong>Gender:</strong> {{ employee.gender }}</p>
+                    <p class="field"><strong>Marital Status:</strong> {{ employee.marital_status }}</p>
+                    <p class="field"><strong>Nationality:</strong> {{ employee.nationality }}</p>
+                    <p class="field"><strong>Blood Group:</strong> {{ employee.blood_group }}</p>
+                    <p class="field"><strong>Address:</strong> {{ employee.address }}</p>
+                    <p class="field"><strong>City:</strong> {{ employee.city }}</p>
+                    <p class="field"><strong>State:</strong> {{ employee.state }}</p>
+                    <p class="field"><strong>ZIP Code:</strong> {{ employee.zip_code }}</p>
+                    <p class="field"><strong>Mobile:</strong> {{ employee.mobile }}</p>
+                    <p class="field"><strong>Alternate Phone:</strong> {{ employee.alternate_phone }}</p>
+                    <p class="field"><strong>Personal Email:</strong> {{ employee.personal_email }}</p>
+                    <p class="field"><strong>Work Email:</strong> {{ employee.work_email }}</p>
+                    <p class="field"><strong>Passport No:</strong> {{ employee.passport_no }}</p>
+                    <p class="field"><strong>Passport Valid From:</strong> {{ employee.passport_valid_from }}</p>
+                    <p class="field"><strong>Passport Valid Upto:</strong> {{ employee.passport_valid_upto }}</p>
+                    {% if employee.passport_file_upload %}
+                        <p class="field"><strong>Passport Document:</strong> <a href="{{ employee.passport_file_upload.url }}" target="_blank">View Passport Document</a></p>
+                    {% endif %}
+                    {% if employee.visa_file_upload %}
+                        <p class="field"><strong>Visa Document:</strong> <a href="{{ employee.visa_file_upload.url }}" target="_blank">View Visa Document</a></p>
+                    {% endif %}
+                </div>
+
+                <div id="pan-details" class="section">
+                    <h2>PAN Details</h2>
+                <p class="field"><strong>Name as on PAN:</strong> {{ employee.pan_name }}</p>
+                <p class="field"><strong>PAN Number:</strong> {{ employee.pan_number }}</p>
+                {% if employee.pan_upload_file %}
+                    <p class="field"><strong>PAN Document:</strong> <a href="{{ employee.pan_upload_file.url }}" target="_blank">View PAN Document</a></p>
+                {% endif %}
+                </div>
+
+                <div id="aadhar-details" class="section">
+                    <h2>Aadhar Details</h2>
+                <p class="field"><strong>Name as on Aadhar:</strong> {{ employee.aadhar_name }}</p>
+                <p class="field"><strong>Aadhar Number:</strong> {{ employee.aadhar_number }}</p>
+                {% if employee.aadhar_file_upload %}
+                <p class="field"><strong>Aadhar Upload:</strong> <a href="{{ employee.aadhar_file_upload.url }}">Download</a></p>
+                {% endif %}
+                </div>
+
+                <div id="pf-info" class="section">
+                    <h2>Provident Fund Information</h2>
+                <p class="field"><strong>PF Member:</strong> {{ employee.pf_member }}</p>
+                <p class="field"><strong>PF Number:</strong> {{ employee.pf_number }}</p>
+                <p class="field"><strong>PF Withdrawn:</strong> {{ employee.pf_withdrawn }}</p>
+                <p class="field"><strong>UAN Number:</strong> {{ employee.uan_number }}</p>
+                <p class="field"><strong>UAN Confirmed:</strong> {{ employee.uan_confirmed }}</p>
+                <p class="field"><strong>Active Visa:</strong> {{ employee.active_visa }}</p>
+            </div>
+            <div class="section">
+                <h2>Job Information</h2>
+                <p class="field"><strong>Employee ID:</strong> {{ employee.employee_id }}</p>
+                <p class="field"><strong>Date of Joining:</strong> {{ employee.date_of_joining }}</p>
+                <p class="field"><strong>Position:</strong> {{ employee.position }}</p>
+                <p class="field"><strong>Department:</strong> {{ employee.department }}</p>
+                <p class="field"><strong>Employment Type:</strong> {{ employee.employment_type }}</p>
+                <p class="field"><strong>Reporting Manager:</strong> {{ employee.reporting_manager }}</p>
+                <p class="field"><strong>Job Location:</strong> {{ employee.job_location }}</p>
+                <p class="field"><strong>Work Schedule:</strong> {{ employee.work_schedule }}</p>
+                {% if employee.job_related_documents %}
+                    <p class="field"><strong>Job Related Documents:</strong> <a href="{{ employee.job_related_documents.url }}" target="_blank">View Documents</a></p>
+                {% endif %}
+                </div>
+
+                <div id="job-info" class="section">
+                    <h2>Job Information</h2>
+                    <p class="field"><strong>Employee ID:</strong> {{ employee.employee_id }}</p>
+                    <p class="field"><strong>Date of Joining:</strong> {{ employee.date_of_joining }}</p>
+                    <p class="field"><strong>Position:</strong> {{ employee.position }}</p>
+                    <p class="field"><strong>Department:</strong> {{ employee.department }}</p>
+                    <p class="field"><strong>Employment Type:</strong> {{ employee.employment_type }}</p>
+                    <p class="field"><strong>Reporting Manager:</strong> {{ employee.reporting_manager }}</p>
+                    <p class="field"><strong>Job Location:</strong> {{ employee.job_location }}</p>
+                    <p class="field"><strong>Work Schedule:</strong> {{ employee.work_schedule }}</p>
+                    {% if employee.job_related_documents %}
+                        <p class="field"><strong>Job Related Documents:</strong> <a href="{{ employee.job_related_documents.url }}" target="_blank">View Documents</a></p>
+                    {% endif %}
+                </div>
+
+                <div id="education" class="section">
+                    <h2>Educational Qualifications</h2>
+                    <p class="field"><strong>Highest Degree:</strong> {{ employee.highest_degree }}</p>
+                    <p class="field"><strong>Institution Name:</strong> {{ employee.institution_name }}</p>
+                    <p class="field"><strong>Field of Study:</strong> {{ employee.field_of_study }}</p>
+                    <p class="field"><strong>Year of Graduation:</strong> {{ employee.year_of_graduation }}</p>
+                    {% if employee.certifications %}
+                    <p class="field"><strong>Certifications Upload:</strong> <a href="{{ employee.certifications.url }}">Download</a></p>
+                    {% endif %}
+                </div>
+
+                <div id="emergency-contact" class="section">
+                    <h2>Emergency Contact Information</h2>
+                    <p class="field"><strong>Emergency First Name:</strong> {{ employee.emergency_first_name }}</p>
+                    <p class="field"><strong>Emergency Middle Name:</strong> {{ employee.emergency_middle_name }}</p>
+                    <p class="field"><strong>Emergency Last Name:</strong> {{ employee.emergency_last_name }}</p>
+                    <p class="field"><strong>Relationship:</strong> {{ employee.emergency_relationship }}</p>
+                    <p class="field"><strong>Home Phone:</strong> {{ employee.emergency_home_phone }}</p>
+                    <p class="field"><strong>Mobile Phone:</strong> {{ employee.emergency_mobile_phone }}</p>
+                    <p class="field"><strong>City:</strong> {{ employee.emergency_city }}</p>
+                    <p class="field"><strong>State:</strong> {{ employee.emergency_state }}</p>
+                    <p class="field"><strong>ZIP Code:</strong> {{ employee.emergency_zip_code }}</p>
+                </div>
+
+                <div id="previous-experience" class="section">
+                    <h2>Previous Experience</h2>
+                <p class="field"><strong>Previous Company Name:</strong> {{ employee.previous_company_name }}</p>
+                <p class="field"><strong>Previous Job Title:</strong> {{ employee.previous_job_title }}</p>
+                <p class="field"><strong>Previous Work Location:</strong> {{ employee.previous_work_location }}</p>
+                <p class="field"><strong>Previous Exit Date:</strong> {{ employee.previous_exit_date }}</p>
+                <p class="field"><strong>Responsibilities:</strong> {{ employee.responsibilities }}</p>
+                <p class="field"><strong>Reason for Leaving:</strong> {{ employee.reason_for_leaving }}</p>
+                </div>
+
+                <div id="references" class="section">
+                    <h2>References</h2>
+                <p class="field"><strong>Reference 1:</strong> {{ employee.reference_1_name }} ({{ employee.reference_1_designation }}, {{ employee.reference_1_company_name }}) - Contact: {{ employee.reference_1_contact }} | Email: {{ employee.reference_1_email }}</p>
+                <p class="field"><strong>Reference 2:</strong> {{ employee.reference_2_name }} ({{ employee.reference_2_designation }}, {{ employee.reference_2_company_name }}) - Contact: {{ employee.reference_2_contact }} | Email: {{ employee.reference_2_email }}</p>
+
+                </div>
+
+                <div id="bank-info" class="section">
+                    <h2>Bank Information</h2>
+                    <p class="field"><strong>Name as on Bank Account:</strong> {{ employee.bank_name_on_account }}</p>
+                    <p class="field"><strong>Bank Account Number:</strong> {{ employee.bank_account_number }}</p>
+                    <p class="field"><strong>Bank Name:</strong> {{ employee.bank_name }}</p>
+                    <p class="field"><strong>Bank Branch Name:</strong> {{ employee.bank_branch_name }}</p>
+                    <p class="field"><strong>Bank IFSC Code:</strong> {{ employee.bank_ifsc_code }}</p>
+                    <p class="field"><strong>Bank Branch Address:</strong> {{ employee.bank_branch_address }}</p>
+                    {% if employee.passbook_file_upload %}
+                        <p class="field"><strong>Passbook Upload:</strong> <a href="{{ employee.passbook_file_upload.url }}">Download Passbook</a></p>
+                    {% else %}
+                        <p class="field"><strong>Passbook Upload:</strong> No file uploaded</p>
+                    {% endif %}
+                </div>
+
+                <div id="files-upload" class="section">
+                    <h2>Files Upload for Current Employment</h2>
+                    <p><strong>Offer Letter:</strong> {% if employee.offer_letter %}<a href="{{ employee.offer_letter.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
+                    <p><strong>NDA Form:</strong> {% if employee.nda_form %}<a href="{{ employee.nda_form.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
+                    <p><strong>B.Tech Memo:</strong> {% if employee.btech_memo %}<a href="{{ employee.btech_memo.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
+                    <p><strong>B.Tech TC:</strong> {% if employee.btech_tc %}<a href="{{ employee.btech_tc.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
+                    <p><strong>Relieving Letter:</strong> {% if employee.relieving_letter %}<a href="{{ employee.relieving_letter.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
+                    <p><strong>Experience Letter:</strong> {% if employee.experience_letter %}<a href="{{ employee.experience_letter.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
+                    <p><strong>Payslips:</strong> {% if employee.payslips %}<a href="{{ employee.payslips.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            var sections = document.querySelectorAll('.section');
+            sections.forEach(function(section) {
+                section.classList.remove('active');
+            });
+
+            // Show the selected section
+            var selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+        }
+    </script>
+    {% endblock %}
+</body>
+
+</html>

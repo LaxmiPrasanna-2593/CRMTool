@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Vindus Environment Private Limited</title>
+    <style>
+        /* Basic reset for margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: linear-gradient(rgba(63, 130, 230, 0.7), rgba(1, 26, 90, 0.7)),
+                url('https://www.bizlibrary.com/wp-content/uploads/2019/05/30141657/employeeretention.png') no-repeat center center;
+            background-size: cover;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 3rem;
+            width: 400px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.895); /* Outline for container */
+        }
+
+        h1 {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #fcfafa;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #fff;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+           
+            margin: 10px 0;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.895);
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 1rem;
+             transition: border 0.3s ease;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder {
+            color: white; 
+            opacity: 0.7; 
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #5932EA; /* Change border color on focus */
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #0c005a;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4325b1;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: lightblue;
+            border-radius: 10px;
+            color: blue;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Outline for message box */
+        }
+
+        .message ul {
+            list-style-type: none;
+        }
+
+        .message li {
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Dashboard Login</h1>
+        <p>Please enter your credentials to continue</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="User Name" required>
+
+            <input type="password" name="password" placeholder="Password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        {% if messages %}
+        <div class="message">
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>

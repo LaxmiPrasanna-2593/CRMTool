@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <style>
+        h1 {
+            font-size: 2.5em;
+            color: #0c005a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .employee-table {
+            width: 100%;
+            max-width: 970px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .employee-table th,
+        .employee-table td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .employee-table th {
+            background-color: #0c005a;
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .employee-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .employee-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .employee-table td {
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        .employee-link-active {
+            text-decoration: none;
+            color: #008767;
+            transition: color 0.3s ease;
+            background-color: #7bedd3;
+            border:2px solid #008767;
+            padding: 9px;
+            border-radius: 5px;
+        }
+
+        .employee-link-active:hover {
+            color: #008767;
+            background-color: #7bedd3;
+        }
+        .employee-link-inactive {
+            text-decoration: none;
+            color: #df0404;
+            transition: color 0.3s ease;
+            background-color: #FFC5C5;
+            padding: 9px;
+            border-radius: 5px;
+            border:2px solid #DF0404;
+
+        }
+
+        .employee-link-inactive:hover {
+            color: #df0404;
+            background-color: rgb(239, 167, 155);
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #999;
+            font-size: 1.2em;
+            padding: 20px;
+        }
+        .employee-stats {
+            display: flex;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 15px 0;
+        }
+
+        .stat-card {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+            color: #333;
+        }
+
+        .stat-card:not(:last-child) {
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .stat-card .icon {
+            background-color: #e0f7e9;
+            border-radius: 50%;
+            padding: 15px;
+            margin-bottom: 10px;
+            color: #4caf50;
+            font-size: 24px;
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #999;
+        }
+      
+       
+
+    </style>
+</head>
+
+{% extends 'base.html' %}
+<body>
+    {% block content %}
+   
+
+    <div class="main-content">
+        <div class="employee-stats">
+            <div class="stat-card total">
+                <div class="icon"  style="background-color: rgb(226, 246, 252);">👥</div>
+                <p>Total Employees</p>
+                <h2>    {{ total_count }}
+                    
+                    </h2>
+            </div>
+            <div class="stat-card current" >
+                <div class="icon" style="background-color: #7bedd3;">👨‍💼</div>
+                <p>Current Employees</p>
+                <h2>   
+                   {{ active_count }}
+                   </h2>
+            </div>
+            <div class="stat-card old" >
+                <div class="icon" style="background-color: #FFC5C5;">👤</div>
+                <p>Old Employees</p>
+                <h2>   
+                    
+                  {{ inactive_count }}</h2>
+            </div>
+        </div>
+        <h1>Employee List</h1>
+
+        <table class="employee-table">
+            <thead>
+                <tr>
+                    <th>Employee Name</th>
+                    <th>Employee ID</th>
+                    <th>Job Role</th>
+                    <th>Date Of Joining</th>
+                    <th>Mobile</th>
+                    <th>See Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if employees %} 
+                {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.first_name }}</td>
+                    <td>{{ employee.employee_id }}</td>
+                    <td>{{ employee.position }}</td>
+                    <td>{{ employee.date_of_joining }}</td>
+                    <td>{{ employee.mobile }}</td>
+                    {% if employee.employee_status == "Active" %}
+                    <td class="detail"><a href="{% url 'employee_detail' employee.pk %}" class="employee-link-active">View Details</a></td>
+                    {% else %}
+                    <td class="detail"><a href="{% url 'employee_detail' employee.pk %}" class="employee-link-inactive">View Details</a></td>
+                    {% endif %}
+
+                </tr>
+                {% endfor %} 
+                {% else %}
+                <tr>
+                    <td colspan="6" class="empty-message">No employees found.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}
+</body>
+
+</html>
