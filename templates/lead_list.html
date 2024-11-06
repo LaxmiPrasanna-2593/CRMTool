@@ -6,16 +6,7 @@
     <title>Lead List</title>
     <style>
         
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        
+       
         h1 {
             font-size: 2em;
             color: #333;
@@ -81,8 +72,11 @@
         }
     </style>
 </head>
+{% extends 'base.html' %}
 
 <body>
+    {% block content %}
+    <div class="main-content">
     <h1>Lead List</h1>
      {% for lead in leads %}
     <div class="lead-card">
@@ -98,7 +92,11 @@
 
         </div>
     </div>
+    </div>
+
     {% endfor %}
+    {% endblock %}
+
 </body>
 
 </html>
