@@ -4,9 +4,13 @@ from django.db import models
 class User(AbstractUser):
     DEPARTMENT_CHOICES = [
         ('development', 'Development'),
+        ('teamlead_development', 'TeamLead_Development'),
         ('content_moderators', 'Content Moderators'),
+        ('teamlead_content_moderators', 'TeamLead_Content Moderators'),
         ('sales_team', 'Sales Team'),
+        ('teamlead_sales_team', 'TeamLead_Sales Team'),
         ('customer_support', 'Customer Support Team'),
+        ('teamlead_customer_support', 'TeamLead_Customer Support Team'),
     ]
     department = models.CharField(max_length=30, choices=DEPARTMENT_CHOICES, null=True, blank=True)
 

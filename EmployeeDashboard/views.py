@@ -66,16 +66,16 @@ def dashboard_view(request):
     if request.user.is_superuser:
         return render(request, 'dashboard.html')
 
-    if user_department == 'development':
+    if user_department == 'teamlead_development':
         return render(request, 'development_dashboard.html', context)
-    elif user_department == 'content_moderators':
+    elif user_department == 'teamlead_content_moderators':
         return render(request, 'content_moderator_dashboard.html', context)
-    elif user_department == 'sales_team':
+    elif user_department == 'teamlead_sales_team':
         return render(request, 'sales_team_dashboard.html', context)
-    elif user_department == 'customer_support':
+    elif user_department == 'teamlead_customer_support':
         return render(request, 'customer_support_dashboard.html', context)
     else:
-        return render(request, 'default_dashboard.html', context)
+        return render(request, 'employee_dashboard.html', context)
 
 from django.shortcuts import redirect
 from django.contrib.auth import logout
