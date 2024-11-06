@@ -3,133 +3,166 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lead Details</title>
     <style>
-        
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
+      
+      .main-content {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
         }
-        
-        h1 {
-            font-size: 2em;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        
-        .lead-details-card {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        .small-content {
             width: 100%;
             max-width: 600px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-        
+
+        h1 {
+            font-size: 1.8em;
+            color: #0c005a;
+            margin-bottom: 20px;
+        }
+
+        .edit-button {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 8px 16px;
+            background-color: #0c005a;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+
+        .edit-button:hover {
+            background-color: #004080;
+        }
+
+        .lead-details-card {
+            background-color: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
         .detail-row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            padding: 12px 0;
             font-size: 1em;
+            border-bottom: 1px solid #e0e0e0;
         }
-        
+
         .detail-row:last-child {
             border-bottom: none;
         }
-        
+
         .detail-label {
             font-weight: bold;
-            color: #555;
+            color: #444;
         }
-        
+
         .detail-value {
             color: #333;
             text-align: right;
+            font-weight: 500;
         }
-        
+
         .back-button {
-            margin-top: 20px;
-            padding: 10px 15px;
-            background-color: #007bff;
+            display: inline-block;
+            padding: 10px 18px;
+            background-color: #0c005a;
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
-            font-size: 0.9em;
-            text-align: center;
+            font-size: 1em;
+            transition: background-color 0.2s;
         }
-        
+
         .back-button:hover {
-            background-color: #0056b3;
+            background-color: #004080;
         }
     </style>
 </head>
 
+{% extends 'base.html' %}
+
 <body>
-    <h1>Lead Details</h1>
-    <a href="{% url 'lead_edit' lead.pk %}">Edit</a>
+    {% block content %}
+    <div class="main-content">
+        <div class="small-content">
+        <h1>Lead Details</h1>
+        <a href="{% url 'lead_edit' lead.pk %}" class="edit-button">Edit Lead</a>
 
-    <div class="lead-details-card">
-        <div class="detail-row">
-            <span class="detail-label">Name:</span>
-            <span class="detail-value">{{ lead.name }}</span>
+        <div class="lead-details-card">
+            <div class="detail-row">
+                <span class="detail-label">Name:</span>
+                <span class="detail-value">{{ lead.name }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">{{ lead.email }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Phone Number:</span>
+                <span class="detail-value">{{ lead.phone_number }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Company Name:</span>
+                <span class="detail-value">{{ lead.company_name }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Position:</span>
+                <span class="detail-value">{{ lead.position }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Lead Source:</span>
+                <span class="detail-value">{{ lead.lead_source }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <span class="detail-value">{{ lead.status }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Interest Level:</span>
+                <span class="detail-value">{{ lead.interest_level }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Last Contact Date:</span>
+                <span class="detail-value">{{ lead.last_contact_date }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Next Follow-Up Date:</span>
+                <span class="detail-value">{{ lead.next_follow_up_date }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Product Interest:</span>
+                <span class="detail-value">{{ lead.product_interest }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Estimated Deal Value:</span>
+                <span class="detail-value">{{ lead.estimated_deal_value }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Notes:</span>
+                <span class="detail-value">{{ lead.notes }}</span>
+            </div>
         </div>
-        <div class="detail-row">
-            <span class="detail-label">Email:</span>
-            <span class="detail-value">{{ lead.email }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Phone Number:</span>
-            <span class="detail-value">{{ lead.phone_number }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Company Name:</span>
-            <span class="detail-value">{{ lead.company_name }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Position:</span>
-            <span class="detail-value">{{ lead.position }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Lead Source:</span>
-            <span class="detail-value">{{ lead.lead_source }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Status:</span>
-            <span class="detail-value">{{ lead.status }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Interest Level:</span>
-            <span class="detail-value">{{ lead.interest_level }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Last Contact Date:</span>
-            <span class="detail-value">{{ lead.last_contact_date }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Next Follow-Up Date:</span>
-            <span class="detail-value">{{ lead.next_follow_up_date }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Product Interest:</span>
-            <span class="detail-value">{{ lead.product_interest }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Estimated Deal Value:</span>
-            <span class="detail-value">{{ lead.estimated_deal_value }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="detail-label">Notes:</span>
-            <span class="detail-value">{{ lead.notes }}</span>
-        </div>
+        <a href="{% url 'lead_list' %}" class="back-button">Back to Lead List</a>
     </div>
-
-    <a href="{% url 'lead_list' %}" class="back-button">Back to Lead List</a>
+</div>
+    {% endblock %}
 </body>
 
 </html>

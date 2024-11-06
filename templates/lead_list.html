@@ -5,70 +5,48 @@
     <meta charset="UTF-8">
     <title>Lead List</title>
     <style>
-        
-       
         h1 {
             font-size: 2em;
-            color: #333;
+            color: #0c005a;
             margin-bottom: 20px;
+            text-align: center;
         }
-        
-        .add-lead {
-            margin-bottom: 20px;
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 0.9em;
-        }
-        
-        .add-lead:hover {
-            background-color: #0056b3;
-        }
-        
-        .lead-card {
-            background-color: #fff;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        table {
             width: 100%;
-            max-width: 600px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
-        
-        .lead-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
             font-size: 0.9em;
         }
-        
-        .lead-info span {
-            display: inline-block;
+
+        th {
+            background-color: #0c005a;
+            color: white;
         }
-        
-        .lead-info strong {
-            color: #555;
-            margin-right: 5px;
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
-        
-        .lead-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
+
         .lead-actions a {
-            color: #007bff;
+            color: white;
             text-decoration: none;
             font-size: 0.9em;
+            background-color: rgb(7, 181, 249);
+            padding: 7px;
+            border-radius: 5px;
+            border: 1px solid rgb(3, 74, 137);
         }
-        
+
         .lead-actions a:hover {
-            text-decoration: underline;
+            background-color: rgb(5, 150, 206); /* Darker hover background without underline */
         }
     </style>
 </head>
@@ -77,26 +55,36 @@
 <body>
     {% block content %}
     <div class="main-content">
-    <h1>Lead List</h1>
-     {% for lead in leads %}
-    <div class="lead-card">
-        <div class="lead-info">
-            <span><strong>Name:</strong> {{ lead.name }}</span>
-            <span><strong>Email:</strong> {{ lead.email }}</span>
-            <span><strong>Phone:</strong> {{ lead.phone_number }}</span>
-            <span><strong>Company:</strong> {{ lead.company_name }}</span>
-            <span><strong>Position:</strong> {{ lead.position }}</span>
-        </div>
-        <div class="lead-actions">
-            <a href="{% url 'lead_detail' lead.pk %}">View Details</a>
-
-        </div>
+        <h1>Lead List</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Company</th>
+                    <th>Position</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in leads %}
+                <tr>
+                    <td>{{ lead.name }}</td>
+                    <td>{{ lead.email }}</td>
+                    <td>{{ lead.phone_number }}</td>
+                    <td>{{ lead.company_name }}</td>
+                    <td>{{ lead.position }}</td>
+                    <td class="lead-actions">
+                        <a href="{% url 'lead_detail' lead.pk %}">View Details</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    </div>
-
-    {% endfor %}
     {% endblock %}
-
 </body>
 
 </html>
