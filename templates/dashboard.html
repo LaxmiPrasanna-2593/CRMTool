@@ -1,36 +1,37 @@
-{% extends 'base.html' %}
-
-{% load static %} 
+{% extends 'base.html' %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
 
-{% block content %}
-<div class="dashboard">
-    <main class="main-content">
-       
-        <div id="content" style="background-color: lightblue;padding: 15px;border-radius:15px ;">
-            <div id="employeeForm" class="content-section">
-                    <h3>Welcome to the Employee Dashboard.............</h3>
+    {% block content %}
+    <div class="dashboard">
+        <main class="main-content">
+
+            <div id="content" style="background-color: lightblue;padding: 15px;border-radius:15px ;">
+                <div id="employeeForm" class="content-section">
+                    <h3>Welcome to the Admin Dashboard</h3>
                     <p>View your tasks and manage your details.</p>
                     <p>This dashboard provides you with easy access to your daily tasks, upcoming deadlines, and important announcements. Stay organized and keep track of your progress with our user-friendly interface.</p>
                     <p>You can update your personal information, check your performance metrics, and communicate with your team members all in one place. Explore the features available to enhance your work experience.</p>
                     <p>If you have any questions or need assistance, feel free to reach out to your supervisor or the HR department. We're here to support you!</p>
-                
+
+                </div>
+
             </div>
+            <img src="{% static 'employee.gif' %}" alt="Employee Retention" style="width: 100%; border-radius: 8px; ">
 
-        </div>
-        <img src="{% static 'employee.gif' %}" alt="Employee Retention" style="width: 100%; border-radius: 8px; ">
-
-    </main>
-</div>
-{% endblock %}
+        </main>
+    </div>
+    {% endblock %}
 
 </body>
+
 </html>
