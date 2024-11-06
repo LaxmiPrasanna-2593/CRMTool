@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lead List</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .add-lead {
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .add-lead:hover {
+            background-color: #0056b3;
+        }
+        
+        .lead-card {
+            background-color: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .lead-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.9em;
+        }
+        
+        .lead-info span {
+            display: inline-block;
+        }
+        
+        .lead-info strong {
+            color: #555;
+            margin-right: 5px;
+        }
+        
+        .lead-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .lead-actions a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        
+        .lead-actions a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Lead List</h1>
+     {% for lead in leads %}
+    <div class="lead-card">
+        <div class="lead-info">
+            <span><strong>Name:</strong> {{ lead.name }}</span>
+            <span><strong>Email:</strong> {{ lead.email }}</span>
+            <span><strong>Phone:</strong> {{ lead.phone_number }}</span>
+            <span><strong>Company:</strong> {{ lead.company_name }}</span>
+            <span><strong>Position:</strong> {{ lead.position }}</span>
+        </div>
+        <div class="lead-actions">
+            <a href="{% url 'lead_detail' lead.pk %}">View Details</a>
+
+        </div>
+    </div>
+    {% endfor %}
+</body>
+
+</html>

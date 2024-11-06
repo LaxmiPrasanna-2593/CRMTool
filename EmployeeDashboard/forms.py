@@ -89,3 +89,18 @@ class EmployeeForm(forms.ModelForm):
             'active_visa': forms.Select(),
             'employee_status':forms.Select(),
         }
+
+from .models import Lead
+
+class LeadForm(forms.ModelForm):
+    class Meta:
+        model = Lead
+        fields = [
+            'name', 'email', 'phone_number', 'company_name', 'position',
+            'lead_source', 'status', 'interest_level', 'last_contact_date',
+            'next_follow_up_date', 'product_interest', 'estimated_deal_value', 'notes'
+        ]
+        widgets = {
+            'last_contact_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'next_follow_up_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }        

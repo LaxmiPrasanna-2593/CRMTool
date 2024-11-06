@@ -7,7 +7,7 @@
     <style>
         
         .form-container {
-            max-width: 600px;
+            max-width: 900px;
             margin: auto;
             padding: 20px;
             background-color: #fff;
@@ -34,6 +34,8 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+            background-color: rgb(212, 232, 239);
+
         }
         
         .form-group img {
@@ -43,7 +45,7 @@
             margin-top: 10px;
         }
         
-        button {
+        .submit-button {
             display: inline-block;
             background-color: #4CAF50;
             color: white;
@@ -55,7 +57,7 @@
             transition: background-color 0.3s ease;
         }
         
-        button:hover {
+        .submit-button:hover {
             background-color: #45a049;
         }
         
@@ -94,7 +96,6 @@
                 </div>
                 {% endfor %}
 
-                <!-- Display current profile picture if available -->
                 {% if employee.profile_picture %}
                 <div class="form-group">
                     <label>Current Profile Picture:</label>
@@ -102,7 +103,7 @@
                 </div>
                 {% endif %}
 
-                <button type="submit">Save Changes</button>
+                <button type="submit" class="submit-button">Save Changes</button>
             </form>
 
             <a href="{% url 'employee_detail' employee.pk %}" class="back-link">Cancel</a>

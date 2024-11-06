@@ -176,3 +176,32 @@ class Employee(models.Model):
 
     def _str_(self):
         return f"{self.first_name} {self.last_name}"
+
+class Lead(models.Model):
+    lead_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    company_name = models.CharField(max_length=100, blank=True, null=True)
+    position = models.CharField(max_length=100, blank=True, null=True)  
+    lead_source = models.CharField(max_length=50)
+    date_added = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, choices=[
+        ('New', 'New'),
+        ('Contacted', 'Contacted'),
+        ('Qualified', 'Qualified'),
+        ('Closed', 'Closed')
+    ])
+    interest_level = models.CharField(max_length=50, choices=[
+        ('High', 'High'),
+        ('Medium', 'Medium'),
+        ('Low', 'Low')
+    ], blank=True, null=True)
+    last_contact_date = models.DateTimeField(blank=True, null=True)
+    next_follow_up_date = models.DateTimeField(blank=True, null=True)
+    product_interest = models.CharField(max_length=100, blank=True, null=True)
+    estimated_deal_value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+
+    def _str_(self):
+        return f"{self.name} - {self.company_name}"

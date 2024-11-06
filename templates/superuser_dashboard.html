@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Superuser Dashboard</title>
 
-    <!-- Load the static template tag -->
     {% load static %}
 
     <style>
@@ -26,7 +25,6 @@
             padding: 15px;
             display: flex;
             justify-content: space-between;
-            /* Space between logo and button */
             align-items: center;
             position: relative;
         }
@@ -34,15 +32,12 @@
         .header img {
             height: 50px;
             margin-right: 15px;
-            /* Spacing between logo and title */
         }
         
         .header h1 {
             margin: 0;
             text-align: center;
-            /* Centering text */
             flex-grow: 1;
-            /* Allowing title to take available space */
         }
         
         .logout-button {
@@ -62,12 +57,10 @@
         .main {
             display: flex;
             flex: 1;
-            /* Allowing the main section to grow and take available space */
         }
         
         .sidebar {
             width: 250px;
-            /* Set sidebar width */
             background-color: #0056b3;
             color: white;
             padding: 20px;
@@ -82,14 +75,11 @@
         
         .sidebar a:hover {
             background-color: #0056b3;
-            /* Change background on hover */
             border-radius: 4px;
-            /* Rounded corners on hover */
         }
         
         .content {
             flex: 1;
-            /* Allow content to fill remaining space */
             max-width: 800px;
             margin: 20px;
             padding: 20px;
@@ -98,7 +88,6 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             align-self: center;
-            /* Center content within flex container */
         }
         
         .content h1 {

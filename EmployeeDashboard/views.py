@@ -143,4 +143,37 @@ def edit_employee(request, pk):
         form = EmployeeForm(instance=employee)
     return render(request, 'edit_employee.html', {'form': form, 'employee': employee})
  
-    
+from django.shortcuts import render, redirect
+from .models import Lead
+from .forms import LeadForm
+
+# View to display the list of leads
+def lead_list(request):
+    leads = Lead.objects.all()
+    return render(request, 'lead_list.html', {'leads': leads})
+
+# View to create a new lead
+def lead_create(request):
+    if request.method == 'POST':
+        form = LeadForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lead_list')
+    else:
+        form = LeadForm()
+    return render(request, 'lead_form.html', {'form': form})
+
+def lead_detail(request, pk):
+    lead = get_object_or_404(Lead, pk=pk)
+    return render(request, 'lead_detail.html', {'lead': lead})
+
+def lead_edit(request, pk):
+    lead = get_object_or_404(Lead, pk=pk)
+    if request.method == 'POST':
+        form = LeadForm(request.POST, instance=lead)
+        if form.is_valid():
+            form.save()
+            return redirect('lead_list')
+    else:
+        form = LeadForm(instance=lead)
+    return render(request, 'lead_form.html', {'form': form, 'lead': lead})    

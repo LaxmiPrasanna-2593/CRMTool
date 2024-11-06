@@ -27,7 +27,7 @@
           font-size: 24px;
           padding: 0 16px;
           color: #0c005a;
-          text-decoration: none; /* Ensure no underline */
+          text-decoration: none; 
       }
 
       .sidebar ul {
@@ -93,10 +93,19 @@
                 <a href="{% url 'employee_list' %}"><i class="fas fa-folder"></i> Employee Details <i class="fas fa-chevron-right"></i></a>
             </li>
             <li>
-                <a href="#"><i class="fas fa-tasks"></i> Daily Task Form <i class="fas fa-chevron-right"></i></a>
+                <a href="#"><i class="fas fa-tasks-alt"></i> Daily Task Form <i class="fas fa-chevron-right"></i></a>
             </li>
             <li>
-                <a href="#"><i class="fas fa-clipboard-list"></i> Task List <i class="fas fa-chevron-right"></i></a>
+                <a href="#"><i class="fas fa-tasks"></i> Task List <i class="fas fa-chevron-right"></i></a>
+            </li>
+            
+            
+            <li>
+                <a href="{% url 'lead_list' %}"><i class="fas fa-users"></i> Leads <i class="fas fa-chevron-right"></i></a>
+            </li>
+            
+            <li>
+                <a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Signup <i class="fas fa-chevron-right"></i></a>
             </li>
           </ul>
         </aside>

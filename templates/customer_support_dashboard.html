@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Support Team Dashboard</title>
 
-    <!-- Load the static template tag -->
     {% load static %}
 
     <style>
@@ -23,22 +22,18 @@
             padding: 15px;
             display: flex;
             justify-content: center;
-            /* Centering the title */
             align-items: center;
             position: relative;
         }
         
         .header img {
             height: 50px;
-            /* Adjust height as needed */
             margin-right: 15px;
-            /* Spacing between logo and title */
         }
         
         .header h1 {
             margin: 0;
             text-align: center;
-            /* Centering text */
         }
         
         .logout-button {
@@ -51,9 +46,7 @@
             transition: background-color 0.3s;
             position: absolute;
             right: 20px;
-            /* Positioning button to the right */
             top: 15px;
-            /* Aligning with header */
         }
         
         .logout-button:hover {
@@ -95,7 +88,6 @@
 <body>
     <div class="header">
         <img src="{% static 'vindus_logo.png' %}" alt="Company Logo">
-        <!-- Replace with your logo path -->
         <h1>VINDUS ENVIRONMENT PRIVATE LIMITED</h1>
         <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}
@@ -113,7 +105,6 @@
     </footer>
 
     <script>
-        // Dynamically set the current year in the footer
         document.addEventListener("DOMContentLoaded", function() {
             const currentYear = new Date().getFullYear();
             document.querySelector('.footer').innerHTML = `&copy; ${currentYear} Vindus Environment Private Limited. All rights reserved.`;

@@ -95,7 +95,6 @@
 <body>
     <div class="header">
         <img src="{% static 'vindus_logo.png' %}" alt="Company Logo">
-        <!-- Replace with your logo path -->
         <h1>VINDUS ENVIRONMENT PRIVATE LIMITED</h1>
         <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}
@@ -113,7 +112,6 @@
     </footer>
 
     <script>
-        // Dynamically set the current year in the footer
         document.addEventListener("DOMContentLoaded", function() {
             const currentYear = new Date().getFullYear();
             document.querySelector('.footer').innerHTML = `&copy; ${currentYear} Vindus Environment Private Limited. All rights reserved.`;

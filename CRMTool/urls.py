@@ -22,8 +22,8 @@ from EmployeeDashboard.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',signup_view, name='signup'),
-    path('login/', login_view, name='login'),
+    path('signup/',signup_view, name='signup'),
+    path('', login_view, name='login'),
     path('logout/', custom_logout_view, name='logout'), 
     path('dashboard/', dashboard_view, name='dashboard'),
     path('employee_form/', employee_form_view, name='employee_form'),
@@ -31,6 +31,10 @@ urlpatterns = [
     path('employees/', employee_list, name='employee_list'),
     path('employees/<int:pk>/', employee_detail, name='employee_detail'),
     path('employees/<int:pk>/edit/', edit_employee, name='edit_employee'),
+    path('leads/', lead_list, name='lead_list'),
+    path('lead_create/', lead_create, name='lead_create'),
+    path('lead_detail/<int:pk>/', lead_detail, name='lead_detail'),
+    path('lead_edit/<int:pk>/', lead_edit, name='lead_edit'),
 ] 
 # Serve static files
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

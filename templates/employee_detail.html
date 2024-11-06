@@ -5,79 +5,168 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        .profile-container {
-            display: flex; /* Enable flexbox layout */
-            border-radius: 10px;
-            padding: 20px;
-            width: 95%;
-        }
+     .profile-container {
+    display: flex;
+    border-radius: 10px;
+    padding: 20px;
+    width: 95%;
+}
 
-        .sidebar2 {
-            width: 200px; /* Fixed width for sidebar */
-            margin-right: 20px; /* Spacing between sidebar and content */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            background: white;
-            padding: 20px;
+.sidebar2 {
+    width: 200px;
+    margin-right: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: white;
+    padding: 20px;
+}
 
-        }
+.sidebar2 a {
+    display: block;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #0c005a;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
 
-        .sidebar2 a {
-            display: block;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #0c005a;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+.sidebar2 a:hover {
+    background-color: #1e1a78;
+}
 
-        .sidebar2 a:hover {
-            background-color: #1e1a78; /* Change hover color */
-        }
+.content {
+    flex-grow: 1;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: white;
+    overflow-y: scroll;
+    height: 650px;
+    padding: 20px;
+}
 
-        .content {
-            flex-grow: 1; /* Take remaining space */
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            background: white;
-            overflow-y: scroll;  
-            height: 650px; 
-         }
+.profile-picture {
+    display: block;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
-        .profile-picture {
-            display: block;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+.section {
+    display: none;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-        .section {
-            display: none; /* Hide all sections by default */
-            margin-bottom: 30px;
-        }
+.section h2 {
+    border-bottom: 2px solid #0c005a;
+    padding-bottom: 10px;
+    color: #0c005a;
+    margin-bottom: 15px;
+}
 
-        .section.active {
-            display: block; /* Show active section */
-        }
-        .edit{
-            margin-left: 550px;
-            font-size: 24px;
-        }
-        .employee-heading{
-            text-align: center;
-        }
-        h1{
-            background-color: #0c005a;
-            color: white;
-            padding: 15px;
-            border-radius: 15px;
-            display: inline-block;
-        }
+.field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #d0d0d0;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.field strong {
+    min-width: 150px;
+    color: #333;
+}
+.field-active strong {
+    min-width: 150px;
+    color: #333;
+}
+.field-inactive strong {
+    min-width: 150px;
+    color: #333;
+}
+
+.section.active {
+    display: block;
+}
+.field-active {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: #008767;
+    transition: color 0.3s ease;
+    background-color: #7bedd3;
+    border:1px solid #008767;
+}
+.field-inactive {
+    text-decoration: none;
+            color: #df0404;
+            transition: color 0.3s ease;
+            background-color: #FFC5C5;
+            display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+            border:1px solid #DF0404;
+}
+
+.edit {
+    margin-left: 550px;
+    font-size: 24px;
+}
+
+.employee-heading {
+    text-align: center;
+}
+
+h1 {
+    background-color: #0c005a;
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    display: inline-block;
+}
+.documents-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px; 
+}
+
+.document-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #d0d0d0;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pdf-icon {
+    width: 60px; 
+    height: auto; 
+    margin-right: 10px; 
+}
+
+
     </style>
 </head>
 
 {% extends 'base.html' %}
+{% load static %}
 <body>
     {% block content %}
     <div class="main-content">
@@ -111,6 +200,13 @@
                     <h2>Basic Information</h2>
                     <p class="field"><strong>Employee ID:</strong> {{ employee.employee_id }}</p>
                     <p class="field"><strong>Date of Joining:</strong> {{ employee.date_of_joining }}</p>
+                    {% if employee.employee_status == "Active" %}
+
+                    <p class="field-active"><strong>Employee Status:</strong> {{ employee.employee_status }}</p>
+                    {% else %}
+                    <p class="field-inactive"><strong>Employee Status:</strong> {{ employee.employee_status }}</p>
+                    {% endif %}
+
                     <p class="field"><strong>Position:</strong> {{ employee.position }}</p>
                     <p class="field"><strong>Department:</strong> {{ employee.department }}</p>
                 </div>
@@ -123,7 +219,8 @@
                   
                     <p class="field"><strong>Date of Birth:</strong> {{ employee.dob }}</p>
                     <p class="field"><strong>Place of Birth:</strong> {{ employee.place_of_birth }}</p>
-                    <p class="field"><strong>Employee Status:</strong> {{ employee.employee_status }}</p>
+                   
+
                     <p class="field"><strong>Father's Name:</strong> {{ employee.father_name }}</p>
                     <p class="field"><strong>Gender:</strong> {{ employee.gender }}</p>
                     <p class="field"><strong>Marital Status:</strong> {{ employee.marital_status }}</p>
@@ -141,10 +238,10 @@
                     <p class="field"><strong>Passport Valid From:</strong> {{ employee.passport_valid_from }}</p>
                     <p class="field"><strong>Passport Valid Upto:</strong> {{ employee.passport_valid_upto }}</p>
                     {% if employee.passport_file_upload %}
-                        <p class="field"><strong>Passport Document:</strong> <a href="{{ employee.passport_file_upload.url }}" target="_blank">View Passport Document</a></p>
+                        <p class="field"><strong>Passport Document:</strong> <a href="{{ employee.passport_file_upload.url }}" target="_blank"> <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"></a></p>
                     {% endif %}
                     {% if employee.visa_file_upload %}
-                        <p class="field"><strong>Visa Document:</strong> <a href="{{ employee.visa_file_upload.url }}" target="_blank">View Visa Document</a></p>
+                        <p class="field"><strong>Visa Document:</strong> <a href="{{ employee.visa_file_upload.url }}" target="_blank"> <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"></a></p>
                     {% endif %}
                 </div>
 
@@ -153,7 +250,7 @@
                 <p class="field"><strong>Name as on PAN:</strong> {{ employee.pan_name }}</p>
                 <p class="field"><strong>PAN Number:</strong> {{ employee.pan_number }}</p>
                 {% if employee.pan_upload_file %}
-                    <p class="field"><strong>PAN Document:</strong> <a href="{{ employee.pan_upload_file.url }}" target="_blank">View PAN Document</a></p>
+                    <p class="field"><strong>PAN Document:</strong> <a href="{{ employee.pan_upload_file.url }}" target="_blank"> <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"></a></p>
                 {% endif %}
                 </div>
 
@@ -162,7 +259,7 @@
                 <p class="field"><strong>Name as on Aadhar:</strong> {{ employee.aadhar_name }}</p>
                 <p class="field"><strong>Aadhar Number:</strong> {{ employee.aadhar_number }}</p>
                 {% if employee.aadhar_file_upload %}
-                <p class="field"><strong>Aadhar Upload:</strong> <a href="{{ employee.aadhar_file_upload.url }}">Download</a></p>
+                <p class="field"><strong>Aadhar Upload:</strong> <a href="{{ employee.aadhar_file_upload.url }}"> <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"></a></p>
                 {% endif %}
                 </div>
 
@@ -175,21 +272,7 @@
                 <p class="field"><strong>UAN Confirmed:</strong> {{ employee.uan_confirmed }}</p>
                 <p class="field"><strong>Active Visa:</strong> {{ employee.active_visa }}</p>
             </div>
-            <div class="section">
-                <h2>Job Information</h2>
-                <p class="field"><strong>Employee ID:</strong> {{ employee.employee_id }}</p>
-                <p class="field"><strong>Date of Joining:</strong> {{ employee.date_of_joining }}</p>
-                <p class="field"><strong>Position:</strong> {{ employee.position }}</p>
-                <p class="field"><strong>Department:</strong> {{ employee.department }}</p>
-                <p class="field"><strong>Employment Type:</strong> {{ employee.employment_type }}</p>
-                <p class="field"><strong>Reporting Manager:</strong> {{ employee.reporting_manager }}</p>
-                <p class="field"><strong>Job Location:</strong> {{ employee.job_location }}</p>
-                <p class="field"><strong>Work Schedule:</strong> {{ employee.work_schedule }}</p>
-                {% if employee.job_related_documents %}
-                    <p class="field"><strong>Job Related Documents:</strong> <a href="{{ employee.job_related_documents.url }}" target="_blank">View Documents</a></p>
-                {% endif %}
-                </div>
-
+           
                 <div id="job-info" class="section">
                     <h2>Job Information</h2>
                     <p class="field"><strong>Employee ID:</strong> {{ employee.employee_id }}</p>
@@ -201,7 +284,7 @@
                     <p class="field"><strong>Job Location:</strong> {{ employee.job_location }}</p>
                     <p class="field"><strong>Work Schedule:</strong> {{ employee.work_schedule }}</p>
                     {% if employee.job_related_documents %}
-                        <p class="field"><strong>Job Related Documents:</strong> <a href="{{ employee.job_related_documents.url }}" target="_blank">View Documents</a></p>
+                        <p class="field"><strong>Job Related Documents:</strong> <a href="{{ employee.job_related_documents.url }}" target="_blank"> <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"></a></p>
                     {% endif %}
                 </div>
 
@@ -212,7 +295,7 @@
                     <p class="field"><strong>Field of Study:</strong> {{ employee.field_of_study }}</p>
                     <p class="field"><strong>Year of Graduation:</strong> {{ employee.year_of_graduation }}</p>
                     {% if employee.certifications %}
-                    <p class="field"><strong>Certifications Upload:</strong> <a href="{{ employee.certifications.url }}">Download</a></p>
+                    <p class="field"><strong>Certifications Upload:</strong> <a href="{{ employee.certifications.url }}"> <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"></a></p>
                     {% endif %}
                 </div>
 
@@ -255,7 +338,7 @@
                     <p class="field"><strong>Bank IFSC Code:</strong> {{ employee.bank_ifsc_code }}</p>
                     <p class="field"><strong>Bank Branch Address:</strong> {{ employee.bank_branch_address }}</p>
                     {% if employee.passbook_file_upload %}
-                        <p class="field"><strong>Passbook Upload:</strong> <a href="{{ employee.passbook_file_upload.url }}">Download Passbook</a></p>
+                        <p class="field"><strong>Passbook Upload:</strong> <a href="{{ employee.passbook_file_upload.url }}"> <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"></a></p>
                     {% else %}
                         <p class="field"><strong>Passbook Upload:</strong> No file uploaded</p>
                     {% endif %}
@@ -263,27 +346,91 @@
 
                 <div id="files-upload" class="section">
                     <h2>Files Upload for Current Employment</h2>
-                    <p><strong>Offer Letter:</strong> {% if employee.offer_letter %}<a href="{{ employee.offer_letter.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
-                    <p><strong>NDA Form:</strong> {% if employee.nda_form %}<a href="{{ employee.nda_form.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
-                    <p><strong>B.Tech Memo:</strong> {% if employee.btech_memo %}<a href="{{ employee.btech_memo.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
-                    <p><strong>B.Tech TC:</strong> {% if employee.btech_tc %}<a href="{{ employee.btech_tc.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
-                    <p><strong>Relieving Letter:</strong> {% if employee.relieving_letter %}<a href="{{ employee.relieving_letter.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
-                    <p><strong>Experience Letter:</strong> {% if employee.experience_letter %}<a href="{{ employee.experience_letter.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
-                    <p><strong>Payslips:</strong> {% if employee.payslips %}<a href="{{ employee.payslips.url }}">View Document</a>{% else %}Not Uploaded{% endif %}</p>
+                    <div class="documents-grid">
+                        <div class="document-item">
+                            <strong>Offer Letter:</strong>
+                            {% if employee.offer_letter %}
+                                <a href="{{ employee.offer_letter.url }}">
+                                    <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"> 
+                                </a>
+                            {% else %}
+                                Not Uploaded
+                            {% endif %}
+                        </div>
+                        <div class="document-item">
+                            <strong>NDA Form:</strong>
+                            {% if employee.nda_form %}
+                                <a href="{{ employee.nda_form.url }}">
+                                    <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"> 
+                                </a>
+                            {% else %}
+                                Not Uploaded
+                            {% endif %}
+                        </div>
+                        <div class="document-item">
+                            <strong>B.Tech Memo:</strong>
+                            {% if employee.btech_memo %}
+                                <a href="{{ employee.btech_memo.url }}">
+                                    <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"> 
+                                </a>
+                            {% else %}
+                                Not Uploaded
+                            {% endif %}
+                        </div>
+                        <div class="document-item">
+                            <strong>B.Tech TC:</strong>
+                            {% if employee.btech_tc %}
+                                <a href="{{ employee.btech_tc.url }}">
+                                    <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"> 
+                                </a>
+                            {% else %}
+                                Not Uploaded
+                            {% endif %}
+                        </div>
+                        <div class="document-item">
+                            <strong>Relieving Letter:</strong>
+                            {% if employee.relieving_letter %}
+                                <a href="{{ employee.relieving_letter.url }}">
+                                    <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"> 
+                                </a>
+                            {% else %}
+                                Not Uploaded
+                            {% endif %}
+                        </div>
+                        <div class="document-item">
+                            <strong>Experience Letter:</strong>
+                            {% if employee.experience_letter %}
+                                <a href="{{ employee.experience_letter.url }}">
+                                    <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"> 
+                                </a>
+                            {% else %}
+                                Not Uploaded
+                            {% endif %}
+                        </div>
+                        <div class="document-item">
+                            <strong>Payslips:</strong>
+                            {% if employee.payslips %}
+                                <a href="{{ employee.payslips.url }}">
+                                    <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"> 
+                                </a>
+                            {% else %}
+                                Not Uploaded
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
+                
             </div>
         </div>
     </div>
 
     <script>
         function showSection(sectionId) {
-            // Hide all sections
             var sections = document.querySelectorAll('.section');
             sections.forEach(function(section) {
                 section.classList.remove('active');
             });
 
-            // Show the selected section
             var selectedSection = document.getElementById(sectionId);
             if (selectedSection) {
                 selectedSection.classList.add('active');
