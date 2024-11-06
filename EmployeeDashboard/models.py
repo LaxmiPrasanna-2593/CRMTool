@@ -209,3 +209,69 @@ class Lead(models.Model):
 
     def _str_(self):
         return f"{self.name} - {self.company_name}"
+    
+from django.db import models
+from django.core.exceptions import ValidationError
+
+class Task(models.Model):
+    # Basic Information
+    title = models.CharField(max_length=255)  # Task title
+    description = models.TextField()  # Detailed description of the task
+
+    # Assigned Role
+    ASSIGNED_ROLES = [
+        ('Dev_TL', 'Development Team Lead'),
+        ('Sales_TL', 'Sales Team Lead'),
+        ('Content_TL', 'Content Moderator Team Lead'),
+        ('Support_TL', 'Customer Support Team Lead'),
+    ]
+    
+    assigned_to = models.CharField(
+        max_length=60,
+        choices=ASSIGNED_ROLES,
+        default='Dev_TL',
+    )  # Dropdown with specified roles
+
+    # Assignment and Status
+    created_by = models.CharField(max_length=150)  # Store username instead of ForeignKey
+    status = models.CharField(
+        max_length=50,
+        choices=[
+            ('Pending', 'Pending'),
+            ('In Progress', 'In Progress'),
+            ('Completed', 'Completed'),
+            ('On Hold', 'On Hold')
+        ],
+        default='Pending'
+    )  # Task status
+
+    # Dates and Deadlines
+    created_at = models.DateTimeField(auto_now_add=True)  # Date task was created
+    updated_at = models.DateTimeField(auto_now=True)  # Date task was last updated
+    due_date = models.DateTimeField()  # Task due date
+
+    # Priority
+    priority = models.CharField(
+        max_length=20,
+        choices=[
+            ('Low', 'Low'),
+            ('Medium', 'Medium'),
+            ('High', 'High'),
+            ('Urgent', 'Urgent')
+        ],
+        default='Medium'
+    )  # Priority level
+
+    # Additional Notes
+    notes = models.TextField(blank=True, null=True)  # Additional notes or comments about the task
+
+    def __str__(self):
+        return f"{self.title} - {self.status}"
+
+    def clean(self):
+        """Custom validation to ensure 'created_by' is an admin user."""
+        if self.created_by and not User.objects.filter(username=self.created_by, is_staff=True).exists():
+            raise ValidationError("Created by must be an admin user.")
+    
+    class Meta:
+        ordering = ['due_date', 'priority']

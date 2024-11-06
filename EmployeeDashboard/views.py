@@ -67,12 +67,20 @@ def dashboard_view(request):
         return render(request, 'dashboard.html')
 
     if user_department == 'teamlead_development':
+        tasks = Task.objects.filter(assigned_to='Dev_TL').order_by('due_date')
+        context['tasks'] = tasks
         return render(request, 'development_dashboard.html', context)
     elif user_department == 'teamlead_content_moderators':
+        tasks = Task.objects.filter(assigned_to='Content_TL').order_by('due_date')
+        context['tasks'] = tasks
         return render(request, 'content_moderator_dashboard.html', context)
     elif user_department == 'teamlead_sales_team':
+        tasks = Task.objects.filter(assigned_to='Sales_TL').order_by('due_date')
+        context['tasks'] = tasks
         return render(request, 'sales_team_dashboard.html', context)
     elif user_department == 'teamlead_customer_support':
+        tasks = Task.objects.filter(assigned_to='Support_TL').order_by('due_date')
+        context['tasks'] = tasks
         return render(request, 'customer_support_dashboard.html', context)
     else:
         return render(request, 'employee_dashboard.html', context)
@@ -177,3 +185,47 @@ def lead_edit(request, pk):
     else:
         form = LeadForm(instance=lead)
     return render(request, 'lead_form.html', {'form': form, 'lead': lead})    
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Task
+from .forms import TaskForm
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+
+# View to list all tasks
+def task_list(request):
+    tasks = Task.objects.all()
+    return render(request, 'task_list.html', {'tasks': tasks})
+
+# View to create a new task (only accessible by admin users)
+@login_required
+def task_create(request):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("You are not authorized to create tasks.")
+    
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.created_by = request.user.username  # Set the logged-in user as the creator
+            task.save()
+            return redirect('task_list')
+    else:
+        form = TaskForm()
+
+    return render(request, 'task_form.html', {'form': form})
+
+# View to edit an existing task
+@login_required
+def task_edit(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('task_list')
+    else:
+        form = TaskForm(instance=task)
+
+    return render(request, 'task_form.html', {'form': form})

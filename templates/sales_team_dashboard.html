@@ -95,6 +95,7 @@
 <body>
     <div class="header">
         <img src="{% static 'vindus_logo.png' %}" alt="Company Logo">
+        <!-- Replace with your logo path -->
         <h1>VINDUS ENVIRONMENT PRIVATE LIMITED</h1>
         <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}
@@ -106,12 +107,30 @@
         <h1>Welcome, Sales Team</h1>
         <p>This is the sales team dashboard.</p>
     </div>
+    <div class="task-list">
+        {% if tasks %} {% for task in tasks %}
+        <div class="task-item">
+            <h3><strong>Task Name:</strong>{{ task.title }}</h3>
+            <p><strong>Description:</strong> {{ task.description }}</p>
+            <p><strong>Status:</strong> <span class="status">{{ task.get_status_display }}</span></p>
+            <p><strong>Priority:</strong> <span class="priority">{{ task.get_priority_display }}</span></p>
+            <p><strong>Due Date:</strong> {{ task.due_date|date:"M d, Y" }}</p>
+            <p><strong>Notes:</strong> {{ task.notes|default:"No additional notes" }}</p>
+            <p>
+                <a href="{% url 'task_edit' task.pk %}">Edit</a>
+            </p>
+        </div>
+        {% endfor %} {% else %}
+        <p>No tasks assigned at the moment.</p>
+        {% endif %}
+    </div>
 
     <footer class="footer">
         &copy; {{ current_year }} Vindus Environment Private Limited. All rights reserved.
     </footer>
 
     <script>
+        // Dynamically set the current year in the footer
         document.addEventListener("DOMContentLoaded", function() {
             const currentYear = new Date().getFullYear();
             document.querySelector('.footer').innerHTML = `&copy; ${currentYear} Vindus Environment Private Limited. All rights reserved.`;

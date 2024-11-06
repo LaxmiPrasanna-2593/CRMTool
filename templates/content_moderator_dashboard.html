@@ -107,6 +107,23 @@
         <h1>Welcome, Content Moderators</h1>
         <p>This is the content moderator dashboard.</p>
     </div>
+    <div class="task-list">
+        {% if tasks %} {% for task in tasks %}
+        <div class="task-item">
+            <h3><strong>Task Name:</strong>{{ task.title }}</h3>
+            <p><strong>Description:</strong> {{ task.description }}</p>
+            <p><strong>Status:</strong> <span class="status">{{ task.get_status_display }}</span></p>
+            <p><strong>Priority:</strong> <span class="priority">{{ task.get_priority_display }}</span></p>
+            <p><strong>Due Date:</strong> {{ task.due_date|date:"M d, Y" }}</p>
+            <p><strong>Notes:</strong> {{ task.notes|default:"No additional notes" }}</p>
+            <p>
+                <a href="{% url 'task_edit' task.pk %}">Edit</a>
+            </p>
+        </div>
+        {% endfor %} {% else %}
+        <p>No tasks assigned at the moment.</p>
+        {% endif %}
+    </div>
 
     <footer class="footer">
         &copy; {{ current_year }} Vindus Environment Private Limited. All rights reserved.
