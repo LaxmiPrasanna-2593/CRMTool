@@ -86,30 +86,41 @@
 </head>
 
 <body>
-    <div class="header">
-        <img src="{% static 'vindus_logo.png' %}" alt="Company Logo">
-        <h1>VINDUS ENVIRONMENT PRIVATE LIMITED</h1>
-        <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="logout-button">Logout</button>
-        </form>
-    </div>
 
-    <div class="content">
-        <h1>Welcome {{user.username}} </h1>
-        <p>This is the Employee dashboard.</p>
-    </div>
 
-    <footer class="footer">
-        &copy; {{ current_year }} Vindus Environment Private Limited. All rights reserved.
-    </footer>
+    <h1>Welcome {{ user.username }} to Your Task Dashboard</h1>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const currentYear = new Date().getFullYear();
-            document.querySelector('.footer').innerHTML = `&copy; ${currentYear} Vindus Environment Private Limited. All rights reserved.`;
-        });
-    </script>
+    <h2>Your Assigned Tasks</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Update Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in user_tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.priority }}</td>
+                <td>{{ task.due_date }}</td>
+                <td>{{ task.status }}</td>
+                <td>
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="task_id" value="{{ task.id }}"> {{ form.status }}
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 
 </html>

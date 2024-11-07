@@ -116,3 +116,24 @@ class TaskForm(forms.ModelForm):
         widgets = {
             'due_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
+
+
+from .models import TLTasks
+class TLTaskForm(forms.ModelForm):
+    class Meta:
+        model = TLTasks
+        fields = ['title', 'description', 'assigned_to', 'assigned_by', 'priority', 'due_date', 'status']
+        widgets = {
+            'due_date': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+from django import forms
+from .models import TLTasks
+
+class TLTaskStatusForm(forms.ModelForm):
+    class Meta:
+        model = TLTasks
+        fields = ['status']
+        widgets = {
+            'status': forms.Select(attrs={'class': 'form-control'})
+        }

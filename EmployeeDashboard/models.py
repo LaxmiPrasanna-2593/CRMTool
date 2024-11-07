@@ -275,3 +275,23 @@ class Task(models.Model):
     
     class Meta:
         ordering = ['due_date', 'priority']
+
+
+
+
+class TLTasks(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    assigned_to = models.CharField(max_length=100) 
+    assigned_by = models.CharField(max_length=100) 
+    priority = models.CharField(max_length=20, choices=[('High', 'High'), ('Medium', 'Medium'), ('Low', 'Low')])
+    due_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=[
+        ('Pending', 'Pending'),
+        ('In Progress', 'In Progress'),
+        ('Completed', 'Completed')
+    ], default='Pending')
+
+    def __str__(self):
+        return f"{self.title} - {self.status} (Assigned to {self.assigned_to})"

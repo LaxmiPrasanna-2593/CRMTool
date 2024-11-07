@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ action }} Task</title>
+</head>
+
+<body>
+    <h1>{{ action }} Task</h1>
+    <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit">{{ action }} Task</button>
+    </form>
+    <a href="{% url 'tl_task_list' %}">Back to Task List</a>
+</body>
+
+</html>

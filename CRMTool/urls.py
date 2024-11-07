@@ -37,7 +37,10 @@ urlpatterns = [
     path('lead_edit/<int:pk>/', lead_edit, name='lead_edit'),
     path('task_list/', task_list, name='task_list'),  
     path('task_create/', task_create, name='task_create'),  
-    path('task_edit/<int:pk>/', task_edit, name='task_edit'),  
+    path('task_edit/<int:pk>/', task_edit, name='task_edit'), 
+    path('tl_task_list/', tl_task_list, name='tl_task_list'),
+    path('tl_task_create/', tl_task_create, name='tl_task_create'),
+    path('tl_task_edit/<int:task_id>/', tl_task_edit, name='tl_task_edit'), 
 ] 
 # Serve static files
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

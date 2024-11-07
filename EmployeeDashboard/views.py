@@ -58,6 +58,8 @@ def login_view(request):
             messages.error(request, 'Invalid username or password')
     return render(request, 'login.html')
 
+from django import forms
+from .models import TLTasks
 @login_required
 def dashboard_view(request):
     user_department = request.user.department
@@ -83,6 +85,20 @@ def dashboard_view(request):
         context['tasks'] = tasks
         return render(request, 'customer_support_dashboard.html', context)
     else:
+        # For employees, display tasks assigned to the logged-in user and allow status updates
+        user_tasks = TLTasks.objects.filter(assigned_to=request.user.username).order_by('due_date')
+        if request.method == "POST":
+            task_id = request.POST.get("task_id")
+            task = get_object_or_404(TLTasks, id=task_id)
+            form = TLTaskStatusForm(request.POST, instance=task)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
+        else:
+            form = TLTaskStatusForm()
+        
+        context['user_tasks'] = user_tasks
+        context['form'] = form
         return render(request, 'employee_dashboard.html', context)
 
 from django.shortcuts import redirect
@@ -97,7 +113,7 @@ def custom_logout_view(request):
 
 
 from django.shortcuts import render, redirect
-from .forms import EmployeeForm
+from .forms import EmployeeForm, TLTaskStatusForm
 
 def employee_form_view(request):
     if request.method == 'POST':
@@ -229,3 +245,34 @@ def task_edit(request, pk):
         form = TaskForm(instance=task)
 
     return render(request, 'task_form.html', {'form': form})
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import TLTasks
+from .forms import TLTaskForm
+
+def tl_task_list(request):
+    tasks = TLTasks.objects.all()
+    return render(request, 'tl_task_list.html', {'tasks': tasks})
+
+def tl_task_create(request):
+    if request.method == 'POST':
+        form = TLTaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tl_task_list')
+    else:
+        form = TLTaskForm()
+    return render(request, 'tl_task_form.html', {'form': form, 'action': 'Create'})
+
+def tl_task_edit(request, task_id):
+    task = get_object_or_404(TLTasks, id=task_id)
+    if request.method == 'POST':
+        form = TLTaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('tl_task_list')
+    else:
+        form = TLTaskForm(instance=task)
+    return render(request, 'tl_task_form.html', {'form': form, 'action': 'Edit'})

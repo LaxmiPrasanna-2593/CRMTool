@@ -6,3 +6,4 @@ from .models import Task
 admin.site.register(Employee)
 admin.site.register(User)
 admin.site.register(Task)
+admin.site.register(TLTasks)

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Task List</title>
+</head>
+
+<body>
+    <h1>Task List</h1>
+    <a href="{% url 'tl_task_create' %}">Create New Task</a>
+    <table border="1">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Assigned To</th>
+            <th>Assigned By</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.assigned_to }}</td>
+            <td>{{ task.assigned_by }}</td>
+            <td>{{ task.priority }}</td>
+            <td>{{ task.due_date }}</td>
+            <td>{{ task.status }}</td>
+            <td>
+                <a href="{% url 'tl_task_edit' task.id %}">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
