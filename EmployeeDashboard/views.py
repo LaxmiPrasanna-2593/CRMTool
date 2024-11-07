@@ -276,3 +276,27 @@ def tl_task_edit(request, task_id):
     else:
         form = TLTaskForm(instance=task)
     return render(request, 'tl_task_form.html', {'form': form, 'action': 'Edit'})
+
+
+from django.shortcuts import render
+from .models import TLTasks
+
+def admin_task_list_view(request):
+    tasks = TLTasks.objects.all()  # Fetch all tasks from the database
+    return render(request, 'admin_task_list.html', {'tasks': tasks})
+
+
+from django.shortcuts import render
+from .models import TLTasks
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def tlassigned_task_list_view(request):
+    current_user = request.user.username
+    tasks = TLTasks.objects.filter(assigned_by=current_user).order_by('due_date')
+    
+    context = {
+        'tasks': tasks
+    }
+    
+    return render(request, 'tl_assigned_task_list.html', context)
