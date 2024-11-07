@@ -213,6 +213,8 @@ def task_list(request):
     tasks = Task.objects.all()
     return render(request, 'task_list.html', {'tasks': tasks})
 
+
+
 # View to create a new task (only accessible by admin users)
 @login_required
 def task_create(request):
@@ -246,6 +248,24 @@ def task_edit(request, pk):
 
     return render(request, 'task_form.html', {'form': form})
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Task
+from .forms import TaskForm
+
+@login_required
+def task_edit_alt(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = TaskForm(instance=task)
+
+    return render(request, 'tl_task_edit.html', {'form': form})
 
 
 from django.shortcuts import render, redirect, get_object_or_404

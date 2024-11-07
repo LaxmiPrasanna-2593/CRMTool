@@ -6,100 +6,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task List</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .container {
-            width: 80%;
-            margin: 50px auto;
-        }
-        
         h1 {
             text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        
-        .task-card {
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .task-title {
-            font-size: 1.6em;
+            color: #0c005a;
+            font-size: 2.5em;
+            margin-bottom: 30px;
             font-weight: bold;
-            color: #333;
         }
-        
+
+        .task-table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .task-table th, .task-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .task-table th {
+            background-color: #0c005a;
+            color: white;
+        }
+
+        .task-table td {
+            background-color: #fff;
+        }
+
+        .task-table td strong {
+            color: #0c005a;
+        }
+
         .task-status {
             font-weight: bold;
-            color: green;
+            color: #007500;
+            text-align: center;
+            font-size: 1.1em;
         }
-        
-        .task-details {
-            margin-top: 10px;
+        .task-status1 {
+            font-weight: bold;
+            color: blue;
+            text-align: center;
+            font-size: 1.1em;
         }
-        
-        .task-details div {
-            margin: 5px 0;
+        .task-status2 {
+            font-weight: bold;
+            color: red;
+            text-align: center;
+            font-size: 1.1em;
         }
-        
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        
-        .col-md-4 {
-            flex: 1 1 30%;
-            margin: 10px;
-        }
-        
+
         .no-tasks {
             text-align: center;
             font-size: 1.2em;
             color: #555;
+            margin-top: 20px;
         }
     </style>
 </head>
-
+{% extends 'base.html' %}
 <body>
+    {% block content %}
+    <div class="main-content">
+        <div class="container">
+            <h1>Employee Task List</h1>
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Assigned to</th>
+                        <th>Assigned by</th>
+                        <th>Priority</th>
+                        <th>Due Date</th>
+                        <th>Created At</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through tasks -->
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.assigned_to }}</td>
+                        <td>{{ task.assigned_by }}</td>
+                        <td>{{ task.priority }}</td>
+                        <td>{{ task.due_date }}</td>
+                        <td>{{ task.created_at }}</td>
+                        {% if task.status == "Completed" %}
+                        <td class="task-status">{{ task.status }}</td>
+                    {% elif task.status == "In Progress" %}
+                        <td class="task-status1">{{ task.status }}</td>
+                    {% else %}
+                        <td class="task-status2">{{ task.status }}</td>
+                    {% endif %}
+                    
 
-    <div class="container">
-        <h1>Task List</h1>
-        <div class="row">
-            <!-- Loop through tasks -->
-            {% for task in tasks %}
-            <div class="col-md-4">
-                <div class="task-card">
-                    <div class="task-title">{{ task.title }}</div>
-                    <div class="task-details">
-                        <div><strong>Description:</strong> {{ task.description }}</div>
-                        <div><strong>Assigned to:</strong> {{ task.assigned_to }}</div>
-                        <div><strong>Assigned by:</strong> {{ task.assigned_by }}</div>
-                        <div><strong>Priority:</strong> {{ task.priority }}</div>
-                        <div><strong>Due Date:</strong> {{ task.due_date }}</div>
-                        <div><strong>Created At:</strong> {{ task.created_at }}</div>
-                        <div class="task-status"><strong>Status:</strong> {{ task.status }}</div>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-12 no-tasks">
-                <p>No tasks assigned.</p>
-            </div>
-            {% endfor %}
+
+
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="no-tasks">No tasks assigned.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-
+    {% endblock %}
 </body>
 
 </html>

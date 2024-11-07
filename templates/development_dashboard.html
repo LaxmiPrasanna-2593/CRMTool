@@ -36,19 +36,7 @@
             margin: 0;
         }
         
-        .logout-button {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .logout-button:hover {
-            background-color: #c82333;
-        }
+       
         /* Content Section */
         
         .content {
@@ -110,14 +98,6 @@
         }
         /* Footer Section */
         
-        .footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #007BFF;
-            color: white;
-            margin-top: 30px;
-        }
-        /* Media Queries for Responsiveness */
         
         @media (max-width: 768px) {
             .header {
@@ -135,14 +115,8 @@
 </head>
 
 <body>
-    <div class="header">
-        <img src="{% static 'vindus_logo.png' %}" alt="Company Logo">
-        <h1>VINDUS ENVIRONMENT PRIVATE LIMITED</h1>
-        <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="logout-button">Logout</button>
-        </form>
-    </div>
+    {% include 'includes/header.html' %}
+
 
     <div class="content">
         <h1>Welcome, Development Team</h1>
@@ -158,7 +132,7 @@
                 <p><strong>Due Date:</strong> {{ task.due_date|date:"M d, Y" }}</p>
                 <p><strong>Notes:</strong> {{ task.notes|default:"No additional notes" }}</p>
                 <p>
-                    <a href="{% url 'task_edit' task.pk %}">Edit</a>
+                    <a href="{% url 'task_edit_alt' pk=task.pk %}">Edit</a>
                 </p>
             </div>
             {% endfor %} {% else %}
@@ -174,9 +148,7 @@
 
     </div>
 
-    <footer class="footer">
-        &copy; {{ current_year }} Vindus Environment Private Limited. All rights reserved.
-    </footer>
+   
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

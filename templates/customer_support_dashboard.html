@@ -79,29 +79,13 @@
             font-size: 1.1em;
         }
         
-        .footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-            margin-top: 50px;
-        }
+       
     </style>
 </head>
 
 <body>
-    <div class="header">
-        <img src="{% static 'vindus_logo.png' %}" alt="Company Logo">
-        <!-- Replace with your logo path -->
-        <h1>VINDUS ENVIRONMENT PRIVATE LIMITED</h1>
-        <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="logout-button">Logout</button>
-        </form>
-    </div>
+    {% include 'includes/header.html' %}
+
 
     <div class="content">
         <h1>Welcome, Customer Support Team</h1>
@@ -117,7 +101,7 @@
             <p><strong>Due Date:</strong> {{ task.due_date|date:"M d, Y" }}</p>
             <p><strong>Notes:</strong> {{ task.notes|default:"No additional notes" }}</p>
             <p>
-                <a href="{% url 'task_edit' task.pk %}">Edit</a>
+                <a href="{% url 'task_edit_alt' pk=task.pk %}">Edit</a>
             </p>
         </div>
         {% endfor %} {% else %}
@@ -131,10 +115,7 @@
         <p><a href="{% url 'tl_assigned_task_list' %}">Assigned Tasks</a></p>
     </div>
 
-    <footer class="footer">
-        &copy; {{ current_year }} Vindus Environment Private Limited. All rights reserved.
-    </footer>
-
+    
     <script>
         // Dynamically set the current year in the footer
         document.addEventListener("DOMContentLoaded", function() {
