@@ -41,6 +41,8 @@ urlpatterns = [
     path('tl_task_list/', tl_task_list, name='tl_task_list'),
     path('tl_task_create/', tl_task_create, name='tl_task_create'),
     path('tl_task_edit/<int:task_id>/', tl_task_edit, name='tl_task_edit'), 
+    path('admin_task_list/', admin_task_list_view, name='admin_task_list'),
+    path('tl_assigned_task_list/', tlassigned_task_list_view, name='tl_assigned_task_list'),
 ] 
 # Serve static files
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
