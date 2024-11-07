@@ -1,39 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task List</title>
-</head>
+    <style>
+       h1 {
+            font-size: 2em;
+            color: #0c005a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        th {
+            background-color: #0c005a;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .lead-actions a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9em;
+            background-color: rgb(7, 181, 249);
+            padding: 7px;
+            border-radius: 5px;
+            border: 1px solid rgb(3, 74, 137);
+        }
+
+        .lead-actions a:hover {
+            background-color: rgb(5, 150, 206); /* Darker hover background without underline */
+        }
+        .new-task{
+            background-color: #0c005a;
+            display: inline-block;
+            color: white;
+            border-radius: 5px;
+            padding: 10px;
+            text-decoration: none;
+        }
+        .new-task a {
+            color: #f9f9f9;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+{% extends 'base.html' %}
+{% load static %}
 <body>
-    <h1>Task List</h1>
-    <a href="{% url 'task_create' %}">Create New Task</a>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Assigned To</th>
-                <th>Created By</th>
-                <th>Due Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in tasks %}
-            <tr>
-                <td>{{ task.title }}</td>
-                <td>{{ task.status }}</td>
-                <td>{{ task.get_assigned_to_display }}</td>
-                <td>{{ task.created_by }}</td>
-                <td>{{ task.due_date }}</td>
-                <td>
-                    <a href="{% url 'task_edit' task.pk %}">Edit</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% block content %}
+    <div class="main-content">
+
+        <h1 >Task List</h1>
+        <div class="new-task">
+        <a href="{% url 'task_create' %}" style="color: #f9f9f9;">Create New Task</a>
+    </div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+                    <th>Created By</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>{{ task.get_assigned_to_display }}</td>
+                    <td>{{ task.created_by }}</td>
+                    <td>{{ task.due_date }}</td>
+                    <td class="lead-actions">
+                        <a href="{% url 'task_edit' task.pk %}" >Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}
 </body>
 
 </html>

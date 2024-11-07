@@ -6,17 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submission Successful</title>
     <style>
-        body {
+        .small-container {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f4f8;
             color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            height: 80vh;
             margin: 0;
-            padding: 20px;
+            
         }
         
         h1 {
@@ -31,7 +30,7 @@
             text-align: center;
         }
         
-        a {
+        .entry {
             text-decoration: none;
             background-color: #0c005a;
             color: white;
@@ -42,7 +41,7 @@
             display: inline-block;
         }
         
-        a:hover {
+        .entry:hover {
             background-color: #0c005a;
         }
         
@@ -64,16 +63,24 @@
         }
     </style>
 </head>
+{% extends 'base.html' %}
 
 <body>
+    {% block content %}
+    <div class="main-content">
+        <div class="small-container">
     <div class="container">
         <div class="icon">✅</div>
         <h1>Success!</h1>
         <p>Your employee information has been successfully submitted.</p>
-        <a href="{% url 'employee_form' %}">Submit another entry</a>
-        <a href="{% url 'employee_list' %}">View Employee List</a>
+        <a href="{% url 'employee_form' %}" class="entry">Submit another entry</a>
+        <a href="{% url 'employee_list' %}" class="entry">View Employee List</a>
         <!-- Link to Employee List -->
     </div>
+    </div>
+</div>
+    {% endblock %}
+
 </body>
 
 </html>

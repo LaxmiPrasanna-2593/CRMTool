@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +22,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
             background: linear-gradient(rgba(63, 130, 230, 0.7), rgba(1, 26, 90, 0.7)),
-                url('https://www.bizlibrary.com/wp-content/uploads/2019/05/30141657/employeeretention.png') no-repeat center center;
+                url('{% static "login.png" %}') no-repeat center center;
             background-size: cover;
         }
 
