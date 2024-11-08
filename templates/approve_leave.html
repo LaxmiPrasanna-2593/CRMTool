@@ -1,0 +1,21 @@
+<!-- approve_leave.html -->
+
+<h2>Leave Request Approval</h2>
+
+<p><strong>Employee:</strong> {{ leave.user.username }}</p>
+<p><strong>Leave Date:</strong> {{ leave.leave_date }}</p>
+<p><strong>Leave Type:</strong> {{ leave.leave_type }}</p>
+<p><strong>Reason:</strong> {{ leave.reason }}</p>
+<p><strong>Current Status:</strong> {{ leave.status }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="status">Leave Status:</label>
+    <select name="status" id="status">
+        <option value="Approved" {% if leave.status == "Approved" %}selected{% endif %}>Approved</option>
+        <option value="Disapproved" {% if leave.status == "Disapproved" %}selected{% endif %}>Disapproved</option>
+    </select>
+    <button type="submit">Update Leave Status</button>
+</form>
+
+<a href="{% url 'dashboard' %}">Back to Dashboard</a>

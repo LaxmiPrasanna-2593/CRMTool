@@ -60,6 +60,9 @@ def login_view(request):
 
 from django import forms
 from .models import TLTasks
+from .models import TLTasks, Attendance, Leave
+from .forms import TLTaskStatusForm
+
 @login_required
 def dashboard_view(request):
     user_department = request.user.department
@@ -87,6 +90,9 @@ def dashboard_view(request):
     else:
         # For employees, display tasks assigned to the logged-in user and allow status updates
         user_tasks = TLTasks.objects.filter(assigned_to=request.user.username).order_by('due_date')
+        user_attendance = Attendance.objects.filter(user=request.user).order_by('-date')
+        user_leaves = Leave.objects.filter(user=request.user).order_by('-start_date') 
+
         if request.method == "POST":
             task_id = request.POST.get("task_id")
             task = get_object_or_404(TLTasks, id=task_id)
@@ -99,6 +105,8 @@ def dashboard_view(request):
         
         context['user_tasks'] = user_tasks
         context['form'] = form
+        context['attendance'] = user_attendance
+        context['leaves'] = user_leaves
         return render(request, 'employee_dashboard.html', context)
 
 from django.shortcuts import redirect
@@ -320,3 +328,154 @@ def tlassigned_task_list_view(request):
     }
     
     return render(request, 'tl_assigned_task_list.html', context)
+
+
+from django.shortcuts import render, redirect
+from .models import Attendance, Leave, Break
+from .forms import AttendanceForm, LeaveRequestForm
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+from .forms import AttendanceForm
+from .models import Attendance
+
+@login_required
+def mark_attendance(request):
+    date = timezone.now().date()  # Get today's date
+
+    # Try to get the attendance for the current day
+    attendance = Attendance.objects.filter(user=request.user, date=date).first()
+
+    if request.method == 'POST':
+        form = AttendanceForm(request.POST)
+        if form.is_valid():
+            if attendance:
+                # If attendance exists, update the existing record
+                attendance.login_time = form.cleaned_data['login_time']
+                attendance.logout_time = form.cleaned_data['logout_time']
+                attendance.save()
+            else:
+                # If no attendance exists, create a new record
+                attendance = Attendance(user=request.user, date=date,
+                                        login_time=form.cleaned_data['login_time'],
+                                        logout_time=form.cleaned_data['logout_time'])
+                attendance.save()
+
+            return redirect('dashboard')  # Redirect to the dashboard
+    else:
+        # If the attendance exists, pre-fill the form with existing data for editing
+        if attendance:
+            form = AttendanceForm(initial={
+                'login_time': attendance.login_time,
+                'logout_time': attendance.logout_time
+            })
+        else:
+            form = AttendanceForm()  # Empty form for a new attendance entry
+
+    return render(request, 'mark_attendance.html', {'form': form})
+
+
+@login_required
+def leave_request(request):
+    if request.method == 'POST':
+        form = LeaveRequestForm(request.POST)
+        if form.is_valid():
+            leave = form.save(commit=False)
+            leave.user = request.user
+            leave.save()
+
+            return redirect('dashboard')  # Redirect to the dashboard
+    else:
+        form = LeaveRequestForm()
+
+    return render(request, 'leave_request.html', {'form': form})
+
+
+
+
+# views.py
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import BreakForm
+
+@login_required
+def mark_break(request):
+    if request.method == 'POST':
+        form = BreakForm(request.POST)
+        if form.is_valid():
+            # Save the break for the logged-in user
+            break_instance = form.save(commit=False)
+            break_instance.user = request.user
+            break_instance.save()
+            return redirect('dashboard')  # Redirect to the break list page after saving
+    else:
+        form = BreakForm()
+
+    return render(request, 'mark_break.html', {'form': form})
+
+@login_required
+def break_list(request):
+    # Fetch all breaks for the currently logged-in user
+    breaks = Break.objects.filter(user=request.user)
+    
+    # Pass the breaks to the template
+    return render(request, 'break_list.html', {'breaks': breaks})
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Leave
+
+@login_required
+def leave_requests(request):
+    # Fetch all leave requests, if the user is an admin or the user themselves
+    if request.user.is_staff:
+        leave_requests = Leave.objects.all()  # Admin can see all requests
+    else:
+        leave_requests = Leave.objects.filter(user=request.user)  # Users can see their own requests
+
+    return render(request, 'leave_requests.html', {'leave_requests': leave_requests})
+
+
+@login_required
+def approve_leave(request, leave_id):
+    """
+    View to approve a leave request.
+    """
+    leave = get_object_or_404(Leave, id=leave_id)
+
+    if not request.user.is_staff:
+        messages.error(request, "You do not have permission to approve or disapprove leave requests.")
+        return redirect('leave_requests')
+
+    if leave.status == 'Pending':  # Ensure that the leave is still pending
+        leave.status = 'Approved'
+        leave.save()
+        messages.success(request, f"Leave request from {leave.user.username} approved.")
+    else:
+        messages.warning(request, f"Leave request from {leave.user.username} is already {leave.status.lower()}.")
+
+    return redirect('leave_requests')
+
+@login_required
+def disapprove_leave(request, leave_id):
+    """
+    View to disapprove a leave request.
+    """
+    leave = get_object_or_404(Leave, id=leave_id)
+
+    if not request.user.is_staff:
+        messages.error(request, "You do not have permission to approve or disapprove leave requests.")
+        return redirect('leave_requests')
+
+    if leave.status == 'Pending':  # Ensure that the leave is still pending
+        leave.status = 'Disapproved'
+        leave.save()
+        messages.success(request, f"Leave request from {leave.user.username} disapproved.")
+    else:
+        messages.warning(request, f"Leave request from {leave.user.username} is already {leave.status.lower()}.")
+
+    return redirect('leave_requests')

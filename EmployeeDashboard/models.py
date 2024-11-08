@@ -295,3 +295,116 @@ class TLTasks(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.status} (Assigned to {self.assigned_to})"
+
+from django.db import models
+from django.conf import settings
+from django.utils import timezone
+from decimal import Decimal
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+class Attendance(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date = models.DateField(default=timezone.now)
+    login_time = models.TimeField(null=True, blank=True)
+    logout_time = models.TimeField(null=True, blank=True)
+    break_time = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)  # Store break time as decimal
+    total_working_hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)  # Store working hours as decimal
+
+    def calculate_break_time(self):
+        """Calculate the total break time in hours."""
+        breaks = Break.objects.filter(user=self.user, date=self.date)
+        total_break_seconds = sum(
+            (timezone.datetime.combine(timezone.datetime.min, b.break_end_time) -
+             timezone.datetime.combine(timezone.datetime.min, b.break_start_time)).total_seconds()
+            for b in breaks
+        )
+        total_break_hours = total_break_seconds / 3600  # Convert seconds to hours
+        self.break_time = Decimal(total_break_hours)  # Store break time as a decimal
+        return self.break_time
+
+    def convert_decimal_to_hours_minutes(self, decimal_hours):
+        """Converts decimal hours to hours:minutes format."""
+        hours = int(decimal_hours)  # Get the integer part for hours
+        minutes = round((decimal_hours - hours) * 60)  # Round the decimal part to the nearest minute
+        
+        # If minutes are 60 after rounding, adjust the hours and reset minutes to 0
+        if minutes == 60:
+            hours += 1
+            minutes = 0
+            
+        return f"{hours}:{minutes:02d}"  # Format minutes as two digits (e.g., 08:50)
+    def get_break_time_in_hours_minutes(self):
+        """Converts break time (in decimal) to hours:minutes format."""
+        if self.break_time:
+            return self.convert_decimal_to_hours_minutes(self.break_time)
+        return "00:00"
+    
+    def convert_total_working_hours_to_hours_minutes(self):
+        """Converts total working hours (in decimal) to hours:minutes format."""
+        if self.total_working_hours:
+            return self.convert_decimal_to_hours_minutes(self.total_working_hours)
+        return "00:00"
+    
+    def save(self, *args, **kwargs):
+        if self.login_time and self.logout_time:
+            # Calculate total working hours (from login to logout)
+            work_duration = timezone.datetime.combine(timezone.datetime.min, self.logout_time) - timezone.datetime.combine(timezone.datetime.min, self.login_time)
+            total_hours = Decimal(work_duration.total_seconds() / 3600)  # Convert seconds to hours
+            
+            # Calculate and update break time
+            self.calculate_break_time()
+            
+            # Subtract break time from total hours (if there is a break time)
+            if self.break_time:
+                total_hours -= self.break_time  # Subtract break time in hours
+                
+            # Ensure that total hours don't go below 0 (in case of incorrect input)
+            self.total_working_hours = total_hours  # Store as a decimal
+
+        # Save the attendance record
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        # Return the total working hours as a string in HH:MM format
+        return f"{self.user.username} - {self.date} - {self.convert_decimal_to_hours_minutes(self.total_working_hours)}"
+
+class Break(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date = models.DateField(default=timezone.now)
+    break_start_time = models.TimeField()
+    break_end_time = models.TimeField()
+    reason = models.CharField(max_length=100, blank=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Update related attendance record whenever a break is saved
+        update_attendance_break_time(self)
+
+    def __str__(self):
+        return f"Break for {self.user.username} - {self.break_start_time} to {self.break_end_time}"
+
+# Signal to update Attendance whenever a Break is saved
+@receiver(post_save, sender=Break)
+def update_attendance_break_time(instance, **kwargs):
+    # Update or create the related Attendance record
+    attendance, created = Attendance.objects.get_or_create(
+        user=instance.user,
+        date=instance.date
+    )
+    # Recalculate and save the attendance to update working hours
+    attendance.save()
+
+
+class Leave(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    leave_type = models.CharField(max_length=50)
+    status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Disapproved', 'Disapproved')], default='Pending')
+    reason = models.TextField()
+
+    def __str__(self):
+        return f"Leave from {self.start_date} to {self.end_date} for {self.user.username}"
+
+

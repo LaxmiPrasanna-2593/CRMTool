@@ -44,6 +44,14 @@ urlpatterns = [
     path('admin_task_list/', admin_task_list_view, name='admin_task_list'),
     path('tl_assigned_task_list/', tlassigned_task_list_view, name='tl_assigned_task_list'),
     path('task/<int:pk>/edit_alt/', task_edit_alt, name='task_edit_alt'),
+    path('mark-attendance/', mark_attendance, name='mark_attendance'),
+    path('leave-request/', leave_request, name='leave_request'),
+    path('approve-leave/<int:leave_id>/', approve_leave, name='approve_leave'),
+    path('mark-break/', mark_break, name='mark_break'), 
+    path('break-list/', break_list, name='break_list'),
+    path('leave-requests/', leave_requests, name='leave_requests'),
+    path('approve_leave/<int:leave_id>/', approve_leave, name='approve_leave'),
+    path('disapprove_leave/<int:leave_id>/', disapprove_leave, name='disapprove_leave'),
 ] 
 # Serve static files
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

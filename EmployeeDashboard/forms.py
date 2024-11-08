@@ -1,5 +1,5 @@
 from django import forms
-from .models import Employee
+from .models import Employee, Leave
 
 class EmployeeForm(forms.ModelForm):
     class Meta:
@@ -137,3 +137,37 @@ class TLTaskStatusForm(forms.ModelForm):
         widgets = {
             'status': forms.Select(attrs={'class': 'form-control'})
         }
+
+
+
+
+from django import forms
+from .models import Attendance, Break
+
+class AttendanceForm(forms.ModelForm):
+    class Meta:
+        model = Attendance
+        fields = ['login_time', 'logout_time', 'date']
+        widgets = {
+            'login_time': forms.TimeInput(attrs={'type': 'time'}),
+            'logout_time': forms.TimeInput(attrs={'type': 'time'}),
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+class BreakForm(forms.ModelForm):
+    class Meta:
+        model = Break
+        fields = ['date','break_start_time', 'break_end_time', 'reason']
+        widgets = {
+            'break_start_time': forms.TimeInput(attrs={'type': 'time'}),
+            'break_end_time': forms.TimeInput(attrs={'type': 'time'}),
+        }
+
+class LeaveRequestForm(forms.ModelForm):
+    class Meta:
+        model = Leave
+        fields = ['start_date','end_date', 'leave_type', 'reason']
+
+    leave_type = forms.ChoiceField(choices=[('Sick', 'Sick'), ('Vacation', 'Vacation'), ('Casual', 'Casual')], required=True)
+    reason = forms.CharField(widget=forms.Textarea, required=True)
+
