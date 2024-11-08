@@ -94,12 +94,12 @@ WSGI_APPLICATION = 'CRMTool.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Set the backend to MySQL
-        'NAME': 'vinduscrm',          # Name of your database
-        'USER': 'root',          # Your MySQL username
-        'PASSWORD': '1!2@3#4$5%()',           # Your MySQL password
-        'HOST': 'localhost',                   # Set to 'localhost' if running locally
-        'PORT': '3306',                        # MySQL port, usually 3306
+        'ENGINE': 'django.db.backends.mysql',  
+        'NAME': 'crmdashboard',         
+        'USER': 'root',          
+        'PASSWORD': 'Durgaprakash@143',           
+        'HOST': 'localhost',                   
+        'PORT': '3306',                        
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
