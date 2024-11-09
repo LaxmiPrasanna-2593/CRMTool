@@ -52,6 +52,8 @@ urlpatterns = [
     path('leave-requests/', leave_requests, name='leave_requests'),
     path('approve_leave/<int:leave_id>/', approve_leave, name='approve_leave'),
     path('disapprove_leave/<int:leave_id>/', disapprove_leave, name='disapprove_leave'),
+    path('attendance/', attendance_on_date, name='attendance_on_date'),
+    path('attendance/report/',get_monthly_report, name='monthly_report')
 ] 
 # Serve static files
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

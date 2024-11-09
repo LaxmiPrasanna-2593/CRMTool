@@ -167,6 +167,10 @@ class LeaveRequestForm(forms.ModelForm):
     class Meta:
         model = Leave
         fields = ['start_date','end_date', 'leave_type', 'reason']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
     leave_type = forms.ChoiceField(choices=[('Sick', 'Sick'), ('Vacation', 'Vacation'), ('Casual', 'Casual')], required=True)
     reason = forms.CharField(widget=forms.Textarea, required=True)
