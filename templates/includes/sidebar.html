@@ -12,17 +12,29 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .sidebar {
-            width: 240px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            overflow-y: auto;
-        }
-        
+    width: 240px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: scroll;
+}
+
+/* Hides the scrollbar but still allows scrolling */
+.sidebar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.sidebar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;  /* For Internet Explorer */
+}
+
+
         .sidebar h2 {
             margin-top: 80px;
             font-size: 24px;
@@ -30,24 +42,22 @@
             color: #0c005a;
             text-decoration: none;
         }
-        
+
         .sidebar ul {
             list-style-type: none;
-            cursor: pointer;
             padding: 0;
             margin: 0;
         }
-        
+
         .sidebar ul li {
-            padding: 15px 20px;
-            cursor: pointer;
+            position: relative;
+            padding: 15px 40px 15px 16px;
             display: flex;
             align-items: center;
-            transition: background-color 0.3s;
             color: #9197B3;
-            justify-content: space-between;
+            transition: background-color 0.3s;
         }
-        
+
         .sidebar ul li a {
             text-decoration: none;
             color: inherit;
@@ -55,25 +65,27 @@
             align-items: center;
             width: 100%;
         }
-        
+
         .sidebar ul li:hover {
             background-color: #0c005a;
             color: white;
         }
-        
-        .sidebar ul li i {
-            margin-right: 10px;
+
+        .sidebar ul li i:first-child {
+            margin-right: 16px;
         }
-        
+
         .sidebar ul li i:last-child {
-            margin-left: auto;
+            position: absolute;
+            right: 19px;
             color: #9197B3;
+            transition: color 0.3s;
         }
-        
+
         .sidebar ul li:hover i:last-child {
             color: white;
         }
-        
+
         .main-content {
             flex-grow: 1;
             padding: 20px;
@@ -86,7 +98,7 @@
 <body>
     <div class="dashboard">
         <aside class="sidebar">
-            <h2> Admin Dashboard</h2>
+            <h2>Admin Dashboard</h2>
             <ul>
                 <li>
                     <a href="{% url 'employee_form' %}"><i class="fas fa-user"></i> Employee Form <i class="fas fa-chevron-right"></i></a>
@@ -103,21 +115,18 @@
                 <li>
                     <a href="{% url 'admin_task_list' %}"><i class="fas fa-users"></i> Employees Tasks <i class="fas fa-chevron-right"></i></a>
                 </li>
-
                 <li>
-                    <a href="{% url 'lead_list' %}"><i class="fas fa-users"></i> Leads <i class="fas fa-chevron-right"></i></a>
-                </li>
-
-                <li>
-                    <a href="{% url 'leave_requests' %}"><i class="fas fa-users"></i> Leave Requests <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'lead_list' %}"><i class="fas fa-address-book"></i> Leads <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'attendance_on_date' %}"><i class="fas fa-users"></i> Attendance On Date  <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'leave_requests' %}"><i class="fas fa-calendar-minus"></i> Leave Requests <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'monthly_report' %}"><i class="fas fa-users"></i> Monthly Attendance  <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'attendance_on_date' %}"><i class="fas fa-calendar-day"></i> Attendance On Date <i class="fas fa-chevron-right"></i></a>
                 </li>
-
+                <li>
+                    <a href="{% url 'monthly_report' %}"><i class="fas fa-chart-bar"></i> Monthly Attendance <i class="fas fa-chevron-right"></i></a>
+                </li>
                 <li>
                     <a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Signup <i class="fas fa-chevron-right"></i></a>
                 </li>
