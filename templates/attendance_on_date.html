@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance for {{ date }}</title>
+</head>
+
+<body>
+    <h1>Attendance for {{ date }}</h1>
+
+    <!-- Form to select a specific date -->
+    <form method="get" action="{% url 'attendance_on_date' %}">
+        <label for="date">Select Date:</label>
+        <input type="date" id="date" name="date" value="{{ date|date:'Y-m-d' }}">
+        <button type="submit">View Attendance</button>
+    </form>
+
+    {% if attendance_records %}
+    <table border="1">
+        <tr>
+            <th>User</th>
+            <th>Status</th>
+            <th>Login Time</th>
+            <th>Logout Time</th>
+            <th>Break Time (HH:MM)</th>
+            <th>Total Working Hours (HH:MM)</th>
+        </tr>
+        {% for record in attendance_records %}
+        <tr>
+            <td>{{ record.user.username }}</td>
+            <td>{{ record.status }}</td>
+            <td>{{ record.login_time }}</td>
+            <td>{{ record.logout_time }}</td>
+            <td>{{ record.get_break_time_in_hours_minutes }}</td>
+            <td>{{ record.convert_total_working_hours_to_hours_minutes }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No attendance records found for this date.</p>
+    {% endif %}
+
+
+</body>
+
+</html>

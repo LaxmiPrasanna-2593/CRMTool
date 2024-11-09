@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Attendance Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .report-table th,
+        .report-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        .report-table th {
+            background-color: #f2f2f2;
+        }
+        
+        .report-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .form-container select,
+        .form-container input {
+            padding: 8px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <h2>Select Attendance Report Parameters</h2>
+        <form method="get" action="{% url 'monthly_report' %}">
+            <label for="year">Year: </label>
+            <select name="year" id="year">
+                {% for y in years %}
+                    <option value="{{ y }}" {% if y == year %} selected {% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="month">Month: </label>
+            <select name="month" id="month">
+                {% for m in months %}
+                    <option value="{{ m.0 }}" {% if m.0 == month %} selected {% endif %}>{{ m.1 }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="start_date">Start Date: </label>
+            <input type="date" name="start_date" id="start_date" value="{{ start_date }}">
+
+            <label for="end_date">End Date: </label>
+            <input type="date" name="end_date" id="end_date" value="{{ end_date }}">
+
+            <button type="submit">Generate Report</button>
+        </form>
+    </div>
+
+    <div class="report-header">
+        <h2>Attendance Report for {{ month_name }} {{ year }}</h2>
+        <p>From {{ start_date }} to {{ end_date }}</p>
+    </div>
+
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Present Days</th>
+                <th>On Leave Days</th>
+                <th>Absent Days</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in monthly_report %}
+            <tr>
+                <td>{{ entry.user.username }}</td>
+                <td>{{ entry.present_days }}</td>
+                <td>{{ entry.on_leave_days }}</td>
+                <td>{{ entry.absent_days }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No attendance records available for this period.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+
+</html>

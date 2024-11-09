@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password
@@ -60,6 +61,9 @@ def login_view(request):
 
 from django import forms
 from .models import TLTasks
+from .models import TLTasks, Attendance, Leave
+from .forms import TLTaskStatusForm
+
 @login_required
 def dashboard_view(request):
     user_department = request.user.department
@@ -87,6 +91,9 @@ def dashboard_view(request):
     else:
         # For employees, display tasks assigned to the logged-in user and allow status updates
         user_tasks = TLTasks.objects.filter(assigned_to=request.user.username).order_by('due_date')
+        user_attendance = Attendance.objects.filter(user=request.user).order_by('-date')
+        user_leaves = Leave.objects.filter(user=request.user).order_by('-start_date') 
+
         if request.method == "POST":
             task_id = request.POST.get("task_id")
             task = get_object_or_404(TLTasks, id=task_id)
@@ -99,6 +106,8 @@ def dashboard_view(request):
         
         context['user_tasks'] = user_tasks
         context['form'] = form
+        context['attendance'] = user_attendance
+        context['leaves'] = user_leaves
         return render(request, 'employee_dashboard.html', context)
 
 from django.shortcuts import redirect
@@ -320,3 +329,271 @@ def tlassigned_task_list_view(request):
     }
     
     return render(request, 'tl_assigned_task_list.html', context)
+
+
+
+from .models import Attendance, Leave, Break
+from .forms import AttendanceForm, LeaveRequestForm
+
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+
+
+@login_required
+def mark_attendance(request):
+    date = timezone.now().date()  # Get today's date
+
+    # Check if the user is on leave today
+    leave_today = Leave.objects.filter(user=request.user, start_date__lte=date, end_date__gte=date, status="Approved").exists()
+    if leave_today:
+        # Inform the user that they cannot mark attendance as they are on leave
+        messages.warning(request, "You are on leave today. Attendance marking is disabled.")
+        return redirect('dashboard')
+
+    # Try to get the attendance for the current day
+    attendance = Attendance.objects.filter(user=request.user, date=date).first()
+
+    if request.method == 'POST':
+        form = AttendanceForm(request.POST)
+        if form.is_valid():
+            if attendance:
+                # If attendance exists, update the existing record
+                attendance.login_time = form.cleaned_data['login_time']
+                attendance.logout_time = form.cleaned_data['logout_time']
+                attendance.status = 'Present'  # Set to present as attendance is being marked
+                attendance.save()
+            else:
+                # If no attendance exists, create a new record
+                attendance = Attendance(user=request.user, date=date,
+                                        login_time=form.cleaned_data['login_time'],
+                                        logout_time=form.cleaned_data['logout_time'],
+                                        status='Present')
+                attendance.save()
+
+            return redirect('dashboard')  # Redirect to the dashboard
+    else:
+        # If the attendance exists, pre-fill the form with existing data for editing
+        if attendance:
+            form = AttendanceForm(initial={
+                'login_time': attendance.login_time,
+                'logout_time': attendance.logout_time
+            })
+        else:
+            form = AttendanceForm()  # Empty form for a new attendance entry
+
+    return render(request, 'mark_attendance.html', {'form': form})
+
+
+@login_required
+def leave_request(request):
+    if request.method == 'POST':
+        form = LeaveRequestForm(request.POST)
+        if form.is_valid():
+            leave = form.save(commit=False)
+            leave.user = request.user
+            leave.save()
+
+            return redirect('dashboard')  # Redirect to the dashboard
+    else:
+        form = LeaveRequestForm()
+
+    return render(request, 'leave_request.html', {'form': form})
+
+
+
+
+# views.py
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import BreakForm
+
+@login_required
+def mark_break(request):
+    if request.method == 'POST':
+        form = BreakForm(request.POST)
+        if form.is_valid():
+            # Save the break for the logged-in user
+            break_instance = form.save(commit=False)
+            break_instance.user = request.user
+            break_instance.save()
+            return redirect('dashboard')  # Redirect to the break list page after saving
+    else:
+        form = BreakForm()
+
+    return render(request, 'mark_break.html', {'form': form})
+
+@login_required
+def break_list(request):
+    # Fetch all breaks for the currently logged-in user
+    breaks = Break.objects.filter(user=request.user)
+    
+    # Pass the breaks to the template
+    return render(request, 'break_list.html', {'breaks': breaks})
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Leave
+
+@login_required
+def leave_requests(request):
+    # Fetch all leave requests, if the user is an admin or the user themselves
+    if request.user.is_staff:
+        leave_requests = Leave.objects.all()  # Admin can see all requests
+    else:
+        leave_requests = Leave.objects.filter(user=request.user)  # Users can see their own requests
+
+    return render(request, 'leave_requests.html', {'leave_requests': leave_requests})
+
+
+from django.contrib import messages
+from django.shortcuts import get_object_or_404
+
+@login_required
+def approve_leave(request, leave_id):
+    leave = get_object_or_404(Leave, id=leave_id)
+
+    if not request.user.is_staff:
+        messages.error(request, "You do not have permission to approve or disapprove leave requests.")
+        return redirect('leave_requests')
+
+    if leave.status == 'Pending':  # Ensure that the leave is still pending
+        leave.status = 'Approved'
+        leave.save()
+
+        # Mark attendance as 'On Leave' for each date in the leave period
+        for single_date in [leave.start_date + timezone.timedelta(days=i) for i in range((leave.end_date - leave.start_date).days + 1)]:
+            attendance, created = Attendance.objects.get_or_create(user=leave.user, date=single_date)
+            attendance.status = 'On Leave'
+            attendance.save()
+
+        messages.success(request, f"Leave request from {leave.user.username} approved.")
+    else:
+        messages.warning(request, f"Leave request from {leave.user.username} is already {leave.status.lower()}.")
+
+    return redirect('leave_requests')
+
+
+@login_required
+def disapprove_leave(request, leave_id):
+    leave = get_object_or_404(Leave, id=leave_id)
+
+    if not request.user.is_staff:
+        messages.error(request, "You do not have permission to approve or disapprove leave requests.")
+        return redirect('leave_requests')
+
+    if leave.status == 'Pending':  # Ensure that the leave is still pending
+        leave.status = 'Disapproved'
+        leave.save()
+
+        # Reset attendance for each date in the leave period to 'Absent' or other default status
+        for single_date in [leave.start_date + timezone.timedelta(days=i) for i in range((leave.end_date - leave.start_date).days + 1)]:
+            attendance = Attendance.objects.filter(user=leave.user, date=single_date).first()
+            if attendance:
+                attendance.status = 'Absent'  # Or other default status
+                attendance.save()
+
+        messages.success(request, f"Leave request from {leave.user.username} disapproved.")
+    else:
+        messages.warning(request, f"Leave request from {leave.user.username} is already {leave.status.lower()}.")
+
+    return redirect('leave_requests')
+
+
+from django.shortcuts import render
+from .models import Attendance
+from django.utils import timezone
+
+def attendance_on_date(request):
+    # Get the date from the query parameter; default to today if not provided
+    date_str = request.GET.get('date')
+    if date_str:
+        try:
+            date = timezone.datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            date = timezone.now().date()  # Fallback to today if date parsing fails
+    else:
+        date = timezone.now().date()
+
+    # Retrieve attendance records for the specified date
+    attendance_records = Attendance.objects.filter(date=date)
+
+    # Pass the attendance records and date to the template
+    context = {
+        'attendance_records': attendance_records,
+        'date': date,
+    }
+    return render(request, 'attendance_on_date.html', context)
+
+
+from django.shortcuts import render
+from django.utils import timezone
+from django.contrib.auth import get_user_model
+from .models import Attendance
+from datetime import timedelta
+
+User = get_user_model()
+
+def get_monthly_report(request):
+    # Get current year and month
+    current_year = timezone.now().year
+    current_month = timezone.now().month
+
+    # Get all possible years and months for the dropdown
+    years = [current_year, current_year - 1, current_year + 1]
+    months = [
+        (1, 'January'), (2, 'February'), (3, 'March'), (4, 'April'),
+        (5, 'May'), (6, 'June'), (7, 'July'), (8, 'August'),
+        (9, 'September'), (10, 'October'), (11, 'November'), (12, 'December')
+    ]
+
+    # Get selected parameters from the request or use current date as default
+    year = int(request.GET.get('year', current_year))  # Convert year to integer
+    month = int(request.GET.get('month', current_month))  # Convert month to integer
+    start_date_str = request.GET.get('start_date', f'{year}-{month:02d}-01')
+    end_date_str = request.GET.get('end_date', f'{year}-{month:02d}-05')
+
+    # Convert the start and end dates to datetime objects
+    start_date = timezone.datetime.strptime(start_date_str, '%Y-%m-%d')
+    end_date = timezone.datetime.strptime(end_date_str, '%Y-%m-%d')
+
+    # Define the departments with team lead status to exclude
+    excluded_departments = [
+        'teamlead_development',
+        'teamlead_content_moderators',
+        'teamlead_sales_team',
+        'teamlead_customer_support'
+    ]
+
+    # Filter users to exclude superusers and those in excluded team lead departments
+    users = User.objects.exclude(
+        is_superuser=True
+    ).exclude(
+        department__in=excluded_departments
+    ).distinct()
+
+    monthly_report = []
+
+    # For each user, calculate the number of Present, On Leave, and Absent days
+    for user in users:
+        attendance_stats = Attendance.calculate_monthly_status_count(user, year, month)
+        monthly_report.append({
+            'user': user,
+            'present_days': attendance_stats['present_days'],
+            'on_leave_days': attendance_stats['on_leave_days'],
+            'absent_days': attendance_stats['absent_days'],
+        })
+
+    context = {
+        'monthly_report': monthly_report,
+        'year': year,
+        'month': month,
+        'start_date': start_date.strftime("%Y-%m-%d"),
+        'end_date': end_date.strftime("%Y-%m-%d"),
+        'years': years,
+        'months': months,
+        'month_name': months[month - 1][1]
+    }
+
+    return render(request, 'monthly_report.html', context)

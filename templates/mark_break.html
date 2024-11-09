@@ -1,0 +1,10 @@
+<!-- mark_break.html -->
+
+<h2>Mark Break</h2>
+
+<form method="POST">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit">Submit Break</button>
+</form>
+
+<a href="{% url 'dashboard' %}">Dashboard</a>
