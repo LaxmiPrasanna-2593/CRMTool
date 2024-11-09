@@ -12,7 +12,7 @@
             margin: 0;
             padding: 0;
         }
-
+        
         .sidebar {
     width: 240px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -23,7 +23,6 @@
     overflow-y: scroll;
 }
 
-/* Hides the scrollbar but still allows scrolling */
 .sidebar::-webkit-scrollbar {
     width: 0;
     height: 0;
@@ -31,10 +30,10 @@
 
 .sidebar {
     scrollbar-width: none;
-    -ms-overflow-style: none;  /* For Internet Explorer */
+    -ms-overflow-style: none; 
 }
 
-
+        
         .sidebar h2 {
             margin-top: 80px;
             font-size: 24px;
@@ -42,22 +41,24 @@
             color: #0c005a;
             text-decoration: none;
         }
-
+        
         .sidebar ul {
             list-style-type: none;
+            cursor: pointer;
             padding: 0;
             margin: 0;
         }
-
+        
         .sidebar ul li {
-            position: relative;
-            padding: 15px 40px 15px 16px;
+            padding: 15px 10px;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            color: #9197B3;
             transition: background-color 0.3s;
+            color: #9197B3;
+            justify-content: space-between;
         }
-
+        
         .sidebar ul li a {
             text-decoration: none;
             color: inherit;
@@ -65,27 +66,25 @@
             align-items: center;
             width: 100%;
         }
-
+        
         .sidebar ul li:hover {
             background-color: #0c005a;
             color: white;
         }
-
-        .sidebar ul li i:first-child {
-            margin-right: 16px;
+        
+        .sidebar ul li i {
+            margin-right: 10px;
         }
-
+        
         .sidebar ul li i:last-child {
-            position: absolute;
-            right: 19px;
+            margin-left: auto;
             color: #9197B3;
-            transition: color 0.3s;
         }
-
+        
         .sidebar ul li:hover i:last-child {
             color: white;
         }
-
+        
         .main-content {
             flex-grow: 1;
             padding: 20px;
@@ -98,7 +97,7 @@
 <body>
     <div class="dashboard">
         <aside class="sidebar">
-            <h2>Admin Dashboard</h2>
+            <h2> Admin Dashboard</h2>
             <ul>
                 <li>
                     <a href="{% url 'employee_form' %}"><i class="fas fa-user"></i> Employee Form <i class="fas fa-chevron-right"></i></a>
@@ -115,6 +114,7 @@
                 <li>
                     <a href="{% url 'admin_task_list' %}"><i class="fas fa-users"></i> Employees Tasks <i class="fas fa-chevron-right"></i></a>
                 </li>
+
                 <li>
                     <a href="{% url 'lead_list' %}"><i class="fas fa-address-book"></i> Leads <i class="fas fa-chevron-right"></i></a>
                 </li>
