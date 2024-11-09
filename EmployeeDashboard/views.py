@@ -281,7 +281,7 @@ def tl_task_create(request):
         form = TLTaskForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('tl_task_list')
+            return redirect('tl_assigned_task_list')
     else:
         form = TLTaskForm()
     return render(request, 'tl_task_form.html', {'form': form, 'action': 'Create'})
