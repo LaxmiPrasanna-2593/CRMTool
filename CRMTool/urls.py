@@ -31,6 +31,10 @@ urlpatterns = [
     path('employees/', employee_list, name='employee_list'),
     path('employees/<int:pk>/', employee_detail, name='employee_detail'),
     path('employees/<int:pk>/edit/', edit_employee, name='edit_employee'),
+    path('alternate_leads_list/', lead_list_alt, name='alternate_leads_list'),
+    path('lead_create_alt/', lead_create_alt, name='lead_create_alt'),
+    path('lead_detail_alt/<int:pk>/', lead_detail_alt, name='lead_detail_alt'),
+    path('lead_edit_alt/<int:pk>/', lead_edit_alt, name='lead_edit_alt'),
     path('leads/', lead_list, name='lead_list'),
     path('lead_create/', lead_create, name='lead_create'),
     path('lead_detail/<int:pk>/', lead_detail, name='lead_detail'),
@@ -53,7 +57,13 @@ urlpatterns = [
     path('approve_leave/<int:leave_id>/', approve_leave, name='approve_leave'),
     path('disapprove_leave/<int:leave_id>/', disapprove_leave, name='disapprove_leave'),
     path('attendance/', attendance_on_date, name='attendance_on_date'),
-    path('attendance/report/',get_monthly_report, name='monthly_report')
+    path('attendance/report/',get_monthly_report, name='monthly_report'),
+    path('assigned_task_list/',assigned_task_list, name='assigned_task_list'),
+    path('update-task-status/', update_task_status, name='update_task_status'),
+    path('attendance-history/', attendance_history, name='attendance_history'),
+    path('leave-request-history/', leave_request_history, name='leave_request_history'),
+
+
 ] 
 # Serve static files
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -50,15 +50,11 @@
         }
     </style>
 </head>
-{% extends 'base.html' %}
 
 <body>
-    {% block content %}
     <div class="main-content">
         <h1>Lead List</h1>
-        <div class="lead-actions">
-        <a href="{% url 'lead_create' %}">Create Lead</a>
-    </div>
+        
         <table>
             <thead>
                 <tr>
@@ -79,14 +75,13 @@
                     <td>{{ lead.company_name }}</td>
                     <td>{{ lead.position }}</td>
                     <td class="lead-actions">
-                        <a href="{% url 'lead_detail' lead.pk %}">View Details</a>
+                        <a href="{% url 'lead_detail_alt' lead.pk %}">View Details</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    {% endblock %}
 </body>
 
 </html>

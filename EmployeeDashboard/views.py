@@ -209,7 +209,42 @@ def lead_edit(request, pk):
             return redirect('lead_list')
     else:
         form = LeadForm(instance=lead)
-    return render(request, 'lead_form.html', {'form': form, 'lead': lead})    
+    return render(request, 'lead_form.html', {'form': form, 'lead': lead})
+        
+from django.shortcuts import render, redirect
+from .models import Lead
+from .forms import LeadForm
+
+# View to display the list of leads
+def lead_list_alt(request):
+    leads = Lead.objects.all()
+    return render(request, 'lead_list_alt.html', {'leads': leads})
+
+# View to create a new lead
+def lead_create_alt(request):
+    if request.method == 'POST':
+        form = LeadForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('alternate_leads_list')
+    else:
+        form = LeadForm()
+    return render(request, 'lead_form_alt.html', {'form': form})
+
+def lead_detail_alt(request, pk):
+    lead = get_object_or_404(Lead, pk=pk)
+    return render(request, 'lead_detail_alt.html', {'lead': lead})
+
+def lead_edit_alt(request, pk):
+    lead = get_object_or_404(Lead, pk=pk)
+    if request.method == 'POST':
+        form = LeadForm(request.POST, instance=lead)
+        if form.is_valid():
+            form.save()
+            return redirect('alternate_leads_list')
+    else:
+        form = LeadForm(instance=lead)
+    return render(request, 'lead_form_alt.html', {'form': form, 'lead': lead})
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
@@ -597,3 +632,37 @@ def get_monthly_report(request):
     }
 
     return render(request, 'monthly_report.html', context)
+
+# views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Task
+from django.contrib import messages
+
+def assigned_task_list(request):
+    user_tasks = Task.objects.all()  # Adjust this query as needed for specific user filtering
+    return render(request, 'assigned_tasks.html', {'user_tasks': user_tasks})
+
+def update_task_status(request):
+    if request.method == 'POST':
+        task_id = request.POST.get('task_id')
+        new_status = request.POST.get('status')
+        task = get_object_or_404(Task, id=task_id)
+        task.status = new_status
+        task.save()
+        messages.success(request, 'Task status updated successfully.')
+    return redirect('assigned_task_list')
+
+from django.shortcuts import render
+from .models import Attendance
+
+def attendance_history(request):
+    user_attendance = Attendance.objects.filter(user=request.user)  
+    return render(request, 'attendance_history.html', {'attendance': user_attendance})
+
+from django.shortcuts import render
+from .models import Leave
+
+def leave_request_history(request):
+    
+    user_leaves = Leave.objects.filter(user=request.user)  
+    return render(request, 'leave_request_history.html', {'leaves': user_leaves})

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+    {% extends "base.html" %}
+    {% block content %}
 
 <head>
     <meta charset="UTF-8">
@@ -10,38 +12,8 @@
     {% load static %}
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .header {
-            background-color: #007BFF;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            /* Centering the title */
-            align-items: center;
-            position: relative;
-        }
-        
-        .header img {
-            height: 50px;
-            /* Adjust height as needed */
-            margin-right: 15px;
-            /* Spacing between logo and title */
-        }
-        
-        .header h1 {
-            margin: 0;
-            text-align: center;
-            /* Centering text */
-        }
-        
-       
+      
+      
         
         .content {
             max-width: 800px;
@@ -67,8 +39,7 @@
 </head>
 
 <body>
-    {% include 'includes/header.html' %}
-
+    <div class="main-content">
     <div class="content">
         <h1>Welcome, Sales Team</h1>
         <p>This is the sales team dashboard.</p>
@@ -90,14 +61,11 @@
         <p>No tasks assigned at the moment.</p>
         {% endif %}
     </div>
-    <div>
-        <p><a href="{% url 'tl_task_create' %}">Assign Tasks to Team Members</a></p>
     </div>
-    <div>
-        <p><a href="{% url 'tl_assigned_task_list' %}">Assigned Tasks</a></p>
-    </div>
+    
 
-   
+    {% endblock %}
+
 
     <script>
         // Dynamically set the current year in the footer

@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% extends 'base.html' %}
 
 <head>
     <meta charset="UTF-8">
     <title>{% if lead %}Edit{% else %}Create{% endif %} Lead</title>
     <style>
         
-     
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
         
         .form-container {
             background-color: #fff;
@@ -73,8 +81,7 @@
 </head>
 
 <body>
-    {% block content %}
-    <div class="main-content">
+
     <div class="form-container">
         <h1>{% if lead %}Edit{% else %}Create{% endif %} Lead</h1>
 
@@ -83,10 +90,8 @@
             <button type="submit">{% if lead %}Save Changes{% else %}Save Lead{% endif %}</button>
         </form>
 
-        <a href="{% url 'lead_list' %}" class="back-link">Back to Lead List</a>
+        <a href="{% url 'alternate_leads_list' %}" class="back-link">Back to Lead List</a>
     </div>
-    </div>
-    {% endblock %}
 
 </body>
 

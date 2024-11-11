@@ -11,7 +11,7 @@
         h1 {
             text-align: center;
             color: #0c005a;
-            font-size: 2.5em;
+            font-size: 2em;
             margin-bottom: 30px;
             font-weight: bold;
         }
@@ -19,6 +19,7 @@
         form label {
             margin-right: 10px;
             font-weight: bold;
+            text-align: center;
         }
 
         form input[type="date"] {
@@ -96,18 +97,21 @@
             color: #555;
             margin-top: 20px;
         }
+        .small-content{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="main-content">
         <h1>Attendance for {{ date }}</h1>
-
+         <div class="small-content">
         <form method="get" action="{% url 'attendance_on_date' %}">
             <label for="date">Select Date:</label>
             <input type="date" id="date" name="date" value="{{ date|date:'Y-m-d' }}">
             <button type="submit" class="btn">View Attendance</button>
         </form>
-
+    
         {% if attendance_records %}
         <table class="task-table">
             <tr>
@@ -134,7 +138,7 @@
         {% endif %}
 
     </div>
-
+</div>
     {% endblock %}
 
 </body>

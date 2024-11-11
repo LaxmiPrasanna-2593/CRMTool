@@ -1,64 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+    {% extends "base.html" %}
+    {% block content %}
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Support Team Dashboard</title>
 
-    <!-- Load the static template tag -->
     {% load static %}
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .header {
-            background-color: #007BFF;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            /* Centering the title */
-            align-items: center;
-            position: relative;
-        }
-        
-        .header img {
-            height: 50px;
-            /* Adjust height as needed */
-            margin-right: 15px;
-            /* Spacing between logo and title */
-        }
-        
-        .header h1 {
-            margin: 0;
-            text-align: center;
-            /* Centering text */
-        }
-        
-        .logout-button {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            position: absolute;
-            right: 20px;
-            /* Positioning button to the right */
-            top: 15px;
-            /* Aligning with header */
-        }
-        
-        .logout-button:hover {
-            background-color: #c82333;
-        }
+       
         
         .content {
             max-width: 800px;
@@ -84,9 +37,8 @@
 </head>
 
 <body>
-    {% include 'includes/header.html' %}
 
-
+    <div class="main-content">
     <div class="content">
         <h1>Welcome, Customer Support Team</h1>
         <p>This is the customer support team dashboard.</p>
@@ -108,12 +60,8 @@
         <p>No tasks assigned at the moment.</p>
         {% endif %}
     </div>
-    <div>
-        <p><a href="{% url 'tl_task_create' %}">Assign Tasks to Team Members</a></p>
-    </div>
-    <div>
-        <p><a href="{% url 'tl_assigned_task_list' %}">Assigned Tasks</a></p>
-    </div>
+   
+    {% endblock %}
 
     
     <script>

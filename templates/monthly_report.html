@@ -12,14 +12,15 @@
         h1 {
             text-align: center;
             color: #0c005a;
-            font-size: 2.5em;
+            font-size: 2em;
             margin-bottom: 30px;
             font-weight: bold;
         }
         form {
             padding: 10px;
-            text-align: left;
-            width: 90%;
+            text-align: center;
+            width: 100%;
+
         }
         form label {
             margin-right: 10px;
@@ -44,6 +45,8 @@
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 20px;
+           
         }
 
         .btn:hover {
@@ -128,12 +131,17 @@
         .form-container {
             text-align: center;
             margin-bottom: 20px;
+            text-align: center;
         }
         
         .form-container select,
         .form-container input {
             padding: 8px;
             margin: 5px;
+            text-align: center;
+        }
+        .generate{
+            text-align: center;
         }
     </style>
 </head>
@@ -163,8 +171,9 @@
 
                 <label for="end_date">End Date: </label>
                 <input type="date" name="end_date" id="end_date" value="{{ end_date }}">
-
+                <div class="generate">
                 <button type="submit" class="btn">Generate Report</button>
+            </div>
             </form>
         </div>
 

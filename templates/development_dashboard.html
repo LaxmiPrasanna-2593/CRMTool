@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+    {% extends "base.html" %}
+    {% block content %}
 
 <head>
     <meta charset="UTF-8">
@@ -112,16 +114,13 @@
     </style>
 </head>
 
-{% include 'includes/header.html' %}
 <body>
+    <div class="main-content">
     <div class="content">
         <h1>Welcome, Development Team</h1>
         <p>This is the development team dashboard where you can view all assigned tasks and their statuses.</p>
         
-        <div class="action">
-            <p><a href="{% url 'tl_task_create' %}">Assign Tasks to Team Members</a></p>
-            <p><a href="{% url 'tl_assigned_task_list' %}">Assigned Tasks</a></p>
-        </div>
+       
         <table class="task-table">
             <thead>
                 <tr>
@@ -157,6 +156,8 @@
             </tbody>
         </table>
     </div>
+    </div>
+    {% endblock %}
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
