@@ -14,14 +14,25 @@
         }
         
         .sidebar {
-            width: 240px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            overflow-y: auto;
-        }
+    width: 240px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: scroll;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.sidebar {
+    scrollbar-width: none;
+    -ms-overflow-style: none; 
+}
+
         
         .sidebar h2 {
             margin-top: 80px;
@@ -39,7 +50,7 @@
         }
         
         .sidebar ul li {
-            padding: 15px 20px;
+            padding: 15px 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -105,19 +116,17 @@
                 </li>
 
                 <li>
-                    <a href="{% url 'lead_list' %}"><i class="fas fa-users"></i> Leads <i class="fas fa-chevron-right"></i></a>
-                </li>
-
-                <li>
-                    <a href="{% url 'leave_requests' %}"><i class="fas fa-users"></i> Leave Requests <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'lead_list' %}"><i class="fas fa-address-book"></i> Leads <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'attendance_on_date' %}"><i class="fas fa-users"></i> Attendance On Date  <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'leave_requests' %}"><i class="fas fa-calendar-minus"></i> Leave Requests <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'monthly_report' %}"><i class="fas fa-users"></i> Monthly Attendance  <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'attendance_on_date' %}"><i class="fas fa-calendar-day"></i> Attendance On Date <i class="fas fa-chevron-right"></i></a>
                 </li>
-
+                <li>
+                    <a href="{% url 'monthly_report' %}"><i class="fas fa-chart-bar"></i> Monthly Attendance <i class="fas fa-chevron-right"></i></a>
+                </li>
                 <li>
                     <a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Signup <i class="fas fa-chevron-right"></i></a>
                 </li>
