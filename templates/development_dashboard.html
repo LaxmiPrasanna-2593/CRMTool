@@ -7,151 +7,159 @@
     <title>Development Team Dashboard</title>
     {% load static %}
     <style>
-        /* General body styles */
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fc;
+        body{
             margin: 0;
             padding: 0;
         }
-        /* Header Section */
-        
-        .header {
-            background-color: #007BFF;
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .header img {
-            height: 50px;
-        }
-        
-        .header h1 {
-            font-size: 24px;
-            margin: 0;
-        }
-        
-       
-        /* Content Section */
-        
-        .content {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .content h1 {
+        h1 {
             text-align: center;
             color: #333;
             font-size: 28px;
             margin-bottom: 20px;
         }
-        
-        .task-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+        .content {
+            width: 90%;
+            margin: 20px auto;
+            padding: 25px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .content h2 {
+            color: #0c005a;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .content a {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 20px;
+            color: white;
+            background-color: #0c005a;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .content a:hover {
+            background-color: #0056b3;
+        }
+
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        .task-table th,
+        .task-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+
+        .task-table th {
+            background-color: #0c005a;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .task-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .task-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .link {
+            color: #007BFF;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .link:hover {
+            color: #0056b3;
+        }
+
+        .action {
+            display: flex;
             gap: 20px;
         }
-        
-        .task-item {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .task-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        .task-item h3 {
-            font-size: 20px;
-            color: #007BFF;
-            margin-bottom: 10px;
-        }
-        
-        .task-item p {
-            color: #555;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-        
-        .task-item .status {
-            font-weight: bold;
-            color: #28a745;
-        }
-        
-        .task-item .priority {
-            font-weight: bold;
-            color: #ffc107;
-        }
-        /* Footer Section */
-        
-        
+
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
                 align-items: flex-start;
             }
+
             .header h1 {
                 font-size: 20px;
-            }
-            .task-list {
-                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 
+{% include 'includes/header.html' %}
 <body>
-    {% include 'includes/header.html' %}
-
-
     <div class="content">
         <h1>Welcome, Development Team</h1>
         <p>This is the development team dashboard where you can view all assigned tasks and their statuses.</p>
-
-        <div class="task-list">
-            {% if tasks %} {% for task in tasks %}
-            <div class="task-item">
-                <h3><strong>Task Name:</strong>{{ task.title }}</h3>
-                <p><strong>Description:</strong> {{ task.description }}</p>
-                <p><strong>Status:</strong> <span class="status">{{ task.get_status_display }}</span></p>
-                <p><strong>Priority:</strong> <span class="priority">{{ task.get_priority_display }}</span></p>
-                <p><strong>Due Date:</strong> {{ task.due_date|date:"M d, Y" }}</p>
-                <p><strong>Notes:</strong> {{ task.notes|default:"No additional notes" }}</p>
-                <p>
-                    <a href="{% url 'task_edit_alt' pk=task.pk %}">Edit</a>
-                </p>
-            </div>
-            {% endfor %} {% else %}
-            <p>No tasks assigned at the moment.</p>
-            {% endif %}
-        </div>
-        <div>
+        
+        <div class="action">
             <p><a href="{% url 'tl_task_create' %}">Assign Tasks to Team Members</a></p>
-        </div>
-        <div>
             <p><a href="{% url 'tl_assigned_task_list' %}">Assigned Tasks</a></p>
         </div>
-
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if tasks %}
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.description }}</td>
+                    <td><span class="status">{{ task.get_status_display }}</span></td>
+                    <td><span class="priority">{{ task.get_priority_display }}</span></td>
+                    <td>{{ task.due_date|date:"M d, Y" }}</td>
+                    <td>{{ task.notes|default:"No additional notes" }}</td>
+                    <td>
+                        <a href="{% url 'task_edit_alt' pk=task.pk %}" class="link">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="7">No tasks assigned at the moment.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
     </div>
 
-   
-
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const currentYear = new Date().getFullYear();
             document.querySelector('.footer').innerHTML = `&copy; ${currentYear} Vindus Environment Private Limited. All rights reserved.`;
         });

@@ -1,46 +1,141 @@
+{% extends 'base.html' %}
+    {% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <title>Attendance for {{ date }}</title>
+    
+    <style>
+        h1 {
+            text-align: center;
+            color: #0c005a;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        form label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        form input[type="date"] {
+            padding: 8px 12px;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            font-size: 1em;
+            color: white;
+            background-color: #0c005a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #080046;
+        }
+
+        .task-table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .task-table th, .task-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .task-table th {
+            background-color: #0c005a;
+            color: white;
+        }
+
+        .task-table td {
+            background-color: #fff;
+        }
+
+        .task-table td strong {
+            color: #0c005a;
+        }
+
+        .task-status {
+            font-weight: bold;
+            color: #007500;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .task-status1 {
+            font-weight: bold;
+            color: blue;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .task-status2 {
+            font-weight: bold;
+            color: red;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .no-tasks {
+            text-align: center;
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 20px;
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Attendance for {{ date }}</h1>
+    <div class="main-content">
+        <h1>Attendance for {{ date }}</h1>
 
-    <!-- Form to select a specific date -->
-    <form method="get" action="{% url 'attendance_on_date' %}">
-        <label for="date">Select Date:</label>
-        <input type="date" id="date" name="date" value="{{ date|date:'Y-m-d' }}">
-        <button type="submit">View Attendance</button>
-    </form>
+        <form method="get" action="{% url 'attendance_on_date' %}">
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" name="date" value="{{ date|date:'Y-m-d' }}">
+            <button type="submit" class="btn">View Attendance</button>
+        </form>
 
-    {% if attendance_records %}
-    <table border="1">
-        <tr>
-            <th>User</th>
-            <th>Status</th>
-            <th>Login Time</th>
-            <th>Logout Time</th>
-            <th>Break Time (HH:MM)</th>
-            <th>Total Working Hours (HH:MM)</th>
-        </tr>
-        {% for record in attendance_records %}
-        <tr>
-            <td>{{ record.user.username }}</td>
-            <td>{{ record.status }}</td>
-            <td>{{ record.login_time }}</td>
-            <td>{{ record.logout_time }}</td>
-            <td>{{ record.get_break_time_in_hours_minutes }}</td>
-            <td>{{ record.convert_total_working_hours_to_hours_minutes }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-    <p>No attendance records found for this date.</p>
-    {% endif %}
+        {% if attendance_records %}
+        <table class="task-table">
+            <tr>
+                <th>User</th>
+                <th>Status</th>
+                <th>Login Time</th>
+                <th>Logout Time</th>
+                <th>Break Time (HH:MM)</th>
+                <th>Total Working Hours (HH:MM)</th>
+            </tr>
+            {% for record in attendance_records %}
+            <tr>
+                <td>{{ record.user.username }}</td>
+                <td>{{ record.status }}</td>
+                <td>{{ record.login_time }}</td>
+                <td>{{ record.logout_time }}</td>
+                <td>{{ record.get_break_time_in_hours_minutes }}</td>
+                <td>{{ record.convert_total_working_hours_to_hours_minutes }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No attendance records found for this date.</p>
+        {% endif %}
 
+    </div>
+
+    {% endblock %}
 
 </body>
 

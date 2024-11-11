@@ -10,152 +10,213 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
-        
-        .header {
-            background-color: #007BFF;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        
-        .header img {
-            height: 50px;
-            margin-right: 15px;
-        }
-        
-        .header h1 {
-            margin: 0;
-            text-align: center;
-        }
-        
+
         .content {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 10px 20px;
+        }
+
+        .content h1,
+        .content h2,
+        .content h3 {
+            color: #0c005a;
             text-align: center;
+            margin-bottom: 15px;
         }
-        
-        .content h1 {
-            color: #333;
-        }
-        
+
         .content p {
             color: #555;
             font-size: 1.1em;
         }
-        
-        .footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            position: relative;
-            bottom: 0;
+
+        table {
             width: 100%;
-            margin-top: 50px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, 
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+            font-size: 0.95em;
+        }
+
+        table th {
+            background-color: #0c005a;
+            color: white;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        form {
+            display: inline;
+        }
+
+        form .btn {
+            padding: 5px 10px;
+            color: white;
+            background-color: #0c005a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+
+        form .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .content a {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 8px 15px;
+            background-color: #0c005a;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .content a:hover {
+            background-color: #0056b3;
+        }
+
+        .actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #ff0000;
+            font-style: italic;
+            padding: 20px 0;
         }
     </style>
 </head>
+
 {% include 'includes/header.html' %}
 
 <body>
+    <div class="content">
+        <h1>Welcome {{ user.username }} to Your Task Dashboard</h1>
 
+        <div class="actions">
+            <p><a href="{% url 'mark_attendance' %}">Mark Attendance</a></p>
+            <p><a href="{% url 'mark_break' %}">Mark Break</a></p>
+            <p><a href="{% url 'leave_request' %}">Request Leave</a></p>
+        </div>
 
-    <h1>Welcome {{ user.username }} to Your Task Dashboard</h1>
+        <h2>Your Assigned Tasks</h2>
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if user_tasks %}
+                    {% for task in user_tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.priority }}</td>
+                        <td>{{ task.due_date }}</td>
+                        <td>{{ task.status }}</td>
+                        <td>
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                <input type="hidden" name="task_id" value="{{ task.id }}">
+                                {{ form.status }}
+                                <button type="submit" class="btn">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="no-data">No tasks available</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
 
-    <h2>Your Assigned Tasks</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Priority</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th>Update Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in user_tasks %}
-            <tr>
-                <td>{{ task.title }}</td>
-                <td>{{ task.description }}</td>
-                <td>{{ task.priority }}</td>
-                <td>{{ task.due_date }}</td>
-                <td>{{ task.status }}</td>
-                <td>
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <input type="hidden" name="task_id" value="{{ task.id }}"> {{ form.status }}
-                        <button type="submit">Update</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <h3>Attendance History</h3>
-    <table>
-        <tr>
-            <th>Date</th>
-            <th>Login Time</th>
-            <th>Logout Time</th>
-            <th>Break Time</th>
-            <th>Total Working Hours</th>
-        </tr>
-        {% for attendance in attendance %}
-        <tr>
-            <td>{{ attendance.date }}</td>
-            <td>{{ attendance.login_time }}</td>
-            <td>{{ attendance.logout_time }}</td>
-            <td>{{ attendance.get_break_time_in_hours_minutes }}</td>
-            <!-- Break Time -->
-            <td>{{ attendance.convert_total_working_hours_to_hours_minutes }}</td>
+        <h3>Attendance History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Login Time</th>
+                    <th>Logout Time</th>
+                    <th>Break Time</th>
+                    <th>Total Working Hours</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if attendance %}
+                    {% for record in attendance %}
+                    <tr>
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.login_time }}</td>
+                        <td>{{ record.logout_time }}</td>
+                        <td>{{ record.get_break_time_in_hours_minutes }}</td>
+                        <td>{{ record.convert_total_working_hours_to_hours_minutes }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="no-data">No attendance records found</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
 
-        </tr>
-        {% endfor %}
-    </table>
-
-
-    <h3>Leave Requests</h3>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Leave Type</th>
-            <th>Reason</th>
-            <th>Status</th>
-        </tr>
-        {% for leave in leaves %}
-        <tr>
-            <td>{{user.username}}</td>
-            <td>{{ leave.start_date }}</td>
-            <td>{{ leave.end_date }}</td>
-            <td>{{ leave.leave_type }}</td>
-            <td>{{ leave.reason }}</td>
-            <td>{{ leave.status }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <p><a href="{% url 'mark_attendance' %}">Mark Attendance</a></p>
-
-    <!-- Breaks Link -->
-    <p><a href="{% url 'leave_request' %}">Request Leave</a></p>
-
-    <!-- Leave Requests Link -->
-    <p><a href="{% url 'mark_break' %}">Mark Break</a></p>
+        <h3>Leave Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Leave Type</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if leaves %}
+                    {% for leave in leaves %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ leave.start_date }}</td>
+                        <td>{{ leave.end_date }}</td>
+                        <td>{{ leave.leave_type }}</td>
+                        <td>{{ leave.reason }}</td>
+                        <td>{{ leave.status }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="no-data">No leave requests found</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>

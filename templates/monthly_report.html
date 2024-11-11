@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,17 +7,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monthly Attendance Report</title>
+    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-        
         h1 {
             text-align: center;
+            color: #0c005a;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            font-weight: bold;
         }
-        
+        form {
+            padding: 10px;
+            text-align: left;
+            width: 90%;
+        }
+        form label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        form input[type="date"] {
+            padding: 8px 12px;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            font-size: 1em;
+            color: white;
+            background-color: #0c005a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #080046;
+        }
+
+        .task-table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .task-table th, .task-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .task-table th {
+            background-color: #0c005a;
+            color: white;
+        }
+
+        .task-table td {
+            background-color: #fff;
+        }
+
+        .task-table td strong {
+            color: #0c005a;
+        }
+
+        .task-status {
+            font-weight: bold;
+            color: #007500;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .task-status1 {
+            font-weight: bold;
+            color: blue;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .task-status2 {
+            font-weight: bold;
+            color: red;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .no-tasks {
+            text-align: center;
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 20px;
+        }
+
         .report-table {
             width: 100%;
             border-collapse: collapse;
@@ -52,63 +139,66 @@
 </head>
 
 <body>
+    <div class="main-content">
 
-    <div class="form-container">
-        <h2>Select Attendance Report Parameters</h2>
-        <form method="get" action="{% url 'monthly_report' %}">
-            <label for="year">Year: </label>
-            <select name="year" id="year">
-                {% for y in years %}
-                    <option value="{{ y }}" {% if y == year %} selected {% endif %}>{{ y }}</option>
+        <div class="form-container">
+            <h1>Select Attendance Report Parameters</h1>
+            <form method="get" action="{% url 'monthly_report' %}">
+                <label for="year">Year: </label>
+                <select name="year" id="year">
+                    {% for y in years %}
+                        <option value="{{ y }}" {% if y == year %} selected {% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="month">Month: </label>
+                <select name="month" id="month">
+                    {% for m in months %}
+                        <option value="{{ m.0 }}" {% if m.0 == month %} selected {% endif %}>{{ m.1 }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="start_date">Start Date: </label>
+                <input type="date" name="start_date" id="start_date" value="{{ start_date }}">
+
+                <label for="end_date">End Date: </label>
+                <input type="date" name="end_date" id="end_date" value="{{ end_date }}">
+
+                <button type="submit" class="btn">Generate Report</button>
+            </form>
+        </div>
+
+        <div class="report-header">
+            <h1>Attendance Report for {{ month_name }} {{ year }}</h1>
+            <p>From {{ start_date }} to {{ end_date }}</p>
+        </div>
+
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Present Days</th>
+                    <th>On Leave Days</th>
+                    <th>Absent Days</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in monthly_report %}
+                <tr>
+                    <td>{{ entry.user.username }}</td>
+                    <td>{{ entry.present_days }}</td>
+                    <td>{{ entry.on_leave_days }}</td>
+                    <td>{{ entry.absent_days }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No attendance records available for this period.</td>
+                </tr>
                 {% endfor %}
-            </select>
-
-            <label for="month">Month: </label>
-            <select name="month" id="month">
-                {% for m in months %}
-                    <option value="{{ m.0 }}" {% if m.0 == month %} selected {% endif %}>{{ m.1 }}</option>
-                {% endfor %}
-            </select>
-
-            <label for="start_date">Start Date: </label>
-            <input type="date" name="start_date" id="start_date" value="{{ start_date }}">
-
-            <label for="end_date">End Date: </label>
-            <input type="date" name="end_date" id="end_date" value="{{ end_date }}">
-
-            <button type="submit">Generate Report</button>
-        </form>
+            </tbody>
+        </table>
     </div>
-
-    <div class="report-header">
-        <h2>Attendance Report for {{ month_name }} {{ year }}</h2>
-        <p>From {{ start_date }} to {{ end_date }}</p>
-    </div>
-
-    <table class="report-table">
-        <thead>
-            <tr>
-                <th>User</th>
-                <th>Present Days</th>
-                <th>On Leave Days</th>
-                <th>Absent Days</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for entry in monthly_report %}
-            <tr>
-                <td>{{ entry.user.username }}</td>
-                <td>{{ entry.present_days }}</td>
-                <td>{{ entry.on_leave_days }}</td>
-                <td>{{ entry.absent_days }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">No attendance records available for this period.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% endblock %}
 
 </body>
 

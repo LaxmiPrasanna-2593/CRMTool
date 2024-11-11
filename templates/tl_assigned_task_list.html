@@ -5,19 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Assigned Tasks</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .container {
-            width: 80%;
-            margin: 50px auto;
-        }
-        
+    <style>        
         h1 {
             text-align: center;
             color: #333;
@@ -71,12 +59,12 @@
     </style>
 </head>
 
+{% include 'includes/header.html' %}
 <body>
 
-    <div class="container">
+    <div class="main-content">
         <h1>Your Assigned Tasks</h1>
         <div class="row">
-            <!-- Loop through tasks -->
             {% for task in tasks %}
             <div class="col-md-4">
                 <div class="task-card">
