@@ -50,10 +50,13 @@
         }
     </style>
 </head>
+{% extends "base.html" %}
 
 <body>
-    <div class="main-content">
-        <h1>Lead List</h1>
+
+ {% block content %}
+    <div class="main-content">      
+          <h1>Lead List</h1>
         
         <table>
             <thead>
@@ -82,6 +85,8 @@
             </tbody>
         </table>
     </div>
+</div>
+{% endblock %}
 </body>
 
 </html>

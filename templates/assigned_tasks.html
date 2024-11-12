@@ -4,49 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Assigned Tasks</title>
+    <style>
+        h1 {
+            font-size: 2em;
+            color: #0c005a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        th {
+            background-color: #0c005a;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
+{% extends "base.html" %}
+
 <body>
-    <h2>Your Assigned Tasks</h2>
-    <table class="task-table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Priority</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th>Update Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if user_tasks %}
-                {% for task in user_tasks %}
+    {% block content %}
+    <div class="main-content">
+        <h1>Your Assigned Tasks</h1>
+        <table class="task-table">
+            <thead>
                 <tr>
-                    <td>{{ task.title }}</td>
-                    <td>{{ task.description }}</td>
-                    <td>{{ task.priority }}</td>
-                    <td>{{ task.due_date }}</td>
-                    <td>{{ task.status }}</td>
-                    <td>
-                        <form method="POST" action="{% url 'update_task_status' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="task_id" value="{{ task.id }}">
-                            <select name="status">
-                                <option value="Pending" {% if task.status == "Pending" %}selected{% endif %}>Pending</option>
-                                <option value="In Progress" {% if task.status == "In Progress" %}selected{% endif %}>In Progress</option>
-                                <option value="Completed" {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
-                            </select>
-                            <button type="submit" class="btn">Update</button>
-                        </form>
-                    </td>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Update Status</th>
                 </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="6" class="no-data">No tasks available</td>
-                </tr>
-            {% endif %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% if user_tasks %}
+                    {% for task in user_tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.priority }}</td>
+                        <td>{{ task.due_date }}</td>
+                        <td>{{ task.status }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'update_task_status' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="task_id" value="{{ task.id }}">
+                                <select name="status">
+                                    <option value="Pending" {% if task.status == "Pending" %}selected{% endif %}>Pending</option>
+                                    <option value="In Progress" {% if task.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                                    <option value="Completed" {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
+                                </select>
+                                <button type="submit" class="btn">Update</button>
+                            </form>
+                            
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="no-data">No tasks available</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}
 </body>
 </html>
+ 

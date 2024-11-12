@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+    {% extends 'base.html' %}
+    {% block content %}
 
 <head>
     <meta charset="UTF-8">
@@ -10,11 +12,7 @@
 
     <style>
         
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
+      
         .content {
             max-width: 600px;
             margin: 30px auto;
@@ -61,6 +59,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 1em;
+            background-color: rgb(212, 232, 239);
         }
 
         form label {
@@ -91,18 +90,21 @@
     </style>
 </head>
 
-{% include 'includes/header.html' %}
 <body>
+    <div class="main-content">
 
     <div class="content">
         <h1>Apply for Leave</h1>
-        <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+        <a href="{% url 'leave_request_history' %}">Back to Dashboard</a>
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn">Submit Leave Request</button>
         </form>
     </div>
+    </div>
+    {% endblock %}
+
 </body>
 
 </html>

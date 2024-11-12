@@ -429,7 +429,7 @@ def leave_request(request):
             leave.user = request.user
             leave.save()
 
-            return redirect('dashboard')  # Redirect to the dashboard
+            return redirect('leave_request_history')  # Redirect to the dashboard
     else:
         form = LeaveRequestForm()
 
@@ -638,15 +638,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def assigned_task_list(request):
-    user_tasks = Task.objects.all()  # Adjust this query as needed for specific user filtering
+    user_tasks = TLTasks.objects.filter(assigned_to=request.user.username)  # Filters tasks where assigned_to matches the username
     return render(request, 'assigned_tasks.html', {'user_tasks': user_tasks})
+
 
 def update_task_status(request):
     if request.method == 'POST':
         task_id = request.POST.get('task_id')
         new_status = request.POST.get('status')
-        task = get_object_or_404(Task, id=task_id)
+        task = get_object_or_404(TLTasks, id=task_id, assigned_to=request.user.username)
         task.status = new_status
         task.save()
         messages.success(request, 'Task status updated successfully.')

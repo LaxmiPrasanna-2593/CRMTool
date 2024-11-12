@@ -1,9 +1,12 @@
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-    }
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vindus Environment Private Limited</title>
+<style>
+  
     .content {
         max-width: 500px;
         width: 90%;
@@ -37,6 +40,8 @@
             color: #555;
             box-sizing: border-box;
             transition: border-color 0.3s ease;
+            width: 100%;
+            background-color: rgb(212, 232, 239);
         }
 
         form input[type="date"]:focus,
@@ -80,8 +85,12 @@
     }
 </style>
 
-{% include 'includes/header.html' %}
+{% extends 'base.html' %}
+
 <body>
+    {% block content %}
+    <div class="main-content">
+
     <div class="content">
         <h2>Mark Attendance</h2>
         <a href="{% url 'dashboard' %}">Back to Dashboard</a>
@@ -90,4 +99,7 @@
             <button type="submit" class="btn">Submit Attendance</button>
         </form>
     </div>
+    </div>
+    {% endblock %}
+
 </body>

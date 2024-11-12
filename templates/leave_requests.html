@@ -100,6 +100,43 @@
         padding: 8px;
         margin: 5px;
     }
+    .approve-btn, .disapprove-btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* Approve Button Style */
+.approve-btn {
+    background-color: #28a745; /* Green */
+    color: white;
+    border: 2px solid #28a745;
+}
+
+.approve-btn:hover {
+    background-color: white;
+    color: #28a745;
+    border-color: #28a745;
+}
+
+/* Disapprove Button Style */
+.disapprove-btn {
+    background-color: #dc3545; /* Red */
+    color: white;
+    border: 2px solid #dc3545;
+}
+
+.disapprove-btn:hover {
+    background-color: white;
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
 </style>
 {% extends 'base.html' %}
 <body>

@@ -7,10 +7,7 @@
     <title>Mark Break</title>
 
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
+       
 
         .content {
             max-width: 500px;
@@ -46,6 +43,8 @@
             font-size: 1em;
             box-sizing: border-box;
             transition: border-color 0.3s ease;
+            background-color: rgb(212, 232, 239);
+            width: 100%;
         }
 
         form input[type="date"]:focus,
@@ -90,7 +89,9 @@
 </head>
 
 <body>
-    {% include 'includes/header.html' %}
+    {% extends 'base.html' %}
+    {% block content %}
+    <div class="main-content">
 
     <div class="content">
         <h2>Mark Break</h2>
@@ -101,6 +102,9 @@
             <button type="submit" class="btn">Submit Break</button>
         </form>
     </div>
+    </div>
+    {% endblock %}
+
 </body>
 
 </html>

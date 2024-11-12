@@ -9,107 +9,60 @@
     <title>Development Team Dashboard</title>
     {% load static %}
     <style>
-        body{
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        .content {
-            width: 90%;
-            margin: 20px auto;
-            padding: 25px;
-            background-color: white;
+         .content {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: lightblue;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 2px solid #0c005a;
+        }
+        
+        h1 {
+            font-size: 2em;
+            color: #0c005a;
+            margin-bottom: 20px;
             text-align: center;
         }
 
-        .content h2 {
-            color: #0c005a;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        .content a {
-            display: inline-block;
-            padding: 10px 15px;
-            margin-top: 20px;
-            color: white;
-            background-color: #0c005a;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .content a:hover {
-            background-color: #0056b3;
+        
+        .content p {
+            color: #070034;
+            font-size: 1.1em;
         }
 
         .task-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: #ffffff;
         }
-
-        .task-table th,
-        .task-table td {
-            padding: 12px;
-            text-align: left;
+        
+        .task-table th, .task-table td {
+            padding: 10px;
             border: 1px solid #ddd;
-            color: #333;
+            text-align: left;
         }
-
+        
         .task-table th {
             background-color: #0c005a;
             color: white;
-            font-weight: bold;
-            text-transform: uppercase;
         }
-
-        .task-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .task-table tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        .link {
-            color: #007BFF;
-            font-weight: bold;
+        
+        .task-table td a {
+            color: #0c005a;
             text-decoration: none;
-            transition: color 0.3s ease;
         }
-
-        .link:hover {
-            color: #0056b3;
+        
+        .task-table td a:hover {
+            text-decoration: underline;
         }
-
-        .action {
-            display: flex;
-            gap: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
+        .edit-button{
+            background-color: lightblue;
+            border-radius: 5px;
+            padding: 5px;
+            border:1px solid #0c005a;
         }
     </style>
 </head>
@@ -117,9 +70,9 @@
 <body>
     <div class="main-content">
     <div class="content">
-        <h1>Welcome, Development Team</h1>
+        <h1>Welcome, Team Lead Of Development Team</h1>
         <p>This is the development team dashboard where you can view all assigned tasks and their statuses.</p>
-        
+    </div>
        
         <table class="task-table">
             <thead>
@@ -144,7 +97,7 @@
                     <td>{{ task.due_date|date:"M d, Y" }}</td>
                     <td>{{ task.notes|default:"No additional notes" }}</td>
                     <td>
-                        <a href="{% url 'task_edit_alt' pk=task.pk %}" class="link">Edit</a>
+                        <a href="{% url 'task_edit_alt' pk=task.pk %}" class="edit-button">Edit</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -155,7 +108,6 @@
                 {% endif %}
             </tbody>
         </table>
-    </div>
     </div>
     {% endblock %}
 

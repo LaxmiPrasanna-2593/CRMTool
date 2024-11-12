@@ -101,6 +101,9 @@
                    <h2> Admin Dashboard</h2>
             <ul>
                 <li>
+                    <a href="{% url 'dashboard' %}"><i class="fas fa-home"></i>Home<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
                     <a href="{% url 'employee_form' %}"><i class="fas fa-user"></i> Employee Form <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
@@ -128,12 +131,12 @@
                 <li>
                     <a href="{% url 'monthly_report' %}"><i class="fas fa-chart-bar"></i> Monthly Attendance <i class="fas fa-chevron-right"></i></a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="{% url 'attendance_on_date' %}"><i class="fas fa-calendar-day"></i> Password Management <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
                     <a href="{% url 'monthly_report' %}"><i class="fas fa-chart-bar"></i>Payslip Generation <i class="fas fa-chevron-right"></i></a>
-                </li>
+                </li> -->
                 <li>
                     <a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Signup <i class="fas fa-chevron-right"></i></a>
                 </li>
@@ -142,29 +145,32 @@
             <h2> Employee Dashboard</h2>
             <ul>
                 <li>
-                    <a href="{% url 'assigned_task_list' %}"><i class="fas fa-calendar-day"></i> Assigned Tasks<i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'dashboard' %}"><i class="fas fa-home"></i>Home<i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'attendance_history' %}"><i class="fas fa-calendar-day"></i> Attendance History<i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'assigned_task_list' %}"><i class="fas fa-tasks"></i> Assigned Tasks<i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'leave_request_history' %}"><i class="fas fa-calendar-day"></i> Leave History<i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'attendance_history' %}"><i class="fas fa-history"></i> Attendance History<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'leave_request_history' %}"><i class="fas fa-clock"></i> Leave History<i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
                     <a href="{% url 'mark_attendance' %}"><i class="fas fa-calendar-day"></i> Mark Attendance<i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'mark_break' %}"><i class="fas fa-chart-bar"></i>Mark Break <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'mark_break' %}"><i class="fas fa-pause-circle"></i>Mark Break <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'leave_request' %}"><i class="fas fa-user-plus"></i> Request Leave<i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'leave_request' %}"><i class="fas fa-calendar-day"></i> Request Leave<i class="fas fa-chevron-right"></i></a>
                 </li>
                 {% if user.department == "sales_team" %}  
                 <li>
-                    <a href="{% url 'lead_create_alt' %}"><i class="fas fa-chart-bar"></i> Create Lead <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'lead_create_alt' %}"><i class="fas fa-plus-circle"></i> Create Lead <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'alternate_leads_list' %}"><i class="fas fa-user-plus"></i> Leads List<i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'alternate_leads_list' %}"><i class="fas fa-list"></i> Leads List<i class="fas fa-chevron-right"></i></a>
                 </li>
                 {% endif %}
             </ul>
@@ -173,17 +179,20 @@
             <h2> TeamLead Dashboard</h2>
             <ul>
                 <li>
-                    <a href="{% url 'tl_assigned_task_list' %}"><i class="fas fa-calendar-day"></i> Assigned Tasks<i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'dashboard' %}"><i class="fas fa-home"></i>Home<i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'tl_task_create' %}"><i class="fas fa-calendar-day"></i> Allocate Tasks <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'tl_assigned_task_list' %}"><i class="fas fa-tasks"></i> Assigned Tasks<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'tl_task_create' %}"><i class="fas fa-share-square"></i> Allocate Tasks <i class="fas fa-chevron-right"></i></a>
                 </li>
                
                
                 {% if user.department == "teamlead_sales_team" %}  
                
                 <li>
-                    <a href="{% url 'alternate_leads_list' %}"><i class="fas fa-user-plus"></i> Leads List<i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'alternate_leads_list' %}"><i class="fas fa-list"></i> Leads List<i class="fas fa-chevron-right"></i></a>
                 </li>
                 {% endif %}
             </ul>

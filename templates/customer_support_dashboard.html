@@ -13,64 +13,114 @@
     <style>
        
         
-        .content {
+       .content {
             max-width: 800px;
-            margin: 50px auto;
+            margin: 30px auto;
             padding: 20px;
-            background-color: white;
+            background-color: lightblue;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            border: 2px solid #0c005a;
         }
         
-        .content h1 {
-            color: #333;
+        h1 {
+            font-size: 2em;
+            color: #0c005a;
+            margin-bottom: 20px;
+            text-align: center;
         }
+
         
         .content p {
-            color: #555;
+            color: #070034;
             font-size: 1.1em;
         }
+
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
         
-       
+        .task-table th, .task-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        .task-table th {
+            background-color: #0c005a;
+            color: white;
+        }
+        
+        .task-table td a {
+            color: #0c005a;
+            text-decoration: none;
+        }
+        
+        .task-table td a:hover {
+            text-decoration: underline;
+        }
+        .edit-button{
+            background-color: lightblue;
+            border-radius: 5px;
+            padding: 5px;
+            border:1px solid #0c005a;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="main-content">
-    <div class="content">
-        <h1>Welcome, Customer Support Team</h1>
-        <p>This is the customer support team dashboard.</p>
-    </div>
-    <div class="task-list">
-        {% if tasks %} {% for task in tasks %}
-        <div class="task-item">
-            <h3><strong>Task Name:</strong>{{ task.title }}</h3>
-            <p><strong>Description:</strong> {{ task.description }}</p>
-            <p><strong>Status:</strong> <span class="status">{{ task.get_status_display }}</span></p>
-            <p><strong>Priority:</strong> <span class="priority">{{ task.get_priority_display }}</span></p>
-            <p><strong>Due Date:</strong> {{ task.due_date|date:"M d, Y" }}</p>
-            <p><strong>Notes:</strong> {{ task.notes|default:"No additional notes" }}</p>
-            <p>
-                <a href="{% url 'task_edit_alt' pk=task.pk %}">Edit</a>
-            </p>
+        <div class="content">
+            <h1>Welcome, Team Lead Of Customer Support Team</h1>
+            <p>This is the customer support team dashboard. Here, you can view and manage your tasks, assign tasks to team members, and stay updated on all ongoing activities.</p>
         </div>
-        {% endfor %} {% else %}
-        <p>No tasks assigned at the moment.</p>
-        {% endif %}
-    </div>
-   
-    {% endblock %}
-
+        <div class="task-list">
+            {% if tasks %}
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Task Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>Due Date</th>
+                        <th>Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.get_status_display }}</td>
+                        <td>{{ task.get_priority_display }}</td>
+                        <td>{{ task.due_date|date:"M d, Y" }}</td>
+                        <td>{{ task.notes|default:"No additional notes" }}</td>
+                        <td><a href="{% url 'task_edit_alt' pk=task.pk %}" class="edit-button">Edit</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No tasks assigned at the moment.</p>
+            {% endif %}
+        </div>
+       
+        {% endblock %}
     
-    <script>
-        // Dynamically set the current year in the footer
-        document.addEventListener("DOMContentLoaded", function() {
-            const currentYear = new Date().getFullYear();
-            document.querySelector('.footer').innerHTML = `&copy; ${currentYear} Vindus Environment Private Limited. All rights reserved.`;
-        });
-    </script>
-</body>
-
-</html>
+        
+        <script>
+            // Dynamically set the current year in the footer
+            document.addEventListener("DOMContentLoaded", function() {
+                const currentYear = new Date().getFullYear();
+                document.querySelector('.footer').innerHTML = `&copy; ${currentYear} Vindus Environment Private Limited. All rights reserved.`;
+            });
+        </script>
+    </body>
+    
+    </html>
