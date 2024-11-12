@@ -14,25 +14,24 @@
         }
         
         .sidebar {
-    width: 240px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    overflow-y: scroll;
-}
-
-.sidebar::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-
-.sidebar {
-    scrollbar-width: none;
-    -ms-overflow-style: none; 
-}
-
+            width: 240px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: scroll;
+        }
+        
+        .sidebar::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+        
+        .sidebar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
         
         .sidebar h2 {
             margin-top: 80px;
@@ -97,8 +96,8 @@
 <body>
     <div class="dashboard">
         <aside class="sidebar">
-            {% if user.is_superuser %}               
-                   <h2> Admin Dashboard</h2>
+            {% if user.is_superuser %}
+            <h2> Admin Dashboard</h2>
             <ul>
                 <li>
                     <a href="{% url 'dashboard' %}"><i class="fas fa-home"></i>Home<i class="fas fa-chevron-right"></i></a>
@@ -108,6 +107,9 @@
                 </li>
                 <li>
                     <a href="{% url 'employee_list' %}"><i class="fas fa-folder"></i> Employee Details <i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'add_project' %}"><i class="fas fa-home"></i>Projects<i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
                     <a href="{% url 'task_create' %}"><i class="fas fa-tasks-alt"></i> Daily Task Form <i class="fas fa-chevron-right"></i></a>
@@ -129,6 +131,15 @@
                     <a href="{% url 'attendance_on_date' %}"><i class="fas fa-calendar-day"></i> Attendance On Date <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
+                    <a href="{% url 'employees_per_project' %}"><i class="fas fa-user"></i> Employees per projects <i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'employee_days_worked' %}"><i class="fas fa-folder"></i> Employee Days Worked on project <i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'employee_task_report_on_date' %}"><i class="fas fa-home"></i>Employee task report<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
                     <a href="{% url 'monthly_report' %}"><i class="fas fa-chart-bar"></i> Monthly Attendance <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <!-- <li>
@@ -148,6 +159,12 @@
                     <a href="{% url 'dashboard' %}"><i class="fas fa-home"></i>Home<i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
+                    <a href="{% url 'submit_daily_task' %}"><i class="fas fa-home"></i>Daily Task Form<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'daily_update_task_list' %}"><i class="fas fa-home"></i>Daily Task List<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
                     <a href="{% url 'assigned_task_list' %}"><i class="fas fa-tasks"></i> Assigned Tasks<i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
@@ -165,7 +182,7 @@
                 <li>
                     <a href="{% url 'leave_request' %}"><i class="fas fa-calendar-day"></i> Request Leave<i class="fas fa-chevron-right"></i></a>
                 </li>
-                {% if user.department == "sales_team" %}  
+                {% if user.department == "sales_team" %}
                 <li>
                     <a href="{% url 'lead_create_alt' %}"><i class="fas fa-plus-circle"></i> Create Lead <i class="fas fa-chevron-right"></i></a>
                 </li>
@@ -187,10 +204,10 @@
                 <li>
                     <a href="{% url 'tl_task_create' %}"><i class="fas fa-share-square"></i> Allocate Tasks <i class="fas fa-chevron-right"></i></a>
                 </li>
-               
-               
-                {% if user.department == "teamlead_sales_team" %}  
-               
+
+
+                {% if user.department == "teamlead_sales_team" %}
+
                 <li>
                     <a href="{% url 'alternate_leads_list' %}"><i class="fas fa-list"></i> Leads List<i class="fas fa-chevron-right"></i></a>
                 </li>

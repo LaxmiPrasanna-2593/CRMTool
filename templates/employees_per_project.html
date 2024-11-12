@@ -1,0 +1,14 @@
+<h2>
+    Employees Per Project</h2>
+<table>
+    <tr>
+        <th>Project Name</th>
+        <th>Employee Count</th>
+    </tr>
+    {% for project in project_employee_count %}
+    <tr>
+        <td>{{ project.name }}</td>
+        <td>{{ project.employee_count }}</td>
+    </tr>
+    {% endfor %}
+</table>

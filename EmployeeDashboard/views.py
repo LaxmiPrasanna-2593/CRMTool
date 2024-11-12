@@ -176,9 +176,10 @@ def edit_employee(request, pk):
         form = EmployeeForm(instance=employee)
     return render(request, 'edit_employee.html', {'form': form, 'employee': employee})
  
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Lead
 from .forms import LeadForm
+from django.contrib.auth.decorators import login_required
 
 # View to display the list of leads
 def lead_list(request):
@@ -186,65 +187,82 @@ def lead_list(request):
     return render(request, 'lead_list.html', {'leads': leads})
 
 # View to create a new lead
+@login_required
 def lead_create(request):
     if request.method == 'POST':
         form = LeadForm(request.POST)
         if form.is_valid():
-            form.save()
+            lead = form.save(commit=False)  # Don't save yet, we want to add the user
+            lead.created_by = request.user  # Set the logged-in user
+            lead.save()
             return redirect('lead_list')
     else:
         form = LeadForm()
     return render(request, 'lead_form.html', {'form': form})
 
+# View to display the lead details
 def lead_detail(request, pk):
     lead = get_object_or_404(Lead, pk=pk)
     return render(request, 'lead_detail.html', {'lead': lead})
 
+# View to edit an existing lead
+@login_required
 def lead_edit(request, pk):
     lead = get_object_or_404(Lead, pk=pk)
     if request.method == 'POST':
         form = LeadForm(request.POST, instance=lead)
         if form.is_valid():
-            form.save()
+            # Only change 'created_by' if it's not already set (optional)
+            lead = form.save(commit=False)
+            if not lead.created_by:
+                lead.created_by = request.user  # Ensure the logged-in user is set
+            lead.save()
             return redirect('lead_list')
     else:
         form = LeadForm(instance=lead)
     return render(request, 'lead_form.html', {'form': form, 'lead': lead})
-        
-from django.shortcuts import render, redirect
-from .models import Lead
-from .forms import LeadForm
 
-# View to display the list of leads
+# View to display the list of leads for an alternative view
 def lead_list_alt(request):
     leads = Lead.objects.all()
     return render(request, 'lead_list_alt.html', {'leads': leads})
 
-# View to create a new lead
+# View to create a new lead for an alternative view
+@login_required
 def lead_create_alt(request):
     if request.method == 'POST':
         form = LeadForm(request.POST)
         if form.is_valid():
-            form.save()
+            lead = form.save(commit=False)
+            lead.created_by = request.user  # Set the logged-in user
+            lead.save()
             return redirect('alternate_leads_list')
     else:
         form = LeadForm()
     return render(request, 'lead_form_alt.html', {'form': form})
 
+# View to display the lead details for an alternative view
 def lead_detail_alt(request, pk):
     lead = get_object_or_404(Lead, pk=pk)
     return render(request, 'lead_detail_alt.html', {'lead': lead})
 
+# View to edit an existing lead for an alternative view
+@login_required
 def lead_edit_alt(request, pk):
     lead = get_object_or_404(Lead, pk=pk)
     if request.method == 'POST':
         form = LeadForm(request.POST, instance=lead)
         if form.is_valid():
-            form.save()
+            # Only change 'created_by' if it's not already set (optional)
+            lead = form.save(commit=False)
+            if not lead.created_by:
+                lead.created_by = request.user  # Ensure the logged-in user is set
+            lead.save()
             return redirect('alternate_leads_list')
     else:
         form = LeadForm(instance=lead)
     return render(request, 'lead_form_alt.html', {'form': form, 'lead': lead})
+
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
@@ -670,3 +688,175 @@ def leave_request_history(request):
     
     user_leaves = Leave.objects.filter(user=request.user)  
     return render(request, 'leave_request_history.html', {'leaves': user_leaves})
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Project, DailyUpdateTaskForm
+from .forms import DailyUpdateTaskForm, ProjectForm
+from django.db.models import Count
+
+# views.py
+
+from django.shortcuts import render, redirect
+from .forms import FormDailyUpdateTaskForm
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def submit_daily_task(request):
+    if request.method == 'POST':
+        form = FormDailyUpdateTaskForm(request.POST, user=request.user)  # Pass the logged-in user here
+        if form.is_valid():
+            form.save()
+            return redirect('daily_update_task_list')  # Redirect to some page after saving the task
+    else:
+        form = FormDailyUpdateTaskForm(user=request.user)  # Pass the logged-in user on GET request
+
+    return render(request, 'submit_daily_task.html', {'form': form})
+
+
+from .forms import DailyUpdateTaskForm 
+# Edit Task (Employees can edit their tasks)
+@login_required
+def edit_daily_task(request, task_id):
+    task = DailyUpdateTaskForm.objects.get(id=task_id)
+    if request.method == 'POST':
+        form = FormDailyUpdateTaskForm(request.POST, instance=task,user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('employee_task_report_on_date')  # Redirect to report after editing
+    else:
+        form = FormDailyUpdateTaskForm(instance=task,user=request.user)
+    
+    return render(request, 'edit_daily_task.html', {'form': form, 'task': task})
+
+# Add Project (Admin/Managers can create new projects)
+@login_required
+def add_project(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = ProjectForm()
+    
+    return render(request, 'add_project.html', {'form': form})
+
+# Edit Project (Admin/Managers can edit existing projects)
+@login_required
+def edit_project(request, project_id):
+    project = Project.objects.get(id=project_id)
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = ProjectForm(instance=project)
+    
+    return render(request, 'edit_project.html', {'form': form, 'project': project})
+
+# Report on the Number of Employees per Project
+@login_required
+def employees_per_project(request):
+    project_employee_count = Project.objects.annotate(employee_count=Count('dailyupdatetaskform__employee', distinct=True))
+    
+    return render(request, 'employees_per_project.html', {'project_employee_count': project_employee_count})
+
+
+from django.db.models import Count
+from django.shortcuts import render
+from .models import DailyUpdateTaskForm
+
+@login_required
+def employee_days_worked(request):
+    # Query to count distinct work days (dates) per employee and project
+    employee_workdays = DailyUpdateTaskForm.objects.values('employee', 'project') \
+        .annotate(work_days=Count('date', distinct=True))  # Count distinct dates
+    
+    # You might want to also include employee and project names to make the data more user-friendly
+    for entry in employee_workdays:
+        entry['employee_name'] = User.objects.get(id=entry['employee']).username
+        entry['project_name'] = Project.objects.get(id=entry['project']).name
+
+    return render(request, 'employee_days_worked.html', {'employee_workdays': employee_workdays})
+
+
+# Report on Employee Tasks on a Given Date
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from datetime import datetime
+from .models import DailyUpdateTaskForm, Project
+
+@login_required
+def employee_task_report_on_date(request):
+    date_str = request.GET.get('date')
+    project_id = request.GET.get('project')
+    message = ""  # Default message
+    
+    selected_date = None
+    selected_project = None
+    
+    # Handle date filtering
+    if date_str:
+        try:
+            selected_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            selected_date = None
+            message = "Invalid date format. Please use YYYY-MM-DD."
+    else:
+        message = "No date selected."
+
+    # Handle project filtering (if project ID is provided)
+    if project_id:
+        try:
+            selected_project = Project.objects.get(id=project_id)
+        except Project.DoesNotExist:
+            selected_project = None
+            message = "Project not found."
+    else:
+        selected_project = None
+    
+    # Filter tasks by selected date and project
+    tasks_on_date = DailyUpdateTaskForm.objects.all().select_related('employee', 'project')
+
+    if selected_date:
+        tasks_on_date = tasks_on_date.filter(date=selected_date)
+    if selected_project:
+        tasks_on_date = tasks_on_date.filter(project=selected_project)
+
+    return render(request, 'employee_task_report_on_date.html', {
+        'tasks_on_date': tasks_on_date,
+        'date': selected_date,
+        'message': message,
+        'projects': Project.objects.all(),  # To show projects in the dropdown
+        'selected_project': selected_project
+    })
+
+
+from .models import DailyUpdateTaskForm 
+@login_required
+def daily_update_task_list(request):
+    if request.user.is_superuser:
+        # If the user is a superuser, show all tasks
+        tasks = DailyUpdateTaskForm.objects.all()
+    else:
+        # For regular users, show only their own tasks
+        tasks = DailyUpdateTaskForm.objects.filter(employee=request.user)
+
+    return render(request, 'daily_update_task_list.html', {'tasks': tasks})
+
+from .models import Project
+
+
+@login_required
+def project_list(request):
+    if request.user.is_superuser:
+        # If the user is a superuser, show all projects
+        projects = Project.objects.all()
+    else:
+        # For regular users, you can apply additional filters if needed
+        projects = Project.objects.all()  # Example: Show all projects for regular users
+
+    return render(request, 'project_list.html', {'projects': projects})

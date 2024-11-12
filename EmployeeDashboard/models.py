@@ -207,6 +207,7 @@ class Lead(models.Model):
     product_interest = models.CharField(max_length=100, blank=True, null=True)
     estimated_deal_value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='leads_created')
 
     def _str_(self):
         return f"{self.name} - {self.company_name}"
@@ -432,3 +433,32 @@ class Leave(models.Model):
 
     def __str__(self):
         return f"Leave from {self.start_date} to {self.end_date} for {self.user.username}"
+
+
+# Project Model
+class Project(models.Model):
+    name = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+# DailyUpdateTaskForm Model with TaskStatus Choices
+class DailyUpdateTaskForm(models.Model):
+    TASK_STATUS_CHOICES = [
+        ('completed', 'Completed'),
+        ('in_progress', 'In Progress'),
+        ('pending', 'Pending'),
+        ('on_hold', 'On Hold'),
+    ]
+
+    task_description = models.TextField()
+    date = models.DateField()
+    employee = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    task_status = models.CharField(max_length=30, choices=TASK_STATUS_CHOICES)
+
+    def __str__(self):
+        return f"{self.employee.username} - {self.project.name} - {self.date}"

@@ -62,6 +62,16 @@ urlpatterns = [
     path('update-task-status/', update_task_status, name='update_task_status'),
     path('attendance-history/', attendance_history, name='attendance_history'),
     path('leave-request-history/', leave_request_history, name='leave_request_history'),
+    path('submit-dailytask/', submit_daily_task, name='submit_daily_task'),
+    path('edit_daily_task/<int:task_id>/', edit_daily_task, name='edit_daily_task'),
+    path('daily_update_task_list/', daily_update_task_list, name='daily_update_task_list'),
+    path('add-project/', add_project, name='add_project'),
+    path('edit-project/<int:project_id>/', edit_project, name='edit_project'),
+    path('employees-per-project/', employees_per_project, name='employees_per_project'),
+    path('employee-days-worked/', employee_days_worked, name='employee_days_worked'),
+    path('employee-task-report-on-date/', employee_task_report_on_date, name='employee_task_report_on_date'),
+    path('projects/', project_list, name='project_list'),
+
 
 
 ] 

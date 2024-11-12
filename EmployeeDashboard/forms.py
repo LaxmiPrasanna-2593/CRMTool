@@ -1,5 +1,5 @@
 from django import forms
-from .models import Employee, Leave
+from .models import Employee, Leave, Project, User
 
 class EmployeeForm(forms.ModelForm):
     class Meta:
@@ -98,7 +98,7 @@ class LeadForm(forms.ModelForm):
         fields = [
             'name', 'email', 'phone_number', 'company_name', 'position',
             'lead_source', 'status', 'interest_level', 'last_contact_date',
-            'next_follow_up_date', 'product_interest', 'estimated_deal_value', 'notes'
+            'next_follow_up_date', 'product_interest', 'estimated_deal_value', 'notes',
         ]
         widgets = {
             'last_contact_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
@@ -175,3 +175,42 @@ class LeaveRequestForm(forms.ModelForm):
     leave_type = forms.ChoiceField(choices=[('Sick', 'Sick'), ('Vacation', 'Vacation'), ('Casual', 'Casual')], required=True)
     reason = forms.CharField(widget=forms.Textarea, required=True)
 
+
+
+# forms.py
+
+from django import forms
+from .models import DailyUpdateTaskForm, User
+
+class FormDailyUpdateTaskForm(forms.ModelForm):
+    class Meta:
+        model = DailyUpdateTaskForm
+        fields = ['task_description', 'date', 'employee', 'project', 'task_status']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+            'task_status': forms.Select(choices=DailyUpdateTaskForm.TASK_STATUS_CHOICES),  # Dropdown for task_status
+        }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Pop 'user' from kwargs if passed from view
+        super(FormDailyUpdateTaskForm, self).__init__(*args, **kwargs)
+        
+        if user:
+            # Set the 'employee' field to the current logged-in user
+            self.fields['employee'].initial = user
+            # Optionally, you can also restrict the queryset to the logged-in user
+            self.fields['employee'].queryset = User.objects.filter(id=user.id)
+        else:
+            # Handle case if no user is passed (shouldn't happen in this case)
+            self.fields['employee'].queryset = User.objects.none()
+
+
+
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['name', 'start_date', 'end_date', 'description']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+        }

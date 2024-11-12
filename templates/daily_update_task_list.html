@@ -1,0 +1,25 @@
+<h2>Task List</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Project</th>
+            <th>Task Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.employee.username }}</td>
+            <td>{{ task.project.name }}</td>
+            <td>{{ task.get_task_status_display }}</td>
+            <td>{{ task.date }}</td>
+            <td><a href="{% url 'edit_daily_task' task_id=task.id %}" class="edit-button">Edit</a></td>
+        </tr>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

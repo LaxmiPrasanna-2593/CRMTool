@@ -1,0 +1,19 @@
+<h2>Employee Work Days per Project</h2>
+<table>
+    <tr>
+        <th>Employee</th>
+        <th>Project</th>
+        <th>Work Days Count</th>
+    </tr>
+    {% for entry in employee_workdays %}
+    <tr>
+        <td>{{ entry.employee_name }}</td>
+        <td>{{ entry.project_name }}</td>
+        <td>{{ entry.work_days }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">No data available</td>
+    </tr>
+    {% endfor %}
+</table>

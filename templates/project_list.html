@@ -1,0 +1,25 @@
+<h2>
+    Project List</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for project in projects %}
+        <tr>
+            <td>{{ project.name }}</td>
+            <td>{{ project.start_date }}</td>
+            <td>{{ project.end_date }}</td>
+            <td>{{ project.description }}</td>
+            <td><a href="{% url 'edit_project' project_id=project.id %}" class="edit-button">Edit</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

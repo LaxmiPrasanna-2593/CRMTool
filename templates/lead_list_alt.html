@@ -11,30 +11,31 @@
             margin-bottom: 20px;
             text-align: center;
         }
-
+        
         table {
             width: 100%;
             max-width: 1000px;
             border-collapse: collapse;
             margin-top: 20px;
         }
-
-        th, td {
+        
+        th,
+        td {
             padding: 12px 15px;
             border: 1px solid #ddd;
             text-align: left;
             font-size: 0.9em;
         }
-
+        
         th {
             background-color: #0c005a;
             color: white;
         }
-
+        
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-
+        
         .lead-actions a {
             color: white;
             text-decoration: none;
@@ -44,9 +45,10 @@
             border-radius: 5px;
             border: 1px solid rgb(3, 74, 137);
         }
-
+        
         .lead-actions a:hover {
-            background-color: rgb(5, 150, 206); /* Darker hover background without underline */
+            background-color: rgb(5, 150, 206);
+            /* Darker hover background without underline */
         }
     </style>
 </head>
@@ -54,10 +56,10 @@
 
 <body>
 
- {% block content %}
-    <div class="main-content">      
-          <h1>Lead List</h1>
-        
+    {% block content %}
+    <div class="main-content">
+        <h1>Lead List</h1>
+
         <table>
             <thead>
                 <tr>
@@ -66,6 +68,7 @@
                     <th>Phone</th>
                     <th>Company</th>
                     <th>Position</th>
+                    <th>Created By</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -77,6 +80,7 @@
                     <td>{{ lead.phone_number }}</td>
                     <td>{{ lead.company_name }}</td>
                     <td>{{ lead.position }}</td>
+                    <td>{{ lead.created_by }}</td>
                     <td class="lead-actions">
                         <a href="{% url 'lead_detail_alt' lead.pk %}">View Details</a>
                     </td>
@@ -85,8 +89,8 @@
             </tbody>
         </table>
     </div>
-</div>
-{% endblock %}
+    </div>
+    {% endblock %}
 </body>
 
 </html>
