@@ -223,9 +223,24 @@ def lead_edit(request, pk):
     return render(request, 'lead_form.html', {'form': form, 'lead': lead})
 
 # View to display the list of leads for an alternative view
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Lead
+
+@login_required
 def lead_list_alt(request):
-    leads = Lead.objects.all()
+    user = request.user  # Get the logged-in user
+    
+    # Check if the user belongs to the "teamlead_sales_team" department
+    if user.department == 'teamlead_sales_team':  # Assuming 'department' is a field on the User model
+        # If the user is a team lead, show all leads
+        leads = Lead.objects.all()
+    else:
+        # Otherwise, show only the leads created by the user
+        leads = Lead.objects.filter(created_by=user)
+    
     return render(request, 'lead_list_alt.html', {'leads': leads})
+
 
 # View to create a new lead for an alternative view
 @login_required
@@ -860,3 +875,32 @@ def project_list(request):
         projects = Project.objects.all()  # Example: Show all projects for regular users
 
     return render(request, 'project_list.html', {'projects': projects})
+
+
+from django.db.models import Count
+from django.shortcuts import render
+from .models import Lead
+
+def lead_status_summary(request):
+    # Query to count leads grouped by status and created_by
+    leads_summary = (
+        Lead.objects.values('created_by__username', 'status')  # Group by created_by and status
+        .annotate(count=Count('lead_id'))  # Use lead_id instead of id
+        .order_by('created_by__username', 'status')  # Optional: Sort by username and status
+    )
+
+    # Restructure data for better display
+    structured_data = {}
+    for entry in leads_summary:
+        created_by = entry['created_by__username'] or 'Unassigned'  # Handle null users
+        status = entry['status']
+        count = entry['count']
+        
+        if created_by not in structured_data:
+            structured_data[created_by] = {'New': 0, 'Contacted': 0, 'Qualified': 0, 'Closed': 0}
+        structured_data[created_by][status] = count
+
+    context = {
+        'leads_summary': structured_data,
+    }
+    return render(request, 'leads_summary.html', context)

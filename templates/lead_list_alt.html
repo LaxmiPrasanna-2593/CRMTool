@@ -67,7 +67,7 @@
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Company</th>
-                    <th>Position</th>
+                    <th>Status</th>
                     <th>Created By</th>
                     <th>Actions</th>
                 </tr>
@@ -79,7 +79,7 @@
                     <td>{{ lead.email }}</td>
                     <td>{{ lead.phone_number }}</td>
                     <td>{{ lead.company_name }}</td>
-                    <td>{{ lead.position }}</td>
+                    <td>{{ lead.status}}</td>
                     <td>{{ lead.created_by }}</td>
                     <td class="lead-actions">
                         <a href="{% url 'lead_detail_alt' lead.pk %}">View Details</a>

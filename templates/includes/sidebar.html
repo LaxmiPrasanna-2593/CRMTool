@@ -124,7 +124,19 @@
                 <li>
                     <a href="{% url 'lead_list' %}"><i class="fas fa-address-book"></i> Leads <i class="fas fa-chevron-right"></i></a>
                 </li>
+<<<<<<< HEAD
               
+=======
+                <li>
+                    <a href="{% url 'lead_status_summary' %}"><i class="fas fa-list"></i> Leads Summary<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'leave_requests' %}"><i class="fas fa-calendar-minus"></i> Leave Requests <i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'attendance_on_date' %}"><i class="fas fa-calendar-day"></i> Attendance On Date <i class="fas fa-chevron-right"></i></a>
+                </li>
+>>>>>>> db13aff5a0b41a018faae2c72392eb27ba04d075
                 <li>
                     <a href="{% url 'employees_per_project' %}"><i class="fas fa-user"></i> Employees per projects <i class="fas fa-chevron-right"></i></a>
                 </li>
@@ -211,6 +223,9 @@
 
                 <li>
                     <a href="{% url 'alternate_leads_list' %}"><i class="fas fa-list"></i> Leads List<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'lead_status_summary' %}"><i class="fas fa-list"></i> Leads Summary<i class="fas fa-chevron-right"></i></a>
                 </li>
                 {% endif %}
             </ul>

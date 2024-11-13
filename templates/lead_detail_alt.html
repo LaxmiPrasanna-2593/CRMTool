@@ -131,8 +131,9 @@
     <div class="main-content">
         <div class="small-content">
             <h1>Lead Details</h1>
-            <a href="{% url 'lead_edit_alt' lead.pk %}" class="edit-button">Edit Lead</a>
-
+            {% if user.department != "teamlead_sales_team" and not user.is_superuser %}
+            <a href="{% url 'lead_edit_alt' lead.pk %}" class="edit-button">Edit Lead</a> {% endif %} {% if lead.created_by == user %}
+            <a href="{% url 'lead_edit' lead.pk %}" class="edit-button">Edit Lead</a> {% endif %}
             <div class="lead-details-card">
                 <div class="detail-row">
                     <span class="detail-label">Name:</span>
