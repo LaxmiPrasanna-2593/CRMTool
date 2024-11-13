@@ -1,3 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>daily task list</title>
+    <style>
+         h1 {
+            font-size: 2em;
+            color: #0c005a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        
+        th {
+            background-color: #0c005a;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .edit-button {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 8px 16px;
+            background-color: #0c005a;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+        
+        .edit-button:hover {
+            background-color: #004080;
+        }
+    </style>
+</head>
+{% extends "base.html" %}
+
+<body>
+    {% block content %}
+    <div class="main-content">
 <h2>Task List</h2>
 
 <table>
@@ -23,3 +83,8 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
+{% endblock %}
+
+</body>
+</html>

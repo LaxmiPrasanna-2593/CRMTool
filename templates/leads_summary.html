@@ -5,9 +5,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lead Status Summary</title>
+    <style>
+         h1 {
+            font-size: 2em;
+            color: #0c005a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        
+        th {
+            background-color: #0c005a;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+    </style>
 </head>
+{% extends "base.html" %}
 
 <body>
+    {% block content %}
+    <div class="main-content">
     <h1>Lead Status Summary</h1>
     <table border="1">
         <thead>
@@ -31,6 +67,9 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
+{% endblock %}
+
 </body>
 
 </html>

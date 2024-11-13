@@ -1,11 +1,105 @@
-<h2>Edit Task</h2>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit</title>
+    <style>
+           h1 {
+            text-align: center;
+            color: #0c005a;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .form-container {
+            max-width: 850px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: rgb(212, 232, 239);
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="file"]:focus,
+        
+        select:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+        
+        .submit-button {
+            background-color: #0c005a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .submit-button:hover {
+            background-color: #2410a5;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+            transition: color 0.3s;
+            background-color: lightblue;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .back-link:hover {
+            color: #000;
+        }
+    </style>
+</head>
+{% extends "base.html" %}
+
+<body>
+    {% block content %}
+    <div class="main-content">
+        <div class="form-container">
+<h1>Edit Task</h1>
 
 <form method="post">
     {% csrf_token %} {{ form.as_p }}
     <!-- This will render the form fields as paragraphs -->
 
-    <button type="submit">Save Changes</button>
+    <button type="submit" class="submit-button">Save Changes</button>
 </form>
 
 <br>
-<a href="{% url 'daily_update_task_list' %}">Back to Task List</a>
+<a href="{% url 'daily_update_task_list' %}" class="back-link">Back to Task List</a>
+</div>
+</div>
+{% endblock %}
+
+</body>
+</html>
