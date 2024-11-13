@@ -66,15 +66,41 @@
             color: #555;
             margin-top: 20px;
         }
+
+        .print-task-btn {
+            background-color: #0c005a;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
     </style>
+    <script>
+        function printTable() {
+            const printContents = document.getElementById('taskTable').outerHTML;
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();  // reload the page to restore original content
+        }
+    </script>
 </head>
+
 {% extends 'base.html' %}
 <body>
     {% block content %}
     <div class="main-content">
         <div class="container">
             <h1>Employee Task List</h1>
-            <table class="task-table">
+
+            {% if tasks %}
+            <button class="print-task-btn" onclick="printTable()">Print Task List</button>
+            <table id="taskTable" class="task-table">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -88,7 +114,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Loop through tasks -->
                     {% for task in tasks %}
                     <tr>
                         <td>{{ task.title }}</td>
@@ -106,13 +131,12 @@
                         <td class="task-status2">{{ task.status }}</td>
                     {% endif %}
                     </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="8" class="no-tasks">No tasks assigned.</td>
-                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            {% else %}
+            <p class="no-tasks">No task data present.</p>
+            {% endif %}
         </div>
     </div>
     {% endblock %}

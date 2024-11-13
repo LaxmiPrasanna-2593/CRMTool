@@ -16,11 +16,11 @@
             margin-bottom: 30px;
             font-weight: bold;
         }
+
         form {
             padding: 10px;
             text-align: center;
             width: 100%;
-
         }
         form label {
             margin-right: 10px;
@@ -46,7 +46,6 @@
             cursor: pointer;
             transition: background-color 0.3s;
             margin-top: 20px;
-           
         }
 
         .btn:hover {
@@ -76,29 +75,6 @@
             background-color: #fff;
         }
 
-        .task-table td strong {
-            color: #0c005a;
-        }
-
-        .task-status {
-            font-weight: bold;
-            color: #007500;
-            text-align: center;
-            font-size: 1.1em;
-        }
-        .task-status1 {
-            font-weight: bold;
-            color: blue;
-            text-align: center;
-            font-size: 1.1em;
-        }
-        .task-status2 {
-            font-weight: bold;
-            color: red;
-            text-align: center;
-            font-size: 1.1em;
-        }
-
         .no-tasks {
             text-align: center;
             font-size: 1.2em;
@@ -106,44 +82,41 @@
             margin-top: 20px;
         }
 
-        .report-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        .report-table th,
-        .report-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-        
-        .report-table th {
-            background-color: #f2f2f2;
-        }
-        
         .report-header {
             margin-bottom: 20px;
             text-align: center;
         }
-        
+
         .form-container {
             text-align: center;
             margin-bottom: 20px;
-            text-align: center;
         }
-        
-        .form-container select,
-        .form-container input {
-            padding: 8px;
-            margin: 5px;
-            text-align: center;
+
+        .print-btn {
+            background-color: #0c005a;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: inline-block;
         }
-        .generate{
-            text-align: center;
+
+        .print-btn:hover {
+            background-color: #080046;
         }
     </style>
+
+    <script>
+        function printTable() {
+            const printContents = document.getElementById('attendanceTable').outerHTML;
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload(); 
+        }
+    </script>
 </head>
 
 <body>
@@ -171,9 +144,8 @@
 
                 <label for="end_date">End Date: </label>
                 <input type="date" name="end_date" id="end_date" value="{{ end_date }}">
-                <div class="generate">
+                
                 <button type="submit" class="btn">Generate Report</button>
-            </div>
             </form>
         </div>
 
@@ -182,10 +154,15 @@
             <p>From {{ start_date }} to {{ end_date }}</p>
         </div>
 
-        <table class="task-table">
+        {% if monthly_report %}
+        <div style="margin-top: 20px;">
+            <button class="print-btn" onclick="printTable()">Print Report</button>
+        </div>
+
+        <table class="task-table" id="attendanceTable">
             <thead>
                 <tr>
-                    <th>User</th>
+                    <th>Employee Name</th>
                     <th>Present Days</th>
                     <th>On Leave Days</th>
                     <th>Absent Days</th>
@@ -206,6 +183,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+            <p class="no-tasks">No attendance records available for this period.</p>
+        {% endif %}
     </div>
     {% endblock %}
 
