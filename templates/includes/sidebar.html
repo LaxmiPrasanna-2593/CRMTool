@@ -125,6 +125,9 @@
                     <a href="{% url 'lead_list' %}"><i class="fas fa-address-book"></i> Leads <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
+                    <a href="{% url 'lead_status_summary' %}"><i class="fas fa-list"></i> Leads Summary<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
                     <a href="{% url 'leave_requests' %}"><i class="fas fa-calendar-minus"></i> Leave Requests <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
@@ -210,6 +213,9 @@
 
                 <li>
                     <a href="{% url 'alternate_leads_list' %}"><i class="fas fa-list"></i> Leads List<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'lead_status_summary' %}"><i class="fas fa-list"></i> Leads Summary<i class="fas fa-chevron-right"></i></a>
                 </li>
                 {% endif %}
             </ul>
