@@ -6,52 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <style>
-       
-        .main-content{
+        .main-content {
             font-family: Arial, sans-serif;
             display: flex;
             min-height: 80vh;
         }
-      
-
+        
         .left-side {
-            flex: 1.2; 
-            background: linear-gradient(rgba(1, 26, 90, 0.7), rgba(0, 82, 204, 0.7)),
-                url('https://www.bizlibrary.com/wp-content/uploads/2019/05/30141657/employeeretention.png') no-repeat center center;
+            flex: 1.2;
+            background: linear-gradient(rgba(1, 26, 90, 0.7), rgba(0, 82, 204, 0.7)), url('https://www.bizlibrary.com/wp-content/uploads/2019/05/30141657/employeeretention.png') no-repeat center center;
             background-size: cover;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
         }
-
+        
         .right-side {
             flex: 1;
             display: flex;
             justify-content: center;
             background-color: white;
         }
-
+        
         .container {
             width: 100%;
             max-width: 450px;
             padding: 2rem;
             border-radius: 8px;
         }
-
+        
         h2 {
             font-size: 24px;
             color: #0c005a;
             margin-bottom: 20px;
         }
-
+        
         label {
             display: block;
             font-size: 14px;
             color: #666;
             margin-top: 15px;
         }
-
+        
         input[type="text"],
         input[type="password"],
         select {
@@ -62,7 +59,7 @@
             border-radius: 4px;
             font-size: 16px;
         }
-
+        
         .submit-button {
             width: 100%;
             padding: 12px;
@@ -75,25 +72,25 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
+        
         .submit-button:hover {
             background-color: #023164;
         }
-
+        
         p {
             margin-top: 20px;
             text-align: center;
         }
-
+        
         p a {
             color: #0c005a;
             text-decoration: none;
         }
-
+        
         p a:hover {
             text-decoration: underline;
         }
-
+        
         .message-list {
             margin-top: 15px;
             padding: 10px;
@@ -102,28 +99,28 @@
             color: green;
             list-style-type: none;
         }
+        
         .portal {
-    text-align: center;
-    padding: 40px;
-    color: white;
-    max-width: 80%;
-}
-
-.portal h1 {
-    font-size:2rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.portal p {
-    font-size: 1.2rem;
-    line-height: 1.5;
-    color: #f0f0f0;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
-}
-
+            text-align: center;
+            padding: 40px;
+            color: white;
+            max-width: 80%;
+        }
+        
+        .portal h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .portal p {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            color: #f0f0f0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+        }
     </style>
 </head>
 {% extends 'base.html' %}
@@ -131,45 +128,49 @@
 <body>
     {% block content %}
     <div class="main-content">
-    <div class="left-side">
-        <div class="portal">
-            <h1>Welcome, Vinay Kalwala!</h1>
-            <p>Please create credentials for your team to get started and access the personalized employee dashboard.</p>
-              </div>  </div>
-    <div class="right-side">
-        <div class="container">
-            <h2>Department Sign Up</h2>
-            <form method="post">
-                {% csrf_token %}
-                <label for="username">Username:</label>
-                <input type="text" name="username" required>
+        <div class="left-side">
+            <div class="portal">
+                <h1>Welcome, Vinay Kalwala!</h1>
+                <p>Please create credentials for your team to get started and access the personalized employee dashboard.</p>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="container">
+                <h2>Department Sign Up</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" required>
 
-                <label for="password1">Password:</label>
-                <input type="password" name="password1" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
 
-                <label for="password2">Confirm Password:</label>
-                <input type="password" name="password2" required>
+                    <label for="password1">Password:</label>
+                    <input type="password" name="password1" required>
 
-                <label for="department">Department:</label>
-                <select name="department" required>
+                    <label for="password2">Confirm Password:</label>
+                    <input type="password" name="password2" required>
+
+                    <label for="department">Department:</label>
+                    <select name="department" required>
                     {% for code, name in department_choices %}
                         <option value="{{ code }}">{{ name }}</option>
                     {% endfor %}
                 </select>
 
-                <button type="submit" class="submit-button">Sign Up</button>
-            </form>
-           
+                    <button type="submit" class="submit-button">Sign Up</button>
+                </form>
 
-            {% if messages %}
-            <ul class="message-list">
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+
+                {% if messages %}
+                <ul class="message-list">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
         </div>
-    </div>
     </div>
     {% endblock %}
 

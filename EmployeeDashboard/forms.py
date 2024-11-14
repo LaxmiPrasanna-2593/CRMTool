@@ -4,6 +4,7 @@ from .models import Employee, Leave, Project, User
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
+       
         fields = [
             # Personal Information
             'first_name', 'middle_name', 'last_name','profile_picture', 'employee_status','dob', 'place_of_birth', 'father_name',
@@ -47,12 +48,15 @@ class EmployeeForm(forms.ModelForm):
             # Files Upload for Current Employment
             'offer_letter', 'nda_form', 'btech_memo', 'btech_tc', 'relieving_letter', 'experience_letter', 'payslips',
         ]
+        fields = '__all__'
         widgets = {
             # Date fields
             'dob': forms.DateInput(attrs={'type': 'date'}),
             'passport_valid_from': forms.DateInput(attrs={'type': 'date'}),
             'passport_valid_upto': forms.DateInput(attrs={'type': 'date'}),
             'date_of_joining': forms.DateInput(attrs={'type': 'date'}),
+            'exit_date': forms.DateInput(attrs={'type': 'date'}),
+            'previous_start_date': forms.DateInput(attrs={'type': 'date'}),
             'previous_exit_date': forms.DateInput(attrs={'type': 'date'}),
 
             # TextInput for smaller fields

@@ -72,6 +72,7 @@ urlpatterns = [
     path('employee-task-report-on-date/', employee_task_report_on_date, name='employee_task_report_on_date'),
     path('projects/', project_list, name='project_list'),
     path('leads/summary/', lead_status_summary, name='lead_status_summary'),
+     path('user_details/', user_details_with_projects, name='user_details_with_projects'),
 
 
 

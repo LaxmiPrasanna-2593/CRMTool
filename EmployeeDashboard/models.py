@@ -18,7 +18,8 @@ class User(AbstractUser):
     def _str_(self):
         return self.username
 
-
+from datetime import date
+from dateutil.relativedelta import relativedelta
 class Employee(models.Model):
     # Choices for dropdown fields
     GENDER_CHOICES = [
@@ -49,21 +50,21 @@ class Employee(models.Model):
     # ======================
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True, null=True)
-    last_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100,blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
-    dob = models.DateField(verbose_name="Date of Birth")
-    place_of_birth = models.CharField(max_length=100)
+    dob = models.DateField(verbose_name="Date of Birth",blank=True, null=True)
+    place_of_birth = models.CharField(max_length=100,blank=True, null=True)
     employee_status=models.CharField(max_length=15, choices=EMPLOYEE_STATUS_CHOICES)
-    father_name = models.CharField(max_length=100)
+    father_name = models.CharField(max_length=100,blank=True, null=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     marital_status = models.CharField(max_length=15, choices=MARITAL_STATUS_CHOICES)
-    nationality = models.CharField(max_length=50)
-    blood_group = models.CharField(max_length=3, blank=True, null=True)
-    address = models.TextField(verbose_name="Current Address")
-    city = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
-    zip_code = models.CharField(max_length=10)
-    mobile = models.CharField(max_length=20)
+    nationality = models.CharField(max_length=50,blank=True, null=True)
+    blood_group = models.CharField(max_length=3, blank=True, null=True,)
+    address = models.TextField(verbose_name="Current Address",blank=True, null=True)
+    city = models.CharField(max_length=50,blank=True, null=True)
+    state = models.CharField(max_length=50,blank=True, null=True)
+    zip_code = models.CharField(max_length=10,blank=True, null=True)
+    mobile = models.CharField(max_length=20,blank=True, null=True)
     alternate_phone = models.CharField(max_length=20, blank=True, null=True)
     personal_email = models.EmailField()
     work_email = models.EmailField()
@@ -76,15 +77,15 @@ class Employee(models.Model):
     # ======================
     # PAN Details
     # ======================
-    pan_name = models.CharField(max_length=100, verbose_name="Name as on PAN")
-    pan_number = models.CharField(max_length=10)
+    pan_name = models.CharField(max_length=100, verbose_name="Name as on PAN",blank=True, null=True)
+    pan_number = models.CharField(max_length=10,blank=True, null=True)
     pan_upload_file = models.FileField(upload_to='pan_docs/', blank=True, null=True)
 
     # ======================
     # Aadhar Details
     # ======================
-    aadhar_name = models.CharField(max_length=100, verbose_name="Name as on Aadhar")
-    aadhar_number = models.CharField(max_length=12)
+    aadhar_name = models.CharField(max_length=100, verbose_name="Name as on Aadhar",blank=True, null=True)
+    aadhar_number = models.CharField(max_length=12,blank=True, null=True)
     aadhar_file_upload = models.FileField(upload_to='aadhar_docs/', blank=True, null=True)
 
     # ======================
@@ -101,71 +102,79 @@ class Employee(models.Model):
     # Job Information
     # ======================
     employee_id = models.CharField(max_length=20, unique=True)
-    date_of_joining = models.DateField()
-    position = models.CharField(max_length=50)
-    department = models.CharField(max_length=50)
+    date_of_joining = models.DateField(blank=True, null=True)
+    exit_date = models.DateField(blank=True, null=True)
+    position = models.CharField(max_length=50,blank=True, null=True)
+    department = models.CharField(max_length=50,blank=True, null=True)
+    responsibilities = models.TextField(blank=True, null=True)
     employment_type = models.CharField(max_length=15, choices=EMPLOYMENT_TYPE_CHOICES)
-    reporting_manager = models.CharField(max_length=100)
-    job_location = models.CharField(max_length=100)
-    work_schedule = models.CharField(max_length=50)
+    reporting_manager = models.CharField(max_length=100,blank=True, null=True)
+    job_location = models.CharField(max_length=100,blank=True, null=True)
+    work_schedule = models.CharField(max_length=50,blank=True, null=True)
+    
+    skill_set=models.TextField(blank=True, null=True)
     job_related_documents = models.FileField(upload_to='job_docs/', blank=True, null=True)
 
     # ======================
     # Educational Qualifications
     # ======================
-    highest_degree = models.CharField(max_length=50)
-    institution_name = models.CharField(max_length=100)
-    field_of_study = models.CharField(max_length=50)
-    year_of_graduation = models.IntegerField()
+    highest_degree = models.CharField(max_length=50,blank=True, null=True)
+    institution_name = models.CharField(max_length=100,blank=True, null=True)
+    field_of_study = models.CharField(max_length=50,blank=True, null=True)
+    year_of_graduation = models.IntegerField(blank=True, null=True)
     certifications = models.FileField(upload_to='certifications/', blank=True, null=True)
 
     # ======================
     # Previous Experience
     # ======================
-    previous_company_name = models.CharField(max_length=100)
-    previous_job_title = models.CharField(max_length=50)
-    previous_work_location = models.CharField(max_length=100)
-    previous_exit_date = models.DateField()
-    responsibilities = models.TextField()
-    reason_for_leaving = models.TextField()
+    previous_company_name = models.CharField(max_length=100,blank=True, null=True)
+    previous_job_title = models.CharField(max_length=50,blank=True, null=True)
+    previous_work_location = models.CharField(max_length=100,blank=True, null=True)
+    previous_start_date=models.DateField(blank=True, null=True)
+    previous_exit_date = models.DateField(blank=True, null=True)
+    previous_Total_work_experience=models.CharField(max_length=20,blank=True, null=True,verbose_name="Previous Experience (Enter in this format(2 years 3 months))",)
+    previous_projects=models.TextField(blank=True, null=True)
+    previous_responsibilities = models.TextField(blank=True, null=True)
+    previous_achievements = models.TextField(blank=True, null=True)
+    reason_for_leaving = models.TextField(blank=True, null=True)
 
     # ======================
     # Reference Information
     # ======================
-    reference_1_name = models.CharField(max_length=100)
-    reference_1_designation = models.CharField(max_length=50)
-    reference_1_company_name = models.CharField(max_length=100)
-    reference_1_contact = models.CharField(max_length=20)
-    reference_1_email = models.EmailField()
+    reference_1_name = models.CharField(max_length=100,blank=True, null=True)
+    reference_1_designation = models.CharField(max_length=50,blank=True, null=True)
+    reference_1_company_name = models.CharField(max_length=100,blank=True, null=True)
+    reference_1_contact = models.CharField(max_length=20,blank=True, null=True)
+    reference_1_email = models.EmailField(blank=True, null=True)
 
-    reference_2_name = models.CharField(max_length=100)
-    reference_2_designation = models.CharField(max_length=50)
-    reference_2_company_name = models.CharField(max_length=100)
-    reference_2_contact = models.CharField(max_length=20)
-    reference_2_email = models.EmailField()
+    reference_2_name = models.CharField(max_length=100,blank=True, null=True)
+    reference_2_designation = models.CharField(max_length=50,blank=True, null=True)
+    reference_2_company_name = models.CharField(max_length=100,blank=True, null=True)
+    reference_2_contact = models.CharField(max_length=20,blank=True, null=True)
+    reference_2_email = models.EmailField(blank=True, null=True)
 
     # ======================
     # Emergency Contact Information
     # ======================
-    emergency_first_name = models.CharField(max_length=100)
+    emergency_first_name = models.CharField(max_length=100,blank=True, null=True)
     emergency_middle_name = models.CharField(max_length=100, blank=True, null=True)
-    emergency_last_name = models.CharField(max_length=100)
-    emergency_relationship = models.CharField(max_length=50)
-    emergency_home_phone = models.CharField(max_length=20)
-    emergency_mobile_phone = models.CharField(max_length=20)
-    emergency_city = models.CharField(max_length=50)
-    emergency_state = models.CharField(max_length=50)
-    emergency_zip_code = models.CharField(max_length=10)
+    emergency_last_name = models.CharField(max_length=100,blank=True, null=True)
+    emergency_relationship = models.CharField(max_length=50,blank=True, null=True)
+    emergency_home_phone = models.CharField(max_length=20,blank=True, null=True)
+    emergency_mobile_phone = models.CharField(max_length=20,blank=True, null=True)
+    emergency_city = models.CharField(max_length=50,blank=True, null=True)
+    emergency_state = models.CharField(max_length=50,blank=True, null=True)
+    emergency_zip_code = models.CharField(max_length=10,blank=True, null=True)
 
     # ======================
     # Bank Information
     # ======================
-    bank_name_on_account = models.CharField(max_length=100, verbose_name="Name as on Bank Account")
-    bank_account_number = models.CharField(max_length=20)
-    bank_name = models.CharField(max_length=100)
-    bank_branch_name = models.CharField(max_length=100)
-    bank_ifsc_code = models.CharField(max_length=11)
-    bank_branch_address = models.TextField()
+    bank_name_on_account = models.CharField(max_length=100, verbose_name="Name as on Bank Account",blank=True, null=True)
+    bank_account_number = models.CharField(max_length=20,blank=True, null=True)
+    bank_name = models.CharField(max_length=100,blank=True, null=True)
+    bank_branch_name = models.CharField(max_length=100,blank=True, null=True)
+    bank_ifsc_code = models.CharField(max_length=11,blank=True, null=True)
+    bank_branch_address = models.TextField(blank=True, null=True)
     passbook_file_upload = models.FileField(upload_to='passbook_docs/', blank=True, null=True)
 
     # ======================
@@ -179,6 +188,8 @@ class Employee(models.Model):
     experience_letter = models.FileField(upload_to='employee_docs/experience_letters/', blank=True, null=True)
     payslips = models.FileField(upload_to='employee_docs/payslips/', blank=True, null=True)  # Allows multiple files upload
 
+    
+    
     def _str_(self):
         return f"{self.first_name} {self.last_name}"
 

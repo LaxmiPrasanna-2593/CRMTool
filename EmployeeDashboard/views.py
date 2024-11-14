@@ -1,41 +1,50 @@
-from django.conf import settings
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
-from .models import User
+from django.shortcuts import render, redirect
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 def signup_view(request):
     if request.method == 'POST':
         # Manually retrieve data from the POST request
         username = request.POST.get('username')
+        email = request.POST.get('email')  # Retrieve email
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
         department = request.POST.get('department')
         
         # Basic validation
-        if not username or not password1 or not password2 or not department:
+        if not username or not email or not password1 or not password2 or not department:
             messages.error(request, "All fields are required.")
             return render(request, 'signup.html')
         
         if password1 != password2:
             messages.error(request, "Passwords do not match.")
             return render(request, 'signup.html')
+        
+        try:
+            validate_email(email)  # Validate email format
+        except ValidationError:
+            messages.error(request, "Invalid email address.")
+            return render(request, 'signup.html')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already taken.")
             return render(request, 'signup.html')
 
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email is already associated with an account.")
+            return render(request, 'signup.html')
+
         # Create and save the user
-        user = User(username=username, password=make_password(password1), department=department)
+        user = User(username=username, email=email, password=make_password(password1), department=department)
         user.save()
 
-       # Inform the user of successful registration
+        # Inform the user of successful registration
         messages.success(request, "User created successfully! User can now log in.")
         
         # Redirect to the signup page or login page (depending on your flow)
-        return redirect('signup')  # Change this to 'login' if you prefer to redirect to login page
-    
+        return redirect('signup')  # Change this to 'login' if you prefer to redirect to the login page
     
     # Display signup page
     return render(request, 'signup.html', {
@@ -904,3 +913,84 @@ def lead_status_summary(request):
         'leads_summary': structured_data,
     }
     return render(request, 'leads_summary.html', context)
+
+
+from datetime import datetime
+import re
+from django.shortcuts import render
+from .models import Employee, User, DailyUpdateTaskForm
+
+def user_details_with_projects(request):
+    # Fetch all employees
+    employees = Employee.objects.all()
+
+    # List to store user details with associated projects
+    user_details = []
+
+    # Function to parse experience string
+    def parse_experience(experience_str):
+        years = 0
+        months = 0
+        if experience_str:
+            # Use regex to extract years and months from the string
+            match = re.match(r'(\d+)\s*years?\s*(\d+)\s*months?', experience_str)
+            if match:
+                years = int(match.group(1))  # Extract years
+                months = int(match.group(2))  # Extract months
+        return years, months
+
+    # Loop through each employee to fetch details and calculate total experience
+    for employee in employees:
+        try:
+            # Find a User whose email matches the employee's work_mail
+            user = User.objects.get(email=employee.work_email)
+        except User.DoesNotExist:
+            # If no user matches, skip this employee
+            continue
+
+        # Fetch DailyUpdateTaskForm entries for the found user
+        daily_update_tasks = DailyUpdateTaskForm.objects.filter(employee=user)
+
+        # Extract associated project names from the tasks
+        projects = set(task.project.name for task in daily_update_tasks)
+
+        # Parse the previous experience from the employee data
+        previous_experience_years, previous_experience_months = parse_experience(employee.previous_Total_work_experience)
+        
+        # Convert previous experience to total years
+        previous_experience_in_years = previous_experience_years * 12 + previous_experience_months  # Total months
+
+        # Get the date of joining
+        date_of_joining = employee.date_of_joining
+
+        # If date_of_joining is a datetime object, we need to convert it to date or make both datetime
+        if isinstance(date_of_joining, datetime):
+            joining_date = date_of_joining.date()  # Convert datetime to date
+        else:
+            joining_date = date_of_joining
+
+        # Calculate the current experience (difference between now and date_of_joining)
+        today = datetime.now().date()
+        current_experience_months = (today.year - joining_date.year) * 12 + today.month - joining_date.month
+
+        # Calculate total experience in months
+        total_experience_months = previous_experience_in_years + current_experience_months
+
+        # Calculate years and months from total months
+        total_experience_years = total_experience_months // 12
+        remaining_months = total_experience_months % 12
+
+        # Prepare the total experience string in "X years Y months" format
+        total_experience = f"{total_experience_years} years {remaining_months} months"
+
+        # Prepare data for the context
+        user_data = {
+            'employee': employee,
+            'user': user,
+            'projects': projects,
+            'total_experience': total_experience,
+        }
+        user_details.append(user_data)
+
+    # Pass the aggregated data to the template
+    return render(request, 'user_details.html', {'user_details': user_details})
