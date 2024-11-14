@@ -95,9 +95,9 @@ WSGI_APPLICATION = 'CRMTool.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'crmdashboard',         
+        'NAME': 'crmvindus',         
         'USER': 'root',          
-        'PASSWORD': 'Durgaprakash@143',           
+        'PASSWORD': '1!2@3#4$5%()',           
         'HOST': 'localhost',                   
         'PORT': '3306',                        
         'OPTIONS': {
