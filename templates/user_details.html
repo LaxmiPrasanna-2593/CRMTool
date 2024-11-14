@@ -6,99 +6,110 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Details</title>
     <style>
-         h1 {
+        h1 {
             font-size: 2em;
             color: #0c005a;
             margin-bottom: 20px;
             text-align: center;
         }
-
+        
         table {
             width: 100%;
             max-width: 1000px;
             border-collapse: collapse;
             margin-top: 20px;
         }
-
-        th, td {
+        
+        th,
+        td {
             padding: 12px 15px;
             border: 1px solid #ddd;
             text-align: left;
             font-size: 0.9em;
         }
-
+        
         th {
             background-color: #0c005a;
             color: white;
         }
-
+        
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-       
+        .view-button {
+    display: inline-block;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 25px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.view-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.view-button:active {
+    background-color: #004085;
+    transform: translateY(1px);
+}
+
+.view-button:focus {
+    outline: none;
+}
+
     </style>
 </head>
 {% extends 'base.html' %}
+
 <body>
-{% block content %}
+    {% block content %}
     <div class="main-content">
-    <h1>User Details</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Profile Picture</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Employee Id</th>
-                <th>Position</th>
-                <th>Department</th>
-                <th>Work Email</th>
-                <th>SkillSet</th>
-                <th>Total Experience</th>
-                <th>View More Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in user_details %}
-            <tr>
-                <td>
-                    {% if user.employee.profile_picture %}
-                    <img src="{{ user.employee.profile_picture.url }}" alt="Profile Picture" style="width: 50px; height: 50px;"> {% else %} NA {% endif %}
-                </td>
-<<<<<<< HEAD
-                <td>{{ user.employee.first_name|default:"NA" }}</td>
-                <td>{{ user.employee.last_name|default:"NA" }}</td>
-                <td>{{ user.employee.employee_id|default:"NA" }}</td>
-                <td>{{ user.employee.position|default:"NA" }}</td>
-                <td>{{ user.employee.department|default:"NA" }}</td>
-                <td>{{ user.employee.work_email|default:"NA" }}</td>
-                <td>{{ user.employee.skillset|default:"NA" }}</td>
-                <td>{{ user.total_experience|default:"NA" }}</td>
-                <td><a href="{% url 'view_employee_portfolio' user.employee.id %}">View More Details</a></td>
-=======
-                <td>{% if user.employee.first_name %}{{ user.employee.first_name }}{% else %}NA{% endif %}</td>
-                <td>{% if user.employee.last_name %}{{ user.employee.last_name }}{% else %}NA{% endif %}</td>
-                <td>{% if user.employee.employee_id %}{{ user.employee.employee_id }}{% else %}NA{% endif %}</td>
-                <td>{% if user.employee.position %}{{ user.employee.position }}{% else %}NA{% endif %}</td>
-                <td>{% if user.employee.department %}{{ user.employee.department }}{% else %}NA{% endif %}</td>
-                <td>{% if user.employee.work_email %}{{ user.employee.work_email }}{% else %}NA{% endif %}</td>
-                <td>{% if user.employee.skill_set %}{{ user.employee.skill_set }}{% else %}NA{% endif %}</td>
-                <!-- Display total experience in "X years Y months" format, or NA if empty -->
-                <td>{% if user.total_experience %}{{ user.total_experience }}{% else %}NA{% endif %}</td>
-                <td>{% if user.employee.previous_company_name %}{{ user.employee.previous_company_name }}{% else %}NA{% endif %}</td>
-                <td>{% if user.employee.previous_Total_work_experience %}{{ user.employee.previous_Total_work_experience }}{% else %}NA{% endif %}</td>
-                <td>{% if user.employee.previous_projects %}{{ user.employee.previous_projects }}{% else %}NA{% endif %}</td>
-                <td>{% if user.employee.previous_achievements %}{{ user.employee.previous_achievements }}{% else %}NA{% endif %}</td>
-                <td>
-                    {% if user.projects %} {% for project in user.projects %} {{ project }}<br> {% endfor %} {% else %} NA {% endif %}
-                </td>
->>>>>>> f9fa726c49595a21d79af4a1349235e987e223e1
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
+        <h1>User Details</h1>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Profile Picture</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Employee Id</th>
+                 
+                   
+                    <th>SkillSet</th>
+                    <th>Total Experience</th>
+                    <th>View More Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in user_details %}
+                <tr>
+                    <td>
+                        {% if user.employee.profile_picture %}
+                        <img src="{{ user.employee.profile_picture.url }}" alt="Profile Picture" style="width: 50px; height: 50px;"> {% else %} NA {% endif %}
+                    </td>
+                    <td>{{ user.employee.first_name|default:"NA" }}</td>
+                    <td>{{ user.employee.last_name|default:"NA" }}</td>
+                    <td>{{ user.employee.employee_id|default:"NA" }}</td>
+                    
+                    <td>{{ user.employee.skill_set|default:"NA" }}</td>
+                    <td>{{ user.total_experience|default:"NA" }}</td>
+                    <td><a href="{% url 'view_employee_portfolio' user.employee.id %}" class="view-button">View  Details</a></td>
+
+
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}
 </body>
 
 </html>
