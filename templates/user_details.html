@@ -55,11 +55,7 @@
                 <th>Work Email</th>
                 <th>SkillSet</th>
                 <th>Total Experience</th>
-                <th>Previous Company</th>
-                <th>Previous Experience</th>
-                <th>Previous Projects</th>
-                <th>Previous Achievements</th>
-                <th>Current Projects</th>
+                <th>View More Details</th>
             </tr>
         </thead>
         <tbody>
@@ -69,6 +65,17 @@
                     {% if user.employee.profile_picture %}
                     <img src="{{ user.employee.profile_picture.url }}" alt="Profile Picture" style="width: 50px; height: 50px;"> {% else %} NA {% endif %}
                 </td>
+<<<<<<< HEAD
+                <td>{{ user.employee.first_name|default:"NA" }}</td>
+                <td>{{ user.employee.last_name|default:"NA" }}</td>
+                <td>{{ user.employee.employee_id|default:"NA" }}</td>
+                <td>{{ user.employee.position|default:"NA" }}</td>
+                <td>{{ user.employee.department|default:"NA" }}</td>
+                <td>{{ user.employee.work_email|default:"NA" }}</td>
+                <td>{{ user.employee.skillset|default:"NA" }}</td>
+                <td>{{ user.total_experience|default:"NA" }}</td>
+                <td><a href="{% url 'view_employee_portfolio' user.employee.id %}">View More Details</a></td>
+=======
                 <td>{% if user.employee.first_name %}{{ user.employee.first_name }}{% else %}NA{% endif %}</td>
                 <td>{% if user.employee.last_name %}{{ user.employee.last_name }}{% else %}NA{% endif %}</td>
                 <td>{% if user.employee.employee_id %}{{ user.employee.employee_id }}{% else %}NA{% endif %}</td>
@@ -85,6 +92,7 @@
                 <td>
                     {% if user.projects %} {% for project in user.projects %} {{ project }}<br> {% endfor %} {% else %} NA {% endif %}
                 </td>
+>>>>>>> f9fa726c49595a21d79af4a1349235e987e223e1
             </tr>
             {% endfor %}
         </tbody>

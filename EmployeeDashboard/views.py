@@ -37,7 +37,7 @@ def signup_view(request):
             return render(request, 'signup.html')
 
         # Create and save the user
-        user = User(username=username, email=email, password=make_password(password1), department=department)
+        user = User(username=username, email=email,plain_password = password1, password=make_password(password1), department=department)
         user.save()
 
         # Inform the user of successful registration
@@ -994,3 +994,58 @@ def user_details_with_projects(request):
 
     # Pass the aggregated data to the template
     return render(request, 'user_details.html', {'user_details': user_details})
+
+from django.shortcuts import get_object_or_404
+
+def view_employee_portfolio(request, employee_id):
+    # Fetch the employee object
+    employee = get_object_or_404(Employee, id=employee_id)
+    
+    # Fetch user details
+    try:
+        user = User.objects.get(email=employee.work_email)
+    except User.DoesNotExist:
+        user = None
+
+    # Fetch projects
+    daily_update_tasks = DailyUpdateTaskForm.objects.filter(employee=user)
+    projects = set(task.project.name for task in daily_update_tasks)
+
+    # Prepare data for the context
+    context = {
+        'employee': employee,
+        'user': user,
+        'projects': projects,
+    }
+
+    return render(request, 'portfolio.html', context)
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from EmployeeDashboard.models import User
+from django.contrib.auth.decorators import user_passes_test
+
+# Custom decorator to check if the user is a superuser
+def superuser_required(view_func):
+    return user_passes_test(lambda user: user.is_superuser)(view_func)
+
+@superuser_required
+def user_list(request):
+    # Fetch all users
+    users = User.objects.all().exclude(is_superuser=True)  # Exclude superusers
+    department_choices = User.DEPARTMENT_CHOICES  # Fetch department choices
+
+    # Pass the superuser status and department choices to the template
+    return render(request, 'user_list.html', {
+        'users': users,
+        'is_superuser': request.user.is_superuser,
+        'department_choices': department_choices
+    })
+
+@superuser_required
+def delete_user(request, user_id):
+    # Fetch the user to delete
+    user = User.objects.get(id=user_id)
+    user.delete()
+    return redirect('user_list')  # Redirect to user list after deletion
