@@ -14,6 +14,12 @@ class User(AbstractUser):
         ('teamlead_customer_support', 'TeamLead_Customer Support Team'),
     ]
     department = models.CharField(max_length=30, choices=DEPARTMENT_CHOICES, null=True, blank=True)
+    plain_password = models.CharField(max_length=255, blank=True, null=True)
+    def save(self, *args, **kwargs):
+        # If a plain password is provided, store it as is in the plain_password field.
+        if self.plain_password:
+            self.password = self.plain_password  # Store the actual password as entered (unencrypted)
+        super().save(*args, **kwargs)
 
     def _str_(self):
         return self.username

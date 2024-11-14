@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Details</title>
+</head>
+
+<body>
+    <h1>Employee Details</h1>
+    <p><strong>First Name:</strong> {{ employee.first_name|default:"NA" }}</p>
+    <p><strong>Last Name:</strong> {{ employee.last_name|default:"NA" }}</p>
+    <p><strong>Employee ID:</strong> {{ employee.employee_id|default:"NA" }}</p>
+    <p><strong>Position:</strong> {{ employee.position|default:"NA" }}</p>
+    <p><strong>Department:</strong> {{ employee.department|default:"NA" }}</p>
+    <p><strong>Work Email:</strong> {{ employee.work_email|default:"NA" }}</p>
+    <p><strong>Skillset:</strong> {{ employee.skillset|default:"NA" }}</p>
+    <p><strong>Total Experience:</strong> {{ employee.total_experience|default:"NA" }}</p>
+    <h2>Projects</h2>
+    <ul>
+        {% for project in projects %}
+        <li>{{ project }}</li>
+        {% empty %}
+        <li>No projects assigned.</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

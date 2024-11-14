@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <script>
+        // Function to toggle password visibility
+        function togglePassword(userId) {
+            const passwordField = document.getElementById('password_' + userId);
+            const button = document.getElementById('show_button_' + userId);
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text'; // Show the password
+                button.innerText = 'Hide Password'; // Change button text
+            } else {
+                passwordField.type = 'password'; // Hide the password
+                button.innerText = 'Show Password'; // Change button text
+            }
+        }
+
+        // Function to filter users by department
+        function filterByDepartment(department) {
+            const rows = document.querySelectorAll('.user-row');
+            rows.forEach(row => {
+                const userDepartment = row.getAttribute('data-department');
+                if (department === 'all' || userDepartment === department) {
+                    row.style.display = ''; // Show user
+                } else {
+                    row.style.display = 'none'; // Hide user
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <h1>User List</h1>
+
+    <!-- Department Buttons -->
+    <div>
+        <button onclick="filterByDepartment('all')">All Users</button> {% for department_key, department_name in department_choices %}
+        <button onclick="filterByDepartment('{{ department_key }}')">{{ department_name }}</button> {% endfor %}
+    </div>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Password</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr class="user-row" data-department="{{ user.department }}">
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.department }}</td>
+                <td>
+                    {% if is_superuser %}
+                    <!-- If user is superuser, show the actual password -->
+                    <input type="password" id="password_{{ user.id }}" value="{{ user.plain_password }}" readonly>
+                    <button type="button" id="show_button_{{ user.id }}" onclick="togglePassword({{ user.id }})">Show Password</button> {% else %}
+                    <!-- If not superuser, show restricted message -->
+                    <span>Restricted</span> {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'delete_user' user.id %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>
