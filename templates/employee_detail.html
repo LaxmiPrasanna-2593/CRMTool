@@ -286,12 +286,19 @@
                     <h2>Job Information</h2>
                     <p class="field"><strong>Employee ID:</strong> {{ employee.employee_id }}</p>
                     <p class="field"><strong>Date of Joining:</strong> {{ employee.date_of_joining }}</p>
+                    <p class="field"><strong>Exit Date:</strong> {{ employee.exit_date }}</p>
+
+
                     <p class="field"><strong>Position:</strong> {{ employee.position }}</p>
                     <p class="field"><strong>Department:</strong> {{ employee.department }}</p>
                     <p class="field"><strong>Employment Type:</strong> {{ employee.employment_type }}</p>
                     <p class="field"><strong>Reporting Manager:</strong> {{ employee.reporting_manager }}</p>
                     <p class="field"><strong>Job Location:</strong> {{ employee.job_location }}</p>
                     <p class="field"><strong>Work Schedule:</strong> {{ employee.work_schedule }}</p>
+                    <p class="field"><strong>Skill Set:</strong> {{ employee.skill_set }}</p>
+                    <p class="field"><strong>Responsibilities:</strong> {{ employee.responsibilities }}</p>
+
+
                     {% if employee.job_related_documents %}
                     <p class="field"><strong>Job Related Documents:</strong>
                         <a href="{{ employee.job_related_documents.url }}" target="_blank"> <img src="{% static 'pdf.png' %}" alt="PDF Icon" class="pdf-icon" title="Downlode pdf"></a>
@@ -327,12 +334,21 @@
 
                 <div id="previous-experience" class="section">
                     <h2>Previous Experience</h2>
-                    <p class="field"><strong>Previous Company Name:</strong> {{ employee.previous_company_name }}</p>
-                    <p class="field"><strong>Previous Job Title:</strong> {{ employee.previous_job_title }}</p>
-                    <p class="field"><strong>Previous Work Location:</strong> {{ employee.previous_work_location }}</p>
-                    <p class="field"><strong>Previous Exit Date:</strong> {{ employee.previous_exit_date }}</p>
-                    <p class="field"><strong>Responsibilities:</strong> {{ employee.responsibilities }}</p>
-                    <p class="field"><strong>Reason for Leaving:</strong> {{ employee.reason_for_leaving }}</p>
+                    <p class="field"><strong>Previous Company Name :</strong> {{ employee.previous_company_name }}</p>
+                    <p class="field"><strong>Previous Job Title :</strong> {{ employee.previous_job_title }}</p>
+                    <p class="field"><strong>Previous Work Location :</strong> {{ employee.previous_work_location }}</p>
+                    <p class="field"><strong>Previous start date :</strong> {{ employee.previous_start_date }}</p>
+
+                    <p class="field"><strong>Previous Exit Date :</strong> {{ employee.previous_exit_date }}</p>
+                    <p class="field"><strong>Reason for Leaving :</strong> {{ employee.reason_for_leaving }}</p>
+                    <p class="field"><strong>Previous responsibilities :</strong> {{ employee.previous_responsibilities }}</p>
+                    <p class="field"><strong>Previous projects :</strong> {{ employee.previous_projects }}</p>
+                    <p class="field"><strong>Previous total experience : </strong> {{ employee.previous_Total_work_experience }}</p>
+                    <p class="field"><strong>Previous Achievements : </strong> {{ employee.previous_achievements }}</p>
+
+
+
+                 
                 </div>
 
                 <div id="references" class="section">
