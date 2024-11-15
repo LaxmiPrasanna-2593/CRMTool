@@ -37,7 +37,7 @@ def signup_view(request):
             return render(request, 'signup.html')
 
         # Create and save the user
-        user = User(username=username, email=email,plain_password = password1, password=make_password(password1), department=department)
+        user = User(username=username, email=email, password=make_password(password1), department=department)
         user.save()
 
         # Inform the user of successful registration
