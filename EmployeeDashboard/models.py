@@ -1,6 +1,7 @@
 from datetime import timedelta
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.auth.hashers import make_password
 
 class User(AbstractUser):
     DEPARTMENT_CHOICES = [
@@ -16,10 +17,11 @@ class User(AbstractUser):
     department = models.CharField(max_length=30, choices=DEPARTMENT_CHOICES, null=True, blank=True)
     plain_password = models.CharField(max_length=255, blank=True, null=True)
     def save(self, *args, **kwargs):
-        # If a plain password is provided, store it as is in the plain_password field.
+    # If a plain password is provided, hash it and store it in the `password` field
         if self.plain_password:
-            self.password = self.plain_password  # Store the actual password as entered (unencrypted)
-        super().save(*args, **kwargs)
+            self.password = make_password(self.plain_password)  # Hash the plain password
+        super().save(*args, **kwargs)  # Call the parent save method
+
 
     def _str_(self):
         return self.username

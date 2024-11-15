@@ -6,14 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Details</title>
     <style>
-        /* Global Styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fc;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
 
         .main-content {
             max-width: 900px;
@@ -26,7 +18,7 @@
 
         h1 {
             font-size: 2.5rem;
-            color: #4A90E2;
+            color: #0c005a;
             text-align: center;
             margin-bottom: 20px;
             letter-spacing: 1px;
@@ -34,107 +26,93 @@
 
         h2 {
             font-size: 1.8rem;
-            color: #4A90E2;
-            margin-top: 40px;
+            color: #0c005a;
+            margin-top: 30px;
             margin-bottom: 15px;
         }
 
-        /* Card-like borders for the details */
-       /* Employee Details Section */
-/* Global Styles */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f7fc;
-    margin: 0;
-    padding: 0;
-    color: #333;
-}
-
-/* Details Box Container */
-.details-box {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    background-color: #fafafa;
-    border: 2px solid #e0e0e0;
-}
-
-/* Styling individual detail items */
-.detail-item {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #555;
-    margin-bottom: 15px;
-    padding: 12px;
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-}
-
-.detail-item:hover {
-    background-color: #e9f4fd;
-    border-color: #4A90E2;
-}
-
-.detail-item strong {
-    font-weight: bold;
-    color: #333;
-}
-
-/* Styling the overall container */
-.details-box p:first-child {
-    margin-top: 0;
-}
-
-.details-box p:last-child {
-    margin-bottom: 0;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .detail-item {
-        font-size: 1rem;
-        padding: 10px;
-    }
-
-    .detail-item strong {
-        display: block;
-        margin-bottom: 5px;
-    }
-}
-
-
-        strong {
-            color: #333;
-            font-weight: bold;
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
 
-        /* Links */
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
+        .button {
             padding: 10px 15px;
-            background-color: #4A90E2;
+            background-color: #0c005a;
             color: white;
+            border: none;
             border-radius: 5px;
-            text-decoration: none;
+            cursor: pointer;
             font-size: 1.1rem;
+            text-decoration: none;
             transition: background-color 0.3s ease;
         }
 
-        .back-link:hover {
+        .button:hover {
             background-color: #357ABD;
         }
 
-        /* Responsive Design */
+        .details-box {
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 15px;
+            padding: 12px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .detail-item:hover {
+            background-color: #e9f4fd;
+            border-color: #0c005a;
+        }
+
+        .detail-item strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .profile-picture {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture img,
+        .profile-picture .default-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #4A90E2;
+        }
+
+        .default-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: #777;
+            background-color: #e0e0e0;
+        }
+
+
         @media screen and (max-width: 768px) {
             .main-content {
                 padding: 15px;
-                margin: 15px;
             }
 
             h1 {
@@ -145,60 +123,72 @@ body {
                 font-size: 1.6rem;
             }
 
-            p {
-                font-size: 0.9rem;
-            }
-
-            .back-link {
+            .button {
+                font-size: 1rem;
                 padding: 8px 12px;
             }
-        }
 
+            .detail-item {
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="main-content">
+        <div class="button-container">
+            <a href="{% url 'user_details_with_projects' %}" class="button">Back to List</a>
+            <button onclick="window.print()" class="button">Print Details</button>
+        </div>
+
         <h1>Employee Details</h1>
 
-        <!-- Profile Picture Section -->
-        <div class="details-box">
+       
+        <div class="profile-picture">
             {% if employee.profile_picture %}
-            <img src="{{ employee.profile_picture.url }}" alt="Profile Picture" style="width: 80px; height: 80px;">
+                <img src="{{ employee.profile_picture.url }}" alt="Profile Picture">
             {% else %}
-            <p><strong>Profile Picture:</strong> NA</p>
+                <div class="default-icon">👤</div>
             {% endif %}
         </div>
 
-        <!-- Employee Details Section -->
-            <div class="details-box">
-                <p class="detail-item"><strong>First Name:</strong> {{ employee.first_name|default:"NA" }}</p>
-                <p class="detail-item"><strong>Last Name:</strong> {{ employee.last_name|default:"NA" }}</p>
-                <p class="detail-item"><strong>Employee ID:</strong> {{ employee.employee_id|default:"NA" }}</p>
-                <p class="detail-item"><strong>Position:</strong> {{ employee.position|default:"NA" }}</p>
-                <p class="detail-item"><strong>Department:</strong> {{ employee.department|default:"NA" }}</p>
-                <p class="detail-item"><strong>Work Email:</strong> {{ employee.work_email|default:"NA" }}</p>
-                <p class="detail-item"><strong>Skillset:</strong> {{ employee.skill_set|default:"NA" }}</p>
-                <p class="detail-item"><strong>Total Experience:</strong> {{ user.employee.total_experience|default:"NA" }}</p>
-                <p class="detail-item"><strong>Previous Company Name:</strong> {{ employee.previous_company_name|default:"NA" }}</p>
-                <p class="detail-item"><strong>Previous Total Experience:</strong> {{ employee.previous_Total_work_experience|default:"NA" }}</p>
-                <p class="detail-item"><strong>Previous Projects:</strong> {{ employee.previous_projects|default:"NA" }}</p>
-                <p class="detail-item"><strong>Previous Achievements:</strong> {{ employee.previous_achievements|default:"NA" }}</p>
-            </div>
-            
+        <div class="details-box">
+            <p class="detail-item"><strong>First Name:</strong> {{ employee.first_name|default:"NA" }}</p>
+            <p class="detail-item"><strong>Last Name:</strong> {{ employee.last_name|default:"NA" }}</p>
+            <p class="detail-item"><strong>Employee ID:</strong> {{ employee.employee_id|default:"NA" }}</p>
+            <p class="detail-item"><strong>Position:</strong> {{ employee.position|default:"NA" }}</p>
+            <p class="detail-item"><strong>Department:</strong> {{ employee.department|default:"NA" }}</p>
+            <p class="detail-item"><strong>Work Email:</strong> {{ employee.work_email|default:"NA" }}</p>
+            <p class="detail-item"><strong>Skillset:</strong> {{ employee.skill_set|default:"NA" }}</p>
+            <p class="detail-item"><strong>Total Experience:</strong> {{ employee.total_experience|default:"NA" }}</p>
+            <p class="detail-item"><strong>Previous Company Name:</strong> {{ employee.previous_company_name|default:"NA" }}</p>
+            <p class="detail-item"><strong>Previous Total Experience:</strong> {{ employee.previous_Total_work_experience|default:"NA" }}</p>
+            <p class="detail-item"><strong>Previous Projects:</strong> {{ employee.previous_projects|default:"NA" }}</p>
+            <p class="detail-item"><strong>Previous Achievements:</strong> {{ employee.previous_achievements|default:"NA" }}</p>
+        </div>
 
-        <!-- Projects Section -->
         <h2>Projects</h2>
-        <ul>
-            {% for project in projects %}
-            <li>{{ project }}</li>
-            {% empty %}
-            <li class="no-projects">No projects assigned.</li>
-            {% endfor %}
-        </ul>
-
-        <a href="{% url 'user_details_with_projects' %}" class="back-link">Back to List</a>
+        <div class="details-box">
+            <ul>
+                {% for project in projects %}
+                <li>{{ project }}</li>
+                {% empty %}
+                <li>No projects assigned.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+
+    <script>
+        window.addEventListener('beforeprint', () => {
+            document.querySelector('.button-container').style.display = 'none';
+        });
+        window.addEventListener('afterprint', () => {
+            document.querySelector('.button-container').style.display = 'flex';
+        });
+    </script>
 </body>
 
 </html>

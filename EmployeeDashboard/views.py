@@ -6,14 +6,13 @@ from django.core.exceptions import ValidationError
 
 def signup_view(request):
     if request.method == 'POST':
-        # Manually retrieve data from the POST request
         username = request.POST.get('username')
-        email = request.POST.get('email')  # Retrieve email
+        email = request.POST.get('email')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
         department = request.POST.get('department')
-        
-        # Basic validation
+
+        # Validate inputs
         if not username or not email or not password1 or not password2 or not department:
             messages.error(request, "All fields are required.")
             return render(request, 'signup.html')
@@ -23,7 +22,7 @@ def signup_view(request):
             return render(request, 'signup.html')
         
         try:
-            validate_email(email)  # Validate email format
+            validate_email(email)
         except ValidationError:
             messages.error(request, "Invalid email address.")
             return render(request, 'signup.html')
@@ -33,20 +32,24 @@ def signup_view(request):
             return render(request, 'signup.html')
 
         if User.objects.filter(email=email).exists():
-            messages.error(request, "Email is already associated with an account.")
+            messages.error(request, "Email already associated with an account.")
             return render(request, 'signup.html')
 
         # Create and save the user
         user = User(username=username, email=email, password=make_password(password1), department=department)
         user.save()
+        # Create the user
+        user = User(
+            username=username,
+            email=email,
+            plain_password=password1,  # Store plain password (if needed)
+            department=department,
+        )
+        user.save()  # This will call the custom save() method
 
-        # Inform the user of successful registration
-        messages.success(request, "User created successfully! User can now log in.")
-        
-        # Redirect to the signup page or login page (depending on your flow)
-        return redirect('signup')  # Change this to 'login' if you prefer to redirect to the login page
-    
-    # Display signup page
+        messages.success(request, "User created successfully! You can now log in.")
+        return redirect('signup')
+
     return render(request, 'signup.html', {
         'department_choices': User.DEPARTMENT_CHOICES
     })
