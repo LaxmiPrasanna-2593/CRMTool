@@ -47,6 +47,18 @@
             padding: 0;
             margin: 0;
         }
+        .sidebar label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            background-color: #0c005a;
+        }
         
         .sidebar ul li {
             padding: 15px 10px;
@@ -54,7 +66,7 @@
             display: flex;
             align-items: center;
             transition: background-color 0.3s;
-            color: #9197B3;
+            color: #4859a4;
             justify-content: space-between;
         }
         
@@ -67,7 +79,7 @@
         }
         
         .sidebar ul li:hover {
-            background-color: #0c005a;
+            background-color: #0c0055af;
             color: white;
         }
         
@@ -102,15 +114,29 @@
                 <li>
                     <a href="{% url 'dashboard' %}"><i class="fas fa-home"></i>Home<i class="fas fa-chevron-right"></i></a>
                 </li>
+                <label>Employees Information</label>
                 <li>
-                    <a href="{% url 'user_details_with_projects' %}"><i class="fas fa-home"></i>Employee Portfolio's<i class="fas fa-chevron-right"></i></a>
-                </li>
-                <li>
-                    <a href="{% url 'employee_form' %}"><i class="fas fa-user"></i> Employee Form <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'employee_form' %}"><i class="fas fa-user-plus"></i> Add New Employee <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
                     <a href="{% url 'employee_list' %}"><i class="fas fa-folder"></i> Employee Details <i class="fas fa-chevron-right"></i></a>
                 </li>
+                <li>
+                    <a href="{% url 'user_details_with_projects' %}"><i class="fas fa-home"></i>Employee Portfolio's<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'attendance_on_date' %}"><i class="fas fa-calendar-day"></i> Attendance On Date <i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'employees_per_project' %}"><i class="fas fa-user"></i> Employees per projects <i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'monthly_report' %}"><i class="fas fa-chart-bar"></i> Monthly Attendance <i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'leave_requests' %}"><i class="fas fa-calendar-minus"></i> Leave Requests <i class="fas fa-chevron-right"></i></a>
+                </li>
+                <label>Task information</label>
                 <li>
                     <a href="{% url 'add_project' %}"><i class="fas fa-home"></i>Projects<i class="fas fa-chevron-right"></i></a>
                 </li>
@@ -123,21 +149,12 @@
                 <!-- <li>
                     <a href="{% url 'admin_task_list' %}"><i class="fas fa-users"></i> Employees Tasks <i class="fas fa-chevron-right"></i></a>
                 </li> -->
-
+                <label>Leads information</label>
                 <li>
                     <a href="{% url 'lead_list' %}"><i class="fas fa-address-book"></i> Leads <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <li>
                     <a href="{% url 'lead_status_summary' %}"><i class="fas fa-list"></i> Leads Summary<i class="fas fa-chevron-right"></i></a>
-                </li>
-                <li>
-                    <a href="{% url 'leave_requests' %}"><i class="fas fa-calendar-minus"></i> Leave Requests <i class="fas fa-chevron-right"></i></a>
-                </li>
-                <li>
-                    <a href="{% url 'attendance_on_date' %}"><i class="fas fa-calendar-day"></i> Attendance On Date <i class="fas fa-chevron-right"></i></a>
-                </li>
-                <li>
-                    <a href="{% url 'employees_per_project' %}"><i class="fas fa-user"></i> Employees per projects <i class="fas fa-chevron-right"></i></a>
                 </li>
                 <!-- <li>
                     <a href="{% url 'employee_days_worked' %}"><i class="fas fa-folder"></i> Employee Days Worked on project <i class="fas fa-chevron-right"></i></a>
@@ -145,17 +162,15 @@
                 <li>
                     <a href="{% url 'employee_task_report_on_date' %}"><i class="fas fa-home"></i>Employee task report<i class="fas fa-chevron-right"></i></a>
                 </li> -->
-                <li>
-                    <a href="{% url 'monthly_report' %}"><i class="fas fa-chart-bar"></i> Monthly Attendance <i class="fas fa-chevron-right"></i></a>
-                </li>
-                <li>
-                    <a href="{% url 'user_list' %}"><i class="fas fa-calendar-day"></i> Password Management <i class="fas fa-chevron-right"></i></a>
-                </li>
                 <!--<li>
                     <a href="{% url 'monthly_report' %}"><i class="fas fa-chart-bar"></i>Payslip Generation <i class="fas fa-chevron-right"></i></a>
                 </li> -->
+                <label>Employees Management</label>
                 <li>
-                    <a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Signup <i class="fas fa-chevron-right"></i></a>
+                    <a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Create Employee Signup <i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'user_list' %}"><i class="fas fa-calendar-day"></i> Employees Password<i class="fas fa-chevron-right"></i></a>
                 </li>
             </ul>
             {% elif user.department == "sales_team" or user.department == "development" or user.department == "content_moderators" or user.department == "customer_support" %}

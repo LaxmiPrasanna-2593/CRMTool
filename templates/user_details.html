@@ -36,6 +36,23 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+        
+        /* Button styling for the 'View More Details' link */
+        .button-link {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #0c005a;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        .button-link:hover {
+            background-color: #1a0a8f;
+        }
     </style>
 </head>
 {% extends 'base.html' %}
@@ -44,7 +61,7 @@
     {% block content %}
     <div class="main-content">
         <h1>User Details</h1>
-        <table border="1">
+        <table>
             <thead>
                 <tr>
                     <th>Profile Picture</th>
@@ -74,10 +91,7 @@
                     <td>{{ user.employee.work_email|default:"NA" }}</td>
                     <td>{{ user.employee.skillset|default:"NA" }}</td>
                     <td>{{ user.total_experience|default:"NA" }}</td>
-                    <td><a href="{% url 'view_employee_portfolio' user.employee.id %}">View More Details</a></td>
-
-
-
+                    <td><a href="{% url 'view_employee_portfolio' user.employee.id %}" class="button-link">View More Details</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
