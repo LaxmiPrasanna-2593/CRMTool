@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from .models import User  # Ensure you import your custom User model
 
 def signup_view(request):
     if request.method == 'POST':
@@ -36,19 +37,17 @@ def signup_view(request):
             return render(request, 'signup.html')
 
         # Create and save the user
-        user = User(username=username, email=email, password=make_password(password1), department=department)
-        user.save()
-        # Create the user
         user = User(
             username=username,
             email=email,
-            plain_password=password1,  # Store plain password (if needed)
-            department=department,
+            password=make_password(password1),  # Encrypt and store in password field
+            plain_password=password1,  # Store plain password
+            department=department
         )
-        user.save()  # This will call the custom save() method
+        user.save()
 
         messages.success(request, "User created successfully! You can now log in.")
-        return redirect('signup')
+        return redirect('signup')  # Redirect to login page after successful signup
 
     return render(request, 'signup.html', {
         'department_choices': User.DEPARTMENT_CHOICES
