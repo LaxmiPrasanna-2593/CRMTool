@@ -1,0 +1,12 @@
+<h2>
+
+    {% if client %}Edit{% else %}Create{% endif %} Client</h2>
+
+<form method="POST">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+
+{% if client %}
+<a href="{% url 'client_list' %}">Cancel</a> {% else %}
+<a href="{% url 'client_list' %}">Cancel</a> {% endif %}

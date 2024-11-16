@@ -476,3 +476,35 @@ class DailyUpdateTaskForm(models.Model):
 
     def __str__(self):
         return f"{self.employee.username} - {self.project.name} - {self.date}"
+    
+
+
+class Client(models.Model):
+    client_id = models.AutoField(primary_key=True)  # Unique ID for each client
+    name = models.CharField(max_length=255)  # Client's name
+    email = models.EmailField(unique=True)  # Client's email
+    phone_number = models.CharField(max_length=15, blank=True, null=True)  # Optional phone number
+    date_added = models.DateTimeField(auto_now_add=True)  # Timestamp for when the client is added
+    status = models.CharField(
+        max_length=20,
+        choices=[('Active', 'Active'), ('Inactive', 'Inactive')],
+        default='Active'
+    )  # Client status
+    
+    # Additional fields
+    project_name = models.CharField(max_length=255, blank=True)  # Project name
+    services_utilized = models.TextField(blank=True)  # Services provided
+    deal_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Deal cost
+    contract_start_date = models.DateField(blank=True, null=True)  # Contract start date
+    contract_end_date = models.DateField(blank=True, null=True)  # Contract end date
+    payment_status = models.CharField(
+        max_length=20,
+        choices=[('Paid', 'Paid'), ('Pending', 'Pending'), ('Overdue', 'Overdue')],
+        default='Pending'
+    )  # Payment status
+    notes = models.TextField(blank=True)  # Additional notes
+    acquisition_source = models.CharField(max_length=255, blank=True)  # How the client was acquired
+    account_manager = models.CharField(max_length=255, blank=True)  # Responsible staff member
+
+    def __str__(self):
+        return self.name

@@ -1,0 +1,47 @@
+<h2>
+    Client List</h2>
+<a href="{% url 'client_create' %}">Create New Client</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Status</th>
+            <th>Project Name</th>
+            <th>Services Utilized</th>
+            <th>Deal Cost</th>
+            <th>Contract Start Date</th>
+            <th>Contract End Date</th>
+            <th>Payment Status</th>
+            <th>Acquisition Source</th>
+            <th>Account Manager</th>
+            <th>Notes</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.name }}</td>
+            <td>{{ client.email }}</td>
+            <td>{{ client.phone_number }}</td>
+            <td>{{ client.status }}</td>
+            <td>{{ client.project_name }}</td>
+            <td>{{ client.services_utilized }}</td>
+            <td>{{ client.deal_cost }}</td>
+            <td>{{ client.contract_start_date }}</td>
+            <td>{{ client.contract_end_date }}</td>
+            <td>{{ client.payment_status }}</td>
+            <td>{{ client.acquisition_source }}</td>
+            <td>{{ client.account_manager }}</td>
+            <td>{{ client.notes }}</td>
+            <td>
+                <a href="{% url 'client_edit' client.client_id %}">Edit</a>
+                <a href="{% url 'client_delete' client.client_id %}" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -218,3 +218,24 @@ class ProjectForm(forms.ModelForm):
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
         }
+
+
+
+from .models import Client
+
+class ClientForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ['name', 'email', 'phone_number', 'status', 'project_name', 
+                  'services_utilized', 'deal_cost', 'contract_start_date', 
+                  'contract_end_date', 'payment_status', 'notes', 
+                  'acquisition_source', 'account_manager']
+    contract_start_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=False  # You can make this optional if you want
+    )
+    
+    contract_end_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=False  # You can make this optional if you want
+    )

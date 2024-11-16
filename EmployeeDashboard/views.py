@@ -53,22 +53,35 @@ def signup_view(request):
         'department_choices': User.DEPARTMENT_CHOICES
     })
 
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+@never_cache
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('dashboard')
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            # Authenticate the user
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                
+                return redirect('dashboard')  # Redirect to a protected page (home/dashboard)
+            else:
+                messages.error(request, "Invalid credentials. Please try again.")
         else:
-            messages.error(request, 'Invalid username or password')
-    return render(request, 'login.html')
+            messages.error(request, "Invalid username or password.")
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'login.html', {'form': form})
+
 
 from django import forms
 from .models import TLTasks
@@ -121,20 +134,27 @@ def dashboard_view(request):
         context['leaves'] = user_leaves
         return render(request, 'employee_dashboard.html', context)
 
-from django.shortcuts import redirect
-from django.contrib.auth import logout
-from django.contrib import messages
-
+from django.contrib.auth import logout, login
+from django.http import HttpResponseRedirect
 @login_required
 def custom_logout_view(request):
-    logout(request)  # Log out the current user
-    messages.info(request, "You have been logged out.") 
-    return redirect('login')  
+    # Log out the user
+    logout(request)
+
+    
+
+    # Setting cache control headers to prevent cached pages
+    response = HttpResponseRedirect('login')
+    response['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = 'Fri, 01 Jan 1990 00:00:00 GMT'
+    
+    return redirect(reverse('login'))
 
 
 from django.shortcuts import render, redirect
 from .forms import EmployeeForm, TLTaskStatusForm
-
+@login_required
 def employee_form_view(request):
     if request.method == 'POST':
         form = EmployeeForm(request.POST, request.FILES)
@@ -146,7 +166,7 @@ def employee_form_view(request):
     return render(request, 'employee_form.html', {'form': form})
 
 
-
+@login_required
 def employee_success_view(request):
     return render(request, 'employee_sucess.html')  # Render the success template
 
@@ -154,7 +174,7 @@ def employee_success_view(request):
 from django.shortcuts import render, get_object_or_404
 from .models import Employee
 from django.urls import reverse
-
+@login_required
 # View to list all employees
 def employee_list(request):
     employees = Employee.objects.all()
@@ -170,12 +190,12 @@ def employee_list(request):
     }
     
     return render(request, 'employee_list.html', context)
-
+@login_required
 # View to show details of a specific employee
 def employee_detail(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     return render(request, 'employee_detail.html', {'employee': employee})
-
+@login_required
 def edit_employee(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     if request.method == 'POST':
@@ -191,7 +211,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Lead
 from .forms import LeadForm
 from django.contrib.auth.decorators import login_required
-
+@login_required
 # View to display the list of leads
 def lead_list(request):
     leads = Lead.objects.all()
@@ -210,7 +230,7 @@ def lead_create(request):
     else:
         form = LeadForm()
     return render(request, 'lead_form.html', {'form': form})
-
+@login_required
 # View to display the lead details
 def lead_detail(request, pk):
     lead = get_object_or_404(Lead, pk=pk)
@@ -266,7 +286,7 @@ def lead_create_alt(request):
     else:
         form = LeadForm()
     return render(request, 'lead_form_alt.html', {'form': form})
-
+@login_required
 # View to display the lead details for an alternative view
 def lead_detail_alt(request, pk):
     lead = get_object_or_404(Lead, pk=pk)
@@ -295,7 +315,7 @@ from .models import Task
 from .forms import TaskForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-
+@login_required
 # View to list all tasks
 def task_list(request):
     tasks = Task.objects.all()
@@ -359,11 +379,11 @@ def task_edit_alt(request, pk):
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import TLTasks
 from .forms import TLTaskForm
-
+@login_required
 def tl_task_list(request):
     tasks = TLTasks.objects.all()
     return render(request, 'tl_task_list.html', {'tasks': tasks})
-
+@login_required
 def tl_task_create(request):
     if request.method == 'POST':
         form = TLTaskForm(request.POST)
@@ -373,7 +393,7 @@ def tl_task_create(request):
     else:
         form = TLTaskForm()
     return render(request, 'tl_task_form.html', {'form': form, 'action': 'Create'})
-
+@login_required
 def tl_task_edit(request, task_id):
     task = get_object_or_404(TLTasks, id=task_id)
     if request.method == 'POST':
@@ -388,7 +408,7 @@ def tl_task_edit(request, task_id):
 
 from django.shortcuts import render
 from .models import TLTasks
-
+@login_required
 def admin_task_list_view(request):
     tasks = TLTasks.objects.all()  # Fetch all tasks from the database
     return render(request, 'admin_task_list.html', {'tasks': tasks})
@@ -583,7 +603,7 @@ def disapprove_leave(request, leave_id):
 from django.shortcuts import render
 from .models import Attendance
 from django.utils import timezone
-
+@login_required
 def attendance_on_date(request):
     # Get the date from the query parameter; default to today if not provided
     date_str = request.GET.get('date')
@@ -613,7 +633,7 @@ from .models import Attendance
 from datetime import timedelta
 
 User = get_user_model()
-
+@login_required
 def get_monthly_report(request):
     # Get current year and month
     current_year = timezone.now().year
@@ -689,7 +709,7 @@ def assigned_task_list(request):
     user_tasks = TLTasks.objects.filter(assigned_to=request.user.username)  # Filters tasks where assigned_to matches the username
     return render(request, 'assigned_tasks.html', {'user_tasks': user_tasks})
 
-
+@login_required
 def update_task_status(request):
     if request.method == 'POST':
         task_id = request.POST.get('task_id')
@@ -702,14 +722,14 @@ def update_task_status(request):
 
 from django.shortcuts import render
 from .models import Attendance
-
+@login_required
 def attendance_history(request):
     user_attendance = Attendance.objects.filter(user=request.user)  
     return render(request, 'attendance_history.html', {'attendance': user_attendance})
 
 from django.shortcuts import render
 from .models import Leave
-
+@login_required
 def leave_request_history(request):
     
     user_leaves = Leave.objects.filter(user=request.user)  
@@ -891,7 +911,7 @@ def project_list(request):
 from django.db.models import Count
 from django.shortcuts import render
 from .models import Lead
-
+@login_required
 def lead_status_summary(request):
     # Query to count leads grouped by status and created_by
     leads_summary = (
@@ -921,7 +941,7 @@ from datetime import datetime
 import re
 from django.shortcuts import render
 from .models import Employee, User, DailyUpdateTaskForm
-
+@login_required
 def user_details_with_projects(request):
     # Fetch all employees
     employees = Employee.objects.all()
@@ -998,7 +1018,7 @@ def user_details_with_projects(request):
     return render(request, 'user_details.html', {'user_details': user_details})
 
 from django.shortcuts import get_object_or_404
-
+@login_required
 def view_employee_portfolio(request, employee_id):
     # Fetch the employee object
     employee = get_object_or_404(Employee, id=employee_id)
@@ -1051,3 +1071,60 @@ def delete_user(request, user_id):
     user = User.objects.get(id=user_id)
     user.delete()
     return redirect('user_list')  # Redirect to user list after deletion
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib import messages
+from .models import Client
+from .forms import ClientForm
+
+# Check if the user is a superuser
+def superuser_required(view_func):
+    return user_passes_test(lambda u: u.is_superuser)(view_func)
+
+# List all clients
+@superuser_required
+def client_list(request):
+    clients = Client.objects.all()
+    return render(request, 'client_list.html', {'clients': clients})
+
+# Create a new client
+@superuser_required
+def client_create(request):
+    if request.method == 'POST':
+        form = ClientForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Client created successfully!")
+            return redirect('client_list')
+    else:
+        form = ClientForm()
+    return render(request, 'client_form.html', {'form': form})
+
+# Edit an existing client
+@superuser_required
+def client_edit(request, client_id):
+    client = get_object_or_404(Client, client_id=client_id)
+    if request.method == 'POST':
+        form = ClientForm(request.POST, instance=client)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Client updated successfully!")
+            return redirect('client_list')
+    else:
+        form = ClientForm(instance=client)
+    return render(request, 'client_form.html', {'form': form, 'client': client})
+
+# Delete a client
+@superuser_required
+def client_delete(request, client_id):
+    client = get_object_or_404(Client, client_id=client_id)
+    client.delete()
+    messages.success(request, "Client deleted successfully!")
+    return redirect('client_list')
+
+
+
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)

@@ -47,6 +47,7 @@
             padding: 0;
             margin: 0;
         }
+        
         .sidebar label {
             display: block;
             font-size: 14px;
@@ -149,6 +150,14 @@
                 <!-- <li>
                     <a href="{% url 'admin_task_list' %}"><i class="fas fa-users"></i> Employees Tasks <i class="fas fa-chevron-right"></i></a>
                 </li> -->
+                <label>Client Information</label>
+                <li>
+                    <a href="{% url 'client_create' %}"><i class="fas fa-home"></i>Add Client<i class="fas fa-chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="{% url 'client_list' %}"><i class="fas fa-tasks-alt"></i> View Clients <i class="fas fa-chevron-right"></i></a>
+                </li>
+
                 <label>Leads information</label>
                 <li>
                     <a href="{% url 'lead_list' %}"><i class="fas fa-address-book"></i> Leads <i class="fas fa-chevron-right"></i></a>

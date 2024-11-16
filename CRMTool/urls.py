@@ -76,6 +76,11 @@ urlpatterns = [
     path('user-details/<int:employee_id>/', view_employee_portfolio, name='view_employee_portfolio'),
     path('user_list/', user_list, name='user_list'),
     path('delete_user/<int:user_id>/', delete_user, name='delete_user'),
+    path('client_list', client_list, name='client_list'),
+    path('client_create/', client_create, name='client_create'),
+    path('client_edit/<int:client_id>/', client_edit, name='client_edit'),
+    path('client_delete/<int:client_id>/', client_delete, name='client_delete'),
+    
 
 
 
@@ -84,3 +89,5 @@ urlpatterns = [
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # Serve media files
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Set custom 404 error handler
+handler404 = custom_404_view
