@@ -4,10 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee List</title>
+    <title>Client List</title>
     <style>
-      
-
         h1 {
             font-size: 2.5em;
             color: #0c005a;
@@ -133,8 +131,17 @@
         .client-details-content div {
             padding: 8px 0;
         }
-        
     </style>
+    <script>
+        function printClientTable() {
+            const printContents = document.getElementById('clientTable').outerHTML;
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = `<h1>Client Data</h1>` + printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();
+        }
+    </script>
 </head>
 
 {% extends 'base.html' %}
@@ -146,15 +153,17 @@
             <div class="total">
                 <h1>Client List</h1>
                 <a href="{% url 'client_create' %}" class="client-add">Create New Client</a>
+                {% if clients %}
+                <button class="client-add" onclick="printClientTable()">Print Client Data</button>
+                {% endif %}
 
-                <table class="client-table">
+                <table class="client-table" id="clientTable">
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
-                           <th> Phone Number</th>
-                           <th>Project Name</th>
-
+                            <th>Phone Number</th>
+                            <th>Project Name</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -165,7 +174,7 @@
                             <td>{{ client.name }}</td>
                             <td>{{ client.email }}</td>
                             <td>{{ client.phone_number }}</td>
-                           <td> {{ client.project_name }}</td>
+                            <td>{{ client.project_name }}</td>
                             <td>{{ client.status }}</td>
                             <td>
                                 <button class="details-button" onclick="toggleDetails('details-{{ forloop.counter }}')">Details</button>
@@ -197,7 +206,6 @@
             </div>
         </div>
     </div>
-
     <script>
         function toggleDetails(detailsId) {
             const details = document.getElementById(detailsId);
