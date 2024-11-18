@@ -90,9 +90,8 @@ urlpatterns = [
 
 
 ] 
-# Serve static files
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-# Serve media files
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # Set custom 404 error handler
-handler404 = custom_404_view
+handler404 = 'EmployeeDashboard.views.custom_404_view'
