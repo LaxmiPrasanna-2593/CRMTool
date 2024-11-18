@@ -1,0 +1,43 @@
+<a href="{% url 'create_asset' %}">Create New Asset</a>
+<h1>Asset List</h1>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Purchase Cost</th>
+            <th>Purchase Date</th>
+            <th>Purchased From</th>
+            <th>Contact Details</th>
+            <th>Warranty Expiration</th>
+            <th>Serial Number</th>
+            <th>Location</th>
+            <th>Maintenance Date</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for asset in assets %}
+        <tr>
+            <td>{{ asset.name }}</td>
+            <td>{{ asset.get_category_display }}</td>
+            <td>{{ asset.description }}</td>
+            <td>{{ asset.purchase_cost }}</td>
+            <td>{{ asset.purchase_date }}</td>
+            <td>{{ asset.purchased_from }}</td>
+            <td>{{ asset.contact_details }}</td>
+            <td>{{ asset.warranty_expiration }}</td>
+            <td>{{ asset.serial_number }}</td>
+            <td>{{ asset.location }}</td>
+            <td>{{ asset.maintenance_date }}</td>
+            <td>{{ asset.quantity }}</td>
+            <td>
+                <a href="{% url 'update_asset' asset.pk %}">Edit</a> |
+                <a href="{% url 'delete_asset' asset.pk %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

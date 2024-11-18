@@ -80,6 +80,11 @@ urlpatterns = [
     path('client_create/', client_create, name='client_create'),
     path('client_edit/<int:client_id>/', client_edit, name='client_edit'),
     path('client_delete/<int:client_id>/', client_delete, name='client_delete'),
+    path('assets/', asset_list, name='asset_list'),
+    path('assets/create/', create_asset, name='create_asset'),
+    path('assets/<int:pk>/update/', update_asset, name='update_asset'),
+    path('assets/<int:pk>/delete/', delete_asset, name='delete_asset'),
+    path('permission_denied/', permission_denied, name='permission_denied'),
     
 
 

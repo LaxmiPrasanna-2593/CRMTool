@@ -1128,3 +1128,63 @@ def client_delete(request, client_id):
 
 def custom_404_view(request, exception):
     return render(request, '404.html', status=404)
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import AssetForm
+from .models import Asset
+
+# Create Asset (Only superusers)
+def create_asset(request):
+    if not request.user.is_superuser:
+        return redirect('permission_denied')  # Redirect to permission denied page if not a superuser
+    
+    if request.method == 'POST':
+        form = AssetForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('asset_list')  # Redirect to asset list after creation
+    else:
+        form = AssetForm()
+    
+    return render(request, 'asset_form.html', {'form': form})
+
+# Update Asset (Only superusers)
+def update_asset(request, pk):
+    if not request.user.is_superuser:
+        return redirect('permission_denied')  # Redirect to permission denied page if not a superuser
+    
+    asset = get_object_or_404(Asset, pk=pk)
+    if request.method == 'POST':
+        form = AssetForm(request.POST, instance=asset)
+        if form.is_valid():
+            form.save()
+            return redirect('asset_list')  # Redirect to asset list after update
+    else:
+        form = AssetForm(instance=asset)
+    
+    return render(request, 'asset_form.html', {'form': form})
+
+# Delete Asset (Only superusers)
+def delete_asset(request, pk):
+    if not request.user.is_superuser:
+        return redirect('permission_denied')  # Redirect to permission denied page if not a superuser
+    
+    asset = get_object_or_404(Asset, pk=pk)
+    if request.method == 'POST':
+        asset.delete()
+        return redirect('asset_list')  # Redirect to asset list after deletion
+    
+    return render(request, 'asset_confirm_delete.html', {'asset': asset})
+
+# List Assets (Optionally restrict to superusers)
+def asset_list(request):
+    if not request.user.is_superuser:
+        return redirect('permission_denied')  # Redirect to permission denied page if not a superuser
+    
+    assets = Asset.objects.all()
+    return render(request, 'asset_list.html', {'assets': assets})
+
+# Permission Denied (for non-superusers)
+def permission_denied(request):
+    return render(request, 'permission_denied.html')

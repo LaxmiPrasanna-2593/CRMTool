@@ -508,3 +508,32 @@ class Client(models.Model):
 
     def __str__(self):
         return self.name
+
+
+from django.db import models
+
+class Asset(models.Model):
+    CATEGORY_CHOICES = [
+        ('hardware', 'Hardware'),
+        ('software', 'Software'),
+        ('license', 'License'),
+        ('furniture', 'Furniture'), 
+        ('peripherals', 'Peripherals'),  
+        ('others','Others'),
+    ]
+    
+    name = models.CharField(max_length=255)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    description = models.TextField(blank=True, null=True)
+    purchase_cost = models.DecimalField(max_digits=10, decimal_places=2)
+    purchase_date = models.DateField()
+    purchased_from = models.CharField(max_length=255, blank=True, null=True, help_text="Name of the vendor or company the asset was purchased from.")
+    contact_details = models.CharField(max_length=255, blank=True, null=True, help_text="Contact details of the vendor or purchasing owner.")
+    warranty_expiration = models.DateField(blank=True, null=True, help_text="Warranty expiration date of the asset.")
+    serial_number = models.CharField(max_length=1255, blank=True, null=True, help_text="Unique serial number of the asset.")
+    location = models.CharField(max_length=255, blank=True, null=True, help_text="Physical location of the asset (e.g., Office Room #).")
+    maintenance_date = models.DateField(blank=True, null=True, help_text="Next scheduled maintenance date.")
+    quantity = models.PositiveIntegerField(default=1, help_text="Number of units of the asset.")
+
+    def __str__(self):
+        return self.name

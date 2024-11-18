@@ -239,3 +239,65 @@ class ClientForm(forms.ModelForm):
         widget=forms.DateInput(attrs={'type': 'date'}),
         required=False  # You can make this optional if you want
     )
+
+
+from django import forms
+from .models import Asset
+
+class AssetForm(forms.ModelForm):
+    class Meta:
+        model = Asset
+        fields = [
+            'name', 'category', 'description', 'purchase_cost', 'purchase_date',
+            'purchased_from', 'contact_details', 'warranty_expiration',
+            'serial_number', 'location', 'maintenance_date', 'quantity'
+        ]
+        
+    # Defining widgets for each field
+    purchase_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        input_formats=['%Y-%m-%d']  # Optional input format, if needed
+    )
+    warranty_expiration = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        input_formats=['%Y-%m-%d']  # Optional input format, if needed
+    )
+    maintenance_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        input_formats=['%Y-%m-%d']  # Optional input format, if needed
+    )
+    purchase_cost = forms.DecimalField(
+        widget=forms.NumberInput(attrs={'step': '0.01', 'class': 'form-control'}),
+        min_value=0.01  # Ensure the cost is positive
+    )
+    category = forms.ChoiceField(
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        choices=Asset.CATEGORY_CHOICES
+    )
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Describe the asset...'}),
+        required=False
+    )
+    purchased_from = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Vendor or Company'}),
+        required=False
+    )
+    contact_details = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Contact details'}),
+        required=False
+    )
+    serial_number = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Serial Numbers'}),
+        required=False
+    )
+    location = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Location of the asset in company'}),
+        required=False
+    )
+    quantity = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
+        initial=1,
+        min_value=1
+    )
+
+    
