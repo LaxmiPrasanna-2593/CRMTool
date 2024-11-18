@@ -1,12 +1,97 @@
-<h2>
+<!DOCTYPE html>
+<html lang="en">
 
-    {% if client %}Edit{% else %}Create{% endif %} Client</h2>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Registration Form</title>
+    <style>     
+        h1 {
+            text-align: center;
+            color: #0c005a;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .form-container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: rgb(212, 232, 239);
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="file"]:focus,
+        select:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+        
+        .submit-button {
+            background-color: #0c005a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .submit-button:hover {
+            background-color: #2410a5;
+        }
+        form a {
+            background-color: #0c005a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+    </style>
+</head>
+{% extends 'base.html' %}
+<body>
+    {% block content %}
+    <div class="main-content">
+        <div class="form-container">        
+        <h2>{% if client %}Edit{% else %}Create{% endif %} Client</h2>
 
-<form method="POST">
-    {% csrf_token %} {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
+            <form method="POST">
+                {% csrf_token %} {{ form.as_p }}
+                <button type="submit" class="submit-button">Save</button>
+                {% if client %}
+                <a href="{% url 'client_list' %}">Cancel</a> {% else %}
+                <a href="{% url 'client_list' %}">Cancel</a> {% endif %}
+            </form>
+        </div>
+    </div>
+        {% endblock %}
+</body>
 
-{% if client %}
-<a href="{% url 'client_list' %}">Cancel</a> {% else %}
-<a href="{% url 'client_list' %}">Cancel</a> {% endif %}
+</html>

@@ -1,47 +1,166 @@
-<h2>
-    Client List</h2>
-<a href="{% url 'client_create' %}">Create New Client</a>
+<!DOCTYPE html>
+<html lang="en">
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Status</th>
-            <th>Project Name</th>
-            <th>Services Utilized</th>
-            <th>Deal Cost</th>
-            <th>Contract Start Date</th>
-            <th>Contract End Date</th>
-            <th>Payment Status</th>
-            <th>Acquisition Source</th>
-            <th>Account Manager</th>
-            <th>Notes</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for client in clients %}
-        <tr>
-            <td>{{ client.name }}</td>
-            <td>{{ client.email }}</td>
-            <td>{{ client.phone_number }}</td>
-            <td>{{ client.status }}</td>
-            <td>{{ client.project_name }}</td>
-            <td>{{ client.services_utilized }}</td>
-            <td>{{ client.deal_cost }}</td>
-            <td>{{ client.contract_start_date }}</td>
-            <td>{{ client.contract_end_date }}</td>
-            <td>{{ client.payment_status }}</td>
-            <td>{{ client.acquisition_source }}</td>
-            <td>{{ client.account_manager }}</td>
-            <td>{{ client.notes }}</td>
-            <td>
-                <a href="{% url 'client_edit' client.client_id %}">Edit</a>
-                <a href="{% url 'client_delete' client.client_id %}" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <style>
+        h1 {
+            font-size: 2.5em;
+            color: #0c005a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .client-table {
+            width: 100%;
+            max-width: 970px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .client-table th,
+        .client-table td {
+            padding: 6px;
+            text-align: left;
+        }
+
+        .client-table th {
+            background-color: #0c005a;
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+            border: 1px solid #ddd;
+        }
+
+        .client-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .client-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .client-table td {
+            color: #333;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+
+        .employee-link-active {
+            text-decoration: none;
+            color: #008767;
+            transition: color 0.3s ease;
+            background-color: #7bedd3;
+            border:1px solid #008767;
+            padding: 6px;
+            border-radius: 5px;
+        }
+
+        .employee-link-active:hover {
+            color: #008767;
+            background-color: #7bedd3;
+        }
+        .employee-link-inactive {
+            text-decoration: none;
+            color: #df0404;
+            transition: color 0.3s ease;
+            background-color: #FFC5C5;
+            padding: 8px;
+            border-radius: 5px;
+            border:1px solid #DF0404
+        }
+
+        .employee-link-inactive:hover {
+            color: #df0404;
+            background-color: rgb(239, 167, 155);
+        }
+
+        .employee-stats {
+            display: flex;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 12px;
+        }
+        .client-add {
+            background: #0c005a;
+            color: #fff;
+            padding: 8px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .d-flex{
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+{% extends 'base.html' %}
+<body>
+    {% block content %}
+   
+    <div class="main-content">
+        <div class="employee-stats">
+            <div class="total">
+            <h1>Client List</h1>
+            <a href="{% url 'client_create' %}" class="client-add">Create New Client</a>
+
+            <table class="client-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                        <th>Project Name</th>
+                        <th>Services Utilized</th>
+                        <th>Deal Cost</th>
+                        <th>Contract Start Date</th>
+                        <th>Contract End Date</th>
+                        <th>Payment Status</th>
+                        <th>Acquisition Source</th>
+                        <th>Account Manager</th>
+                        <th>Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    <tr>
+                        <td>{{ client.name }}</td>
+                        <td>{{ client.email }}</td>
+                        <td>{{ client.phone_number }}</td>
+                        <td>{{ client.status }}</td>
+                        <td>{{ client.project_name }}</td>
+                        <td>{{ client.services_utilized }}</td>
+                        <td>{{ client.deal_cost }}</td>
+                        <td>{{ client.contract_start_date }}</td>
+                        <td>{{ client.contract_end_date }}</td>
+                        <td>{{ client.payment_status }}</td>
+                        <td>{{ client.acquisition_source }}</td>
+                        <td>{{ client.account_manager }}</td>
+                        <td>{{ client.notes }}</td>
+                        <td class="d-flex">
+                            <a href="{% url 'client_edit' client.client_id %}" class="client-add">Edit</a>
+                            <a href="{% url 'client_delete' client.client_id %}" onclick="return confirm('Are you sure you want to delete?')" class="client-add">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>
