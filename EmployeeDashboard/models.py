@@ -543,3 +543,58 @@ class Asset(models.Model):
 
     def __str__(self):
         return self.name
+
+
+from django.db import models
+
+class Intern(models.Model):
+    # Basic Information
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    contact_number = models.CharField(max_length=15,blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+
+    # Internship Details
+    role = models.CharField(max_length=100,blank=True, null=True)
+    department = models.CharField(max_length=100,blank=True, null=True)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
+    mode_of_work = models.CharField(
+        max_length=10,
+        choices=[('Onsite', 'Onsite'), ('Remote', 'Remote'), ('Hybrid', 'Hybrid')],
+        default='Onsite'
+    )
+    supervisor = models.CharField(max_length=255, blank=True, null=True)
+
+    # Educational Details
+    university = models.CharField(max_length=255,blank=True, null=True)
+    degree = models.CharField(max_length=100,blank=True, null=True)
+    year_of_study = models.CharField(max_length=50,blank=True, null=True)
+    major = models.CharField(max_length=100,blank=True, null=True)
+
+    # Compensation and Benefits
+    stipend = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    other_benefits = models.TextField(blank=True, null=True)
+
+    # Performance and Evaluation
+    tasks_assigned = models.TextField(blank=True, null=True)
+    key_projects = models.TextField(blank=True, null=True)
+    performance_reviews = models.TextField(blank=True, null=True)
+    skills_learned = models.TextField(blank=True, null=True)
+    completion_certificate_issued = models.BooleanField(default=False)
+    overall_rating = models.PositiveIntegerField(blank=True, null=True)
+
+    # Administrative Details
+    intern_id = models.CharField(max_length=50, unique=True)
+    joining_letter_issued = models.BooleanField(default=False)
+    exit_feedback_collected = models.BooleanField(default=False)
+
+    # Optional Fields
+    resume = models.FileField(upload_to='resumes/', blank=True, null=True)
+    linkedin_profile = models.URLField(blank=True, null=True)
+    emergency_contact = models.CharField(max_length=255, blank=True, null=True)
+    hobbies = models.TextField(blank=True, null=True)
+    photo = models.ImageField(upload_to='intern_photos/', blank=True, null=True)
+
+    def __str__(self):
+        return self.full_name

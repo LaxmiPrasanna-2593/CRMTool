@@ -85,7 +85,10 @@ urlpatterns = [
     path('assets/<int:pk>/update/', update_asset, name='update_asset'),
     path('assets/<int:pk>/delete/', delete_asset, name='delete_asset'),
     path('permission_denied/', permission_denied, name='permission_denied'),
-    
+    path('intern_list', intern_list, name='intern_list'),
+    path('intern_detail/<int:pk>/', intern_detail, name='intern_detail'),
+    path('intern_create/', intern_create, name='intern_create'),
+    path('intern_update/<int:pk>/', intern_update, name='intern_update'),
 
 
 
