@@ -327,3 +327,147 @@ class AssetForm(forms.ModelForm):
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Additional notes about repairs'}),
         required=False
     )
+
+
+from django import forms
+from .models import Intern
+
+class InternForm(forms.ModelForm):
+    class Meta:
+        model = Intern
+        fields = '__all__'
+        widgets = {
+            # Basic Information
+            'full_name': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter full name'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter email address'
+            }),
+            'contact_number': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter contact number'
+            }),
+            'date_of_birth': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+
+            # Internship Details
+            'role': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter role'
+            }),
+            'department': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter department'
+            }),
+            'start_date': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+            'end_date': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+            'mode_of_work': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'supervisor': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter supervisor name'
+            }),
+
+            # Educational Details
+            'university': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter university name'
+            }),
+            'degree': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter degree'
+            }),
+            'year_of_study': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter year of study'
+            }),
+            'major': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter major'
+            }),
+
+            # Compensation and Benefits
+            'stipend': forms.NumberInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter stipend amount'
+            }),
+            'other_benefits': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'rows': 3, 
+                'placeholder': 'Enter details of other benefits'
+            }),
+
+            # Performance and Evaluation
+            'tasks_assigned': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'rows': 3, 
+                'placeholder': 'Enter tasks assigned'
+            }),
+            'key_projects': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'rows': 3, 
+                'placeholder': 'Enter key projects'
+            }),
+            'performance_reviews': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'rows': 3, 
+                'placeholder': 'Enter performance reviews'
+            }),
+            'skills_learned': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'rows': 3, 
+                'placeholder': 'Enter skills learned'
+            }),
+            'completion_certificate_issued': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
+            }),
+            'overall_rating': forms.NumberInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter overall rating (1-10)'
+            }),
+
+            # Administrative Details
+            'intern_id': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter intern ID'
+            }),
+            'joining_letter_issued': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
+            }),
+            'exit_feedback_collected': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
+            }),
+
+            # Optional Fields
+            'resume': forms.FileInput(attrs={
+                'class': 'form-control'
+            }),
+            'linkedin_profile': forms.URLInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter LinkedIn profile URL'
+            }),
+            'emergency_contact': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter emergency contact details'
+            }),
+            'hobbies': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'rows': 3, 
+                'placeholder': 'Enter hobbies'
+            }),
+            'photo': forms.FileInput(attrs={
+                'class': 'form-control'
+            }),
+        }

@@ -1188,3 +1188,42 @@ def asset_list(request):
 # Permission Denied (for non-superusers)
 def permission_denied(request):
     return render(request, 'permission_denied.html')
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from .models import Intern
+from .forms import InternForm
+
+@login_required
+def intern_list(request):
+    interns = Intern.objects.all()  # Fetch all interns
+    return render(request, 'intern_list.html', {'interns': interns})
+
+@login_required
+def intern_detail(request, pk):
+    intern = get_object_or_404(Intern, pk=pk)  # Fetch intern by pk
+    return render(request, 'intern_detail.html', {'intern': intern})
+
+@login_required
+def intern_create(request):
+    if request.method == 'POST':
+        form = InternForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()  # Save new intern to the database
+            return redirect('intern_list')  # Redirect to the intern list after successful save
+    else:
+        form = InternForm()  # Empty form for GET request
+    return render(request, 'intern_form.html', {'form': form})
+
+@login_required
+def intern_update(request, pk):
+    intern = get_object_or_404(Intern, pk=pk)  # Fetch intern by pk
+    if request.method == 'POST':
+        form = InternForm(request.POST, request.FILES, instance=intern)  # Fill form with existing intern data
+        if form.is_valid():
+            form.save()  # Save updated data to the database
+            return redirect('intern_detail', pk=intern.pk)  # Redirect to intern detail page after save
+    else:
+        form = InternForm(instance=intern)  # Populate form with existing intern data for GET request
+    return render(request, 'intern_form.html', {'form': form})
