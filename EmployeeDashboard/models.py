@@ -534,6 +534,12 @@ class Asset(models.Model):
     location = models.CharField(max_length=255, blank=True, null=True, help_text="Physical location of the asset (e.g., Office Room #).")
     maintenance_date = models.DateField(blank=True, null=True, help_text="Next scheduled maintenance date.")
     quantity = models.PositiveIntegerField(default=1, help_text="Number of units of the asset.")
+    # Repair-related fields
+    repair_history = models.TextField(blank=True, null=True, help_text="Details of past repairs (date, issue, resolution, etc.).")
+    last_repair_date = models.DateField(blank=True, null=True, help_text="Date of the last repair.")
+    repair_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, help_text="Cost of the last repair.")
+    repair_vendor = models.CharField(max_length=255, blank=True, null=True, help_text="Name of the vendor or service provider who handled the last repair.")
+    repair_notes = models.TextField(blank=True, null=True, help_text="Additional notes or comments about the repair.")
 
     def __str__(self):
         return self.name
