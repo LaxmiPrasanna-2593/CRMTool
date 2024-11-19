@@ -1,17 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>{{ form.instance.pk|default:"Add New Intern" }}</title>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Registration Form</title>
+    <style>
+        h1 {
+            text-align: center;
+            color: #0c005a;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+        }
 
+        .form-container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #34495e;
+            font-size: 1rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d0d7de;
+            border-radius: 5px;
+            background-color: #ecf5ff;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="file"]:focus,
+        select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .submit-button {
+            background-color: #0c005a;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-button:hover {
+            background-color: #2410a5;
+            transform: translateY(-3px);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .back-link:hover {
+            color: #1c6ea4;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+{% extends 'base.html' %}
 <body>
-    <h1>{{ form.instance.pk|default:"Add New Intern" }}</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %} {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
-    <a href="{% url 'intern_list' %}">Back to List</a>
+    {% block content %}
+    <div class="main-content">
+        <div class="form-container">
+            <h1>{{ form.instance.pk|default:"Add New Intern" }}</h1>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %} 
+                {{ form.as_p }}
+                <button type="submit" class="submit-button">Save</button>
+            </form>
+            <a href="{% url 'intern_list' %}" class="back-link">← Back to List</a>
+        </div>
+    </div>
+    {% endblock %}
 </body>
 
 </html>
