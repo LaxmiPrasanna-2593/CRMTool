@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intern Details</title>
     <style>
-
         h1 {
             font-size: 2.5em;
             color: #0c005a;
@@ -14,6 +13,23 @@
             text-align: center;
             padding: 10px;
             border-radius: 5px;
+        }
+
+        .print-btn {
+            display: inline-block;
+            background-color: #0c005a;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .print-btn:hover {
+            background-color: #0c005ae6;
         }
 
         table {
@@ -25,7 +41,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        table th, 
+        table th,
         table td {
             padding: 15px;
             text-align: left;
@@ -67,11 +83,13 @@
 </head>
 
 {% extends 'base.html' %}
+
 <body>
     {% block content %}
     <div class="main-content">
         <h1>{{ intern.full_name }}</h1>
-        <table>
+        <button class="print-btn" onclick="printInternDetails()">Print Intern Details</button>
+        <table id="internDetailsTable">
             <tr>
                 <th>Field</th>
                 <th>Details</th>
@@ -159,6 +177,17 @@
         </table>
         <a href="{% url 'intern_list' %}" class="button">Back to Intern List</a>
     </div>
+
+    <script>
+        function printInternDetails() {
+            const tableContent = document.getElementById('internDetailsTable').outerHTML;
+            const originalContent = document.body.innerHTML;
+            document.body.innerHTML = `<h1>Intern Details</h1>` + tableContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload();
+        }
+    </script>
     {% endblock %}
 </body>
 
