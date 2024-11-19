@@ -37,7 +37,7 @@ class Employee(models.Model):
     EMPLOYMENT_TYPE_CHOICES = [
         ('Full-time', 'Full-time'),
         ('Part-time', 'Part-time'),
-        ('Contract', 'Contract')
+        ('Intern', 'Intern')
     ]
     EMPLOYEE_STATUS_CHOICES=[
         ('Active','Active'),

@@ -1,43 +1,219 @@
-<a href="{% url 'create_asset' %}">Create New Asset</a>
-<h1>Asset List</h1>
-<table border="1">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Purchase Cost</th>
-            <th>Purchase Date</th>
-            <th>Purchased From</th>
-            <th>Contact Details</th>
-            <th>Warranty Expiration</th>
-            <th>Serial Number</th>
-            <th>Location</th>
-            <th>Maintenance Date</th>
-            <th>Quantity</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for asset in assets %}
-        <tr>
-            <td>{{ asset.name }}</td>
-            <td>{{ asset.get_category_display }}</td>
-            <td>{{ asset.description }}</td>
-            <td>{{ asset.purchase_cost }}</td>
-            <td>{{ asset.purchase_date }}</td>
-            <td>{{ asset.purchased_from }}</td>
-            <td>{{ asset.contact_details }}</td>
-            <td>{{ asset.warranty_expiration }}</td>
-            <td>{{ asset.serial_number }}</td>
-            <td>{{ asset.location }}</td>
-            <td>{{ asset.maintenance_date }}</td>
-            <td>{{ asset.quantity }}</td>
-            <td>
-                <a href="{% url 'update_asset' asset.pk %}">Edit</a> |
-                <a href="{% url 'delete_asset' asset.pk %}">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Asset List</title>
+    <style>
+        h1 {
+            font-size: 2em;
+            color: #0c005a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .client-add {
+            background: #0c005a;
+            color: #fff;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .client-table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .client-table th,
+        .client-table td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .client-table th {
+            background-color: #0c005a;
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+            border: 1px solid #ddd;
+        }
+
+        .client-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .client-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .client-table td {
+            color: #333;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+
+        .client-add1 {
+            background: rgb(0, 170, 255);
+            color: #fff;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .client-add2 {
+            background: red;
+            color: #fff;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .details-button {
+            background-color: #00694d;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+
+        .details-button:hover {
+            background-color: #004d38;
+        }
+
+        .asset-details {
+            display: none;
+            margin-top: 10px;
+            padding: 16px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #0c005a;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .asset-details-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .asset-details-content strong {
+            color: #0c005a;
+        }
+
+        .asset-details-content div {
+            padding: 8px 0;
+        }
+
+        .print-btn {
+            background-color: #0c005a;
+            color: white;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+{% extends "base.html" %}
+
+<body>
+    {% block content %}
+
+    <div class="main-content">
+        <h1>Asset List</h1>
+        <a href="{% url 'create_asset' %}" class="client-add">Create New Asset</a>
+        {% if assets %}
+        <button class="print-btn" onclick="printAssetTable()">Print Asset Data</button>
+        {% endif %}
+
+        <table class="client-table" id="assetTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Purchase Cost</th>
+                    <th>Purchase Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for asset in assets %}
+                <tr>
+                    <td>{{ asset.name }}</td>
+                    <td>{{ asset.get_category_display }}</td>
+                    <td>{{ asset.description }}</td>
+                    <td>{{ asset.purchase_cost }}</td>
+                    <td>{{ asset.purchase_date }}</td>
+                    <td>
+                        <button class="details-button" onclick="toggleDetails('details-{{ forloop.counter }}')">Details</button> |
+                        <a href="{% url 'update_asset' asset.pk %}" class="client-add1">Edit</a> |
+                        <a href="{% url 'delete_asset' asset.pk %}" class="client-add2">Delete</a>
+                    </td>
+                </tr>
+                <tr id="details-{{ forloop.counter }}" class="asset-details">
+                    <td colspan="6">
+                        <div class="asset-details-content">
+                            <div><strong>Name:</strong> {{ asset.name }}</div>
+                            <div><strong>Category:</strong> {{ asset.get_category_display }}</div>
+                            <div><strong>Description:</strong> {{ asset.description }}</div>
+                            <div><strong>Purchase Cost:</strong> {{ asset.purchase_cost }}</div>
+                            <div><strong>Purchase Date:</strong> {{ asset.purchase_date }}</div>
+                            <div><strong>Purchased From:</strong> {{ asset.purchased_from }}</div>
+                            <div><strong>Contact Details:</strong> {{ asset.contact_details }}</div>
+                            <div><strong>Warranty Expiration:</strong> {{ asset.warranty_expiration }}</div>
+                            <div><strong>Serial Number:</strong> {{ asset.serial_number }}</div>
+                            <div><strong>Location:</strong> {{ asset.location }}</div>
+                            <div><strong>Maintenance Date:</strong> {{ asset.maintenance_date }}</div>
+                            <div><strong>Quantity:</strong> {{ asset.quantity }}</div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleDetails(detailsId) {
+            const details = document.getElementById(detailsId);
+
+            // Toggle the display of the details row
+            if (details.style.display === "none" || details.style.display === "") {
+                details.style.display = "table-row"; // Show the row
+            } else {
+                details.style.display = "none"; // Hide the row
+            }
+        }
+
+        function printAssetTable() {
+            const tableContent = document.getElementById('assetTable').outerHTML;
+            const originalContent = document.body.innerHTML;
+            document.body.innerHTML = `<h1>Asset List</h1>` + tableContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload();
+        }
+    </script>
+    {% endblock %}
+
+</body>
+
+</html>

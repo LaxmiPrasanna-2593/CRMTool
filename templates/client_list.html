@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee List</title>
+    <title>Client List</title>
     <style>
         h1 {
             font-size: 2.5em;
@@ -26,7 +26,7 @@
 
         .client-table th,
         .client-table td {
-            padding: 6px;
+            padding: 12px;
             text-align: left;
         }
 
@@ -52,114 +52,170 @@
             font-size: 0.9em;
         }
 
-        .employee-link-active {
-            text-decoration: none;
-            color: #008767;
-            transition: color 0.3s ease;
-            background-color: #7bedd3;
-            border:1px solid #008767;
-            padding: 6px;
-            border-radius: 5px;
-        }
-
-        .employee-link-active:hover {
-            color: #008767;
-            background-color: #7bedd3;
-        }
-        .employee-link-inactive {
-            text-decoration: none;
-            color: #df0404;
-            transition: color 0.3s ease;
-            background-color: #FFC5C5;
-            padding: 8px;
-            border-radius: 5px;
-            border:1px solid #DF0404
-        }
-
-        .employee-link-inactive:hover {
-            color: #df0404;
-            background-color: rgb(239, 167, 155);
-        }
-
-        .employee-stats {
-            display: flex;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            padding: 12px;
-        }
         .client-add {
             background: #0c005a;
             color: #fff;
-            padding: 8px;
+            padding: 8px 12px;
             margin-bottom: 10px;
             text-decoration: none;
             border-radius: 4px;
         }
-        .d-flex{
-            display: flex;
+
+        .client-add1 {
+            background: rgb(0, 170, 255);
+            color: #fff;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .client-add2 {
+            background: red;
+            color: #fff;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .details-button {
+            background-color: green;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+
+        .details-button:hover {
+            background-color: #00694d;
+        }
+
+        .client-details {
+            display: none;
+            margin-top: 10px;
+            padding: 16px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #0c005a;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease-in-out;
+            width: 100%;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .client-details-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
+            font-size: 0.9em;
+            color: #333;
+
+        }
+
+        .client-details-content strong {
+            color: #0c005a;
+        }
+
+        .client-details-content div {
+            padding: 8px 0;
         }
     </style>
+    <script>
+        function printClientTable() {
+            const printContents = document.getElementById('clientTable').outerHTML;
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = `<h1>Client Data</h1>` + printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();
+        }
+    </script>
 </head>
 
 {% extends 'base.html' %}
+
 <body>
     {% block content %}
-   
     <div class="main-content">
         <div class="employee-stats">
             <div class="total">
-            <h1>Client List</h1>
-            <a href="{% url 'client_create' %}" class="client-add">Create New Client</a>
+                <h1>Client List</h1>
+                <a href="{% url 'client_create' %}" class="client-add">Create New Client</a>
+                {% if clients %}
+                <button class="client-add" onclick="printClientTable()">Print Client Data</button>
+                {% endif %}
 
-            <table class="client-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone Number</th>
-                        <th>Status</th>
-                        <th>Project Name</th>
-                        <th>Services Utilized</th>
-                        <th>Deal Cost</th>
-                        <th>Contract Start Date</th>
-                        <th>Contract End Date</th>
-                        <th>Payment Status</th>
-                        <th>Acquisition Source</th>
-                        <th>Account Manager</th>
-                        <th>Notes</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for client in clients %}
-                    <tr>
-                        <td>{{ client.name }}</td>
-                        <td>{{ client.email }}</td>
-                        <td>{{ client.phone_number }}</td>
-                        <td>{{ client.status }}</td>
-                        <td>{{ client.project_name }}</td>
-                        <td>{{ client.services_utilized }}</td>
-                        <td>{{ client.deal_cost }}</td>
-                        <td>{{ client.contract_start_date }}</td>
-                        <td>{{ client.contract_end_date }}</td>
-                        <td>{{ client.payment_status }}</td>
-                        <td>{{ client.acquisition_source }}</td>
-                        <td>{{ client.account_manager }}</td>
-                        <td>{{ client.notes }}</td>
-                        <td class="d-flex">
-                            <a href="{% url 'client_edit' client.client_id %}" class="client-add">Edit</a>
-                            <a href="{% url 'client_delete' client.client_id %}" onclick="return confirm('Are you sure you want to delete?')" class="client-add">Delete</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <table class="client-table" id="clientTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Project Name</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clients %}
+                        <tr>
+                            <td>{{ client.name }}</td>
+                            <td>{{ client.email }}</td>
+                            <td>{{ client.phone_number }}</td>
+                            <td>{{ client.project_name }}</td>
+                            <td>{{ client.status }}</td>
+                            <td>
+                                <button class="details-button" onclick="toggleDetails('details-{{ forloop.counter }}')">Details</button>
+                                <a href="{% url 'client_edit' client.client_id %}" class="client-add1">Edit</a>
+                                <a href="{% url 'client_delete' client.client_id %}" onclick="return confirm('Are you sure you want to delete?')" class="client-add2">Delete</a>
+                            </td>
+                        </tr>
+                        <tr id="details-{{ forloop.counter }}" class="client-details">
+                            <td colspan="6">
+                                <div class="client-details-content">
+                                    <div><strong>Name:</strong> {{ client.name }}</div>
+                                    <div><strong>Email:</strong> {{ client.email }}</div>
+                                    <div><strong>Phone Number:</strong> {{ client.phone_number }}</div>
+                                    <div><strong>Project Name:</strong> {{ client.project_name }}</div>
+                                    <div><strong>Services Utilized:</strong> {{ client.services_utilized }}</div>
+                                    <div><strong>Deal Cost:</strong> {{ client.deal_cost }}</div>
+                                    <div><strong>Contract Start Date:</strong> {{ client.contract_start_date }}</div>
+                                    <div><strong>Contract End Date:</strong> {{ client.contract_end_date }}</div>
+                                    <div><strong>Payment Status:</strong> {{ client.payment_status }}</div>
+                                    <div><strong>Acquisition Source:</strong> {{ client.acquisition_source }}</div>
+                                    <div><strong>Account Manager:</strong> {{ client.account_manager }}</div>
+                                    <div><strong>Notes:</strong> {{ client.notes }}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+    <script>
+        function toggleDetails(detailsId) {
+            const details = document.getElementById(detailsId);
+            if (details.style.display === "none" || details.style.display === "") {
+                details.style.display = "table-row";
+            } else {
+                details.style.display = "none";
+            }
+        }
+    </script>
     {% endblock %}
 </body>
 

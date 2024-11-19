@@ -214,7 +214,7 @@ from django.contrib.auth.decorators import login_required
 @login_required
 # View to display the list of leads
 def lead_list(request):
-    leads = Lead.objects.all()
+    leads = Lead.objects.all()[::-1]
     return render(request, 'lead_list.html', {'leads': leads})
 
 # View to create a new lead
@@ -265,7 +265,7 @@ def lead_list_alt(request):
     # Check if the user belongs to the "teamlead_sales_team" department
     if user.department == 'teamlead_sales_team':  # Assuming 'department' is a field on the User model
         # If the user is a team lead, show all leads
-        leads = Lead.objects.all()
+        leads = Lead.objects.all()[::-1]
     else:
         # Otherwise, show only the leads created by the user
         leads = Lead.objects.filter(created_by=user)
@@ -318,7 +318,7 @@ from django.http import HttpResponseForbidden
 @login_required
 # View to list all tasks
 def task_list(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.all()[::-1]
     return render(request, 'task_list.html', {'tasks': tasks})
 
 
@@ -381,7 +381,7 @@ from .models import TLTasks
 from .forms import TLTaskForm
 @login_required
 def tl_task_list(request):
-    tasks = TLTasks.objects.all()
+    tasks = TLTasks.objects.all()[::-1]
     return render(request, 'tl_task_list.html', {'tasks': tasks})
 @login_required
 def tl_task_create(request):
@@ -410,7 +410,7 @@ from django.shortcuts import render
 from .models import TLTasks
 @login_required
 def admin_task_list_view(request):
-    tasks = TLTasks.objects.all()  # Fetch all tasks from the database
+    tasks = TLTasks.objects.all()[::-1]  # Fetch all tasks from the database
     return render(request, 'admin_task_list.html', {'tasks': tasks})
 
 
@@ -886,10 +886,10 @@ from .models import DailyUpdateTaskForm
 def daily_update_task_list(request):
     if request.user.is_superuser:
         # If the user is a superuser, show all tasks
-        tasks = DailyUpdateTaskForm.objects.all()
+        tasks = DailyUpdateTaskForm.objects.all()[::-1]
     else:
         # For regular users, show only their own tasks
-        tasks = DailyUpdateTaskForm.objects.filter(employee=request.user)
+        tasks = DailyUpdateTaskForm.objects.filter(employee=request.user)[::-1]
 
     return render(request, 'daily_update_task_list.html', {'tasks': tasks})
 
@@ -900,10 +900,10 @@ from .models import Project
 def project_list(request):
     if request.user.is_superuser:
         # If the user is a superuser, show all projects
-        projects = Project.objects.all()
+        projects = Project.objects.all()[::-1]
     else:
         # For regular users, you can apply additional filters if needed
-        projects = Project.objects.all()  # Example: Show all projects for regular users
+        projects = Project.objects.all()[::-1]  # Example: Show all projects for regular users
 
     return render(request, 'project_list.html', {'projects': projects})
 
@@ -1086,7 +1086,7 @@ def superuser_required(view_func):
 # List all clients
 @superuser_required
 def client_list(request):
-    clients = Client.objects.all()
+    clients = Client.objects.all()[::-1]
     return render(request, 'client_list.html', {'clients': clients})
 
 # Create a new client
@@ -1182,7 +1182,7 @@ def asset_list(request):
     if not request.user.is_superuser:
         return redirect('permission_denied')  # Redirect to permission denied page if not a superuser
     
-    assets = Asset.objects.all()
+    assets = Asset.objects.all()[::-1]
     return render(request, 'asset_list.html', {'assets': assets})
 
 # Permission Denied (for non-superusers)
