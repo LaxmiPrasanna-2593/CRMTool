@@ -354,7 +354,6 @@
 }
 .image-gallery {
     padding: 50px 20px;
-    background-color: #f8f9fa;
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
     gap: 20px; /* Space between images */
@@ -439,6 +438,7 @@
 /* Workflow Section */
 .workflow-section {
     padding: 60px 20px;
+    background-color: #ebf3fa;
     text-align: center;
 }
 
@@ -768,6 +768,77 @@
         padding: 10px 25px;
     }
 }
+.simple-footer {
+    background-color: #09023a;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 0.9rem;
+}
+
+.simple-footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.simple-footer a {
+    color: #ffcc00; /* Highlighted link color */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.simple-footer a:hover {
+    color: #ffa500; /* Slightly darker hover effect */
+}
+
+.contact-info p {
+    margin: 5px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .simple-footer {
+        font-size: 0.8rem;
+    }
+}
+.start-journey {
+    text-align: center;
+    padding: 40px 20px;
+    color: #333; /* Dark text for contrast */
+}
+
+.start-journey h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #0c005a; /* Brand color for heading */
+}
+
+.start-journey .subheading {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #555; /* Subtle contrast for subheading */
+}
+
+.signup-button {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0c005a; /* Blue text for button */
+    text-decoration: none;
+    border: 2px solid #0c005a;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.signup-button:hover {
+    color: #fff;
+    background-color: #0c005a; /* Blue background on hover */
+}
 
     </style>
 </head>
@@ -827,7 +898,7 @@
                 <p class="lead">Discover how our CRM system can streamline your processes, enhance team collaboration, and improve business performance.</p>
             </div>
     
-            <div class="row justify-content-center" >
+            <div class="row justify-content-center">
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <div class="feature-card d-flex flex-column p-4 shadow-lg rounded">
                         <i class="fas fa-user-shield fa-3x mb-3"></i>
@@ -897,42 +968,42 @@
 
         </div>
     </section>
-    
+    <br>
     <section class="workflow-section">
         <div class="workflow-header">
             <h2 >How Our CRM Works</h2>
             <p >Our step-by-step workflow helps streamline your tasks and boost productivity.</p>
         </div>
         <div class="workflow-steps">
-            <div class="workflow-step" style="background-color: #fce4ec;">
+            <div class="workflow-step">
                 <div class="step-icon">
                     <i class="fas fa-sign-in-alt"></i> 
                 </div>
                 <h3>Login</h3>
                 <p>Secure role-based access.</p>
             </div>
-            <div class="workflow-step" style="background-color: #d0f0fd;">
+            <div class="workflow-step">
                 <div class="step-icon">
                     <i class="fas fa-tasks"></i> 
                 </div>
                 <h3>Task <br>Assignment</h3>
                 <p>Assign and prioritize tasks.</p>
             </div>
-            <div class="workflow-step" style="background-color: #fff3cd;">
+            <div class="workflow-step">
                 <div class="step-icon">
                     <i class="fas fa-chart-line"></i> 
                 </div>
                 <h3>Monitoring Progress</h3>
                 <p>Real-time dashboards for employees, projects, and clients.</p>
             </div>
-            <div class="workflow-step" style="background-color: #e2d9f3">
+            <div class="workflow-step">
                 <div class="step-icon">
                     <i class="fas fa-chart-bar"></i> 
                 </div>
                 <h3>Performance Analysis</h3>
                 <p>Generate reports for insights.</p>
             </div>
-            <div class="workflow-step" style="background-color: #d4edda;">
+            <div class="workflow-step">
                 <div class="step-icon">
                     <i class="fas fa-cogs"></i> 
                 </div>
@@ -1002,6 +1073,24 @@
           
         </div>
     </section>
+    <br>
+    <section class="start-journey">
+        <div class="container">
+            <h2>Start Your Journey with Our CRM Today!</h2>
+            <p class="subheading">Simplify your business and focus on what matters most.</p>
+            <a href="#signup" class="signup-button">Sign Up Now</a>
+        </div>
+    </section>
+    
+    <footer class="simple-footer">
+            <p class="copyright">&copy; 2024 <a href="https://vindusenvironment.in/">Vindus.</a> All Rights Reserved.</p>
+            <div class="contact-info">
+                <p><strong>Contact Us:</strong></p>
+                <p>Email: <a href="mailto:info.vindus@gmail.com">info.vindus@gmail.com</a></p>
+                <p>Phone: <a href="tel:+914049525396">+914049525396</a></p>
+            </div>
+        </div>
+    </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
