@@ -23,7 +23,8 @@ from EmployeeDashboard.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/',signup_view, name='signup'),
-    path('', login_view, name='login'),
+    path('',index, name='index'),
+    path('login/', login_view, name='login'),
     path('logout/', custom_logout_view, name='logout'), 
     path('dashboard/', dashboard_view, name='dashboard'),
     path('employee_form/', employee_form_view, name='employee_form'),
