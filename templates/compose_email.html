@@ -5,27 +5,233 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compose Email</title>
+    <style>
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .email-form {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .email-form h2 {
+            color: #0c005a;
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .email-form label {
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .email-form input,
+        .email-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: rgb(225, 242, 248);
+            color: #333;
+            transition: border-color 0.3s;
+        }
+
+        .email-form input:focus,
+        .email-form textarea:focus {
+            border-color: #0c005a;
+            outline: none;
+        }
+
+        .email-form button {
+            background-color: #0c005a;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .email-form button:hover {
+            background-color: #480d99;
+        }
+
+        .email-form p {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-content h3 {
+            color: #0c005a;
+        }
+
+        .modal-content p {
+            color: green;
+            font-size: 18px;
+        }
+
+        .close {
+            color: #771818;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .back-button {
+            background-color: #0c005a;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #480d99;
+        }
+      
+    </style>
 </head>
 
+{% extends 'base.html' %}
+
 <body>
-    <h2>Compose New Email</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="recipient">Recipient:</label>
-        <input type="email" id="recipient" name="recipient" required><br><br>
+    {% block content %}
+    <div class="main-content">
+        <div class="email-form">
+            <h2>Compose New Email</h2>
+            <form method="POST" id="email-form">
+                {% csrf_token %}
+                <label for="recipient">Recipient:</label>
+                <input type="email" id="recipient" name="recipient" required><br>
 
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" required><br><br>
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required><br>
 
-        <label for="body">Body:</label><br>
-        <textarea id="body" name="body" rows="5" cols="40" required></textarea><br><br>
+                <label for="body">Body:</label><br>
+                <textarea id="body" name="body" rows="5" cols="40" required></textarea><br>
 
-        <button type="submit">Send Email</button>
-    </form>
+                <button type="submit">Send Email</button>
+            </form>
 
-    {% if error %}
-    <p style="color:red;">{{ error }}</p>
-    {% endif %}
+            {% if error %}
+            <p>{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Email Sent Successfully!</h3>
+            <p>Your email has been sent successfully.</p>
+            <a href="{% url 'compose_email' %}" class="back-button">Back to compose</a>
+        </div>
+    </div>
+
+    <script>
+        // Get modal and close button
+        var modal = document.getElementById("successModal");
+        var closeModal = document.getElementsByClassName("close")[0];
+
+        // Function to show the modal
+        function showModal() {
+            modal.style.display = "flex";
+        }
+
+        // Close the modal when the user clicks on <span> (x)
+        closeModal.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // Close the modal if the user clicks anywhere outside of the modal content
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Submit form via AJAX and handle response
+        document.getElementById("email-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            fetch("{% url 'reply_email_view' %}", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showModal();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        });
+    </script>
+
+    {% endblock %}
 </body>
 
 </html>

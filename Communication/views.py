@@ -1,10 +1,11 @@
 import imaplib
 import smtplib
 import email
+from django.contrib.auth.decorators import login_required
 from bs4 import BeautifulSoup
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-
+@login_required
 def email_login_view(request):
     if request.method == 'POST':
         email_address = request.POST.get('email')
@@ -17,6 +18,7 @@ def email_login_view(request):
 
     return render(request, 'emaillogin.html')
 
+@login_required
 
 def fetch_emails_view(request):
     if 'email' not in request.session or 'password' not in request.session:
@@ -96,6 +98,7 @@ def fetch_emails_view(request):
     except Exception as e:
         return render(request, 'emails_list.html', {'error': f'An unexpected error occurred: {e}'})
 
+@login_required
 
 def reply_email_view(request):
     if 'email' not in request.session or 'password' not in request.session:
@@ -125,6 +128,7 @@ def reply_email_view(request):
             return JsonResponse({'error': f'Failed to send email: {e}'}, status=500)
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+@login_required
 
 def compose_email_view(request):
     if 'email' not in request.session or 'password' not in request.session:

@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email List</title>
 </head>
+{% extends "base.html" %}
 
 <body>
+    {% block content %}
+    <div class="main-content">
     <h1>compose mail</h1>
     <a href="{% url 'compose_email' %}">Compose mail</a>
     <h1>Email Categories</h1>
@@ -68,6 +71,9 @@
             document.getElementById('subject').value = 'Re: ' + subject;
         }
     </script>
+     </div>
+     {% endblock %} 
+    
 </body>
 
 </html>
