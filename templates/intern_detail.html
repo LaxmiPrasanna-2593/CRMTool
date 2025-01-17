@@ -1,33 +1,194 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intern Details</title>
+    <style>
+        h1 {
+            font-size: 2.5em;
+            color: #0c005a;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .print-btn {
+            display: inline-block;
+            background-color: #0c005a;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .print-btn:hover {
+            background-color: #0c005ae6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table th,
+        table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+
+        table th {
+            background-color: #0c005a;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a.button {
+            display: inline-block;
+            background-color: #0c005a;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a.button:hover {
+            background-color: #1a0e80;
+        }
+    </style>
 </head>
 
-<body>
-    <h1>{{ intern.full_name }}</h1>
-    <p>Email: {{ intern.email }}</p>
-    <p>Contact Number: {{ intern.contact_number }}</p>
-    <p>Role: {{ intern.role }}</p>
-    <p>Department: {{ intern.department }}</p>
-    <p>Start Date: {{ intern.start_date }}</p>
-    <p>End Date: {{ intern.end_date }}</p>
-    <p>Mode of Work: {{ intern.mode_of_work }}</p>
-    <p>Supervisor: {{ intern.supervisor }}</p>
-    <p>University: {{ intern.university }}</p>
-    <p>Degree: {{ intern.degree }}</p>
-    <p>Year of Study: {{ intern.year_of_study }}</p>
-    <p>Major: {{ intern.major }}</p>
-    <p>Stipend: {{ intern.stipend }}</p>
-    <p>Other Benefits: {{ intern.other_benefits }}</p>
-    <p>Key Projects: {{ intern.key_projects }}</p>
-    <p>Skills Learned: {{ intern.skills_learned }}</p>
-    <p>Completion Certificate Issued: {{ intern.completion_certificate_issued }}</p>
-    <p>Overall Rating: {{ intern.overall_rating }}</p>
-    <p>Emergency Contact: {{ intern.emergency_contact }}</p>
+{% extends 'base.html' %}
 
-    <a href="{% url 'intern_list' %}">Back to Intern List</a>
+<body>
+    {% block content %}
+    <div class="main-content">
+        <h1>{{ intern.full_name }}</h1>
+        <button class="print-btn" onclick="printInternDetails()">Print Intern Details</button>
+        <table id="internDetailsTable">
+            <tr>
+                <th>Field</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <td><b>Name</b></td>
+                <td>{{ intern.full_name }}</td>
+            </tr>
+            <tr>
+                <td><b>Email</b></td>
+                <td>{{ intern.email }}</td>
+            </tr>
+            <tr>
+                <td><b>Contact Number</b></td>
+                <td>{{ intern.contact_number }}</td>
+            </tr>
+            <tr>
+                <td><b>Role</b></td>
+                <td>{{ intern.role }}</td>
+            </tr>
+            <tr>
+                <td><b>Department</b></td>
+                <td>{{ intern.department }}</td>
+            </tr>
+            <tr>
+                <td><b>Start Date</b></td>
+                <td>{{ intern.start_date }}</td>
+            </tr>
+            <tr>
+                <td><b>End Date</b></td>
+                <td>{{ intern.end_date }}</td>
+            </tr>
+            <tr>
+                <td><b>Mode of Work</b></td>
+                <td>{{ intern.mode_of_work }}</td>
+            </tr>
+            <tr>
+                <td><b>Supervisor</b></td>
+                <td>{{ intern.supervisor }}</td>
+            </tr>
+            <tr>
+                <td><b>University</b></td>
+                <td>{{ intern.university }}</td>
+            </tr>
+            <tr>
+                <td><b>Degree</b></td>
+                <td>{{ intern.degree }}</td>
+            </tr>
+            <tr>
+                <td><b>Year of Study</b></td>
+                <td>{{ intern.year_of_study }}</td>
+            </tr>
+            <tr>
+                <td><b>Major</b></td>
+                <td>{{ intern.major }}</td>
+            </tr>
+            <tr>
+                <td><b>Stipend</b></td>
+                <td>{{ intern.stipend }}</td>
+            </tr>
+            <tr>
+                <td><b>Other Benefits</b></td>
+                <td>{{ intern.other_benefits }}</td>
+            </tr>
+            <tr>
+                <td><b>Key Projects</b></td>
+                <td>{{ intern.key_projects }}</td>
+            </tr>
+            <tr>
+                <td><b>Skills Learned</b></td>
+                <td>{{ intern.skills_learned }}</td>
+            </tr>
+            <tr>
+                <td><b>Completion Certificate Issued</b></td>
+                <td>{{ intern.completion_certificate_issued }}</td>
+            </tr>
+            <tr>
+                <td><b>Overall Rating</b></td>
+                <td>{{ intern.overall_rating }}</td>
+            </tr>
+            <tr>
+                <td><b>Emergency Contact</b></td>
+                <td>{{ intern.emergency_contact }}</td>
+            </tr>
+        </table>
+        <a href="{% url 'intern_list' %}" class="button">Back to Intern List</a>
+    </div>
+
+    <script>
+        function printInternDetails() {
+            const tableContent = document.getElementById('internDetailsTable').outerHTML;
+            const originalContent = document.body.innerHTML;
+            document.body.innerHTML = `<h1>Intern Details</h1>` + tableContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload();
+        }
+    </script>
+    {% endblock %}
 </body>
 
 </html>

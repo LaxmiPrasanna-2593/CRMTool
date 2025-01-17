@@ -448,7 +448,7 @@ def mark_attendance(request):
     if leave_today:
         # Inform the user that they cannot mark attendance as they are on leave
         messages.warning(request, "You are on leave today. Attendance marking is disabled.")
-        return redirect('dashboard')
+        return redirect('attendance_history')
 
     # Try to get the attendance for the current day
     attendance = Attendance.objects.filter(user=request.user, date=date).first()
@@ -470,7 +470,7 @@ def mark_attendance(request):
                                         status='Present')
                 attendance.save()
 
-            return redirect('dashboard')  # Redirect to the dashboard
+            return redirect('attendance_history')  # Redirect to the dashboard
     else:
         # If the attendance exists, pre-fill the form with existing data for editing
         if attendance:
@@ -517,7 +517,7 @@ def mark_break(request):
             break_instance = form.save(commit=False)
             break_instance.user = request.user
             break_instance.save()
-            return redirect('dashboard')  # Redirect to the break list page after saving
+            return redirect('attendance_history')  # Redirect to the break list page after saving
     else:
         form = BreakForm()
 
@@ -1227,3 +1227,8 @@ def intern_update(request, pk):
     else:
         form = InternForm(instance=intern)  # Populate form with existing intern data for GET request
     return render(request, 'intern_form.html', {'form': form})
+
+from django.shortcuts import render
+
+def index(request):
+    return render(request, 'index.html')

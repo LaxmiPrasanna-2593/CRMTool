@@ -1,0 +1,1098 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+       
+        body, h1, p, button {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth; 
+        }
+
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 20px; 
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            top: 0;
+            transition: padding 0.3s ease-in-out;
+        }
+
+        .header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .logo img {
+            height: 30px; 
+            margin-right: 10px;
+        }
+
+        .header .logo span {
+            font-size: 14px; 
+            font-weight: bold;
+            color: #0c005a;
+        }
+
+        .header .login-btn button {
+            background-color: #0c005a;
+            color: white;
+            border: none;
+            padding: 8px 20px; 
+            font-size: 14px;
+            border-radius: 30px; 
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .header .login-btn button:hover {
+            background-color: #08003e;
+            transform: scale(1.05); 
+        }
+
+        
+        .hero-section {
+            position: relative;
+            height: 98vh;
+            overflow: hidden;
+            background-image: url('https://as2.ftcdn.net/v2/jpg/04/89/56/09/1000_F_489560986_9m3GDCK1SY1TWwLc8PaxuYk0vOnfiow9.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0; 
+            animation: fadeIn 1s forwards; 
+        }
+
+        .hero-section::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(12, 1, 45, 0.7);
+        }
+
+       
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            z-index: 2;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 2.8rem; 
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem; 
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px; 
+        }
+
+        .cta-buttons button {
+            padding: 12px 25px; 
+            font-size: 16px;
+            border: none;
+            border-radius: 30px; 
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .demo-btn {
+            background-color:  #007bff;
+            color: white;
+        }
+
+       
+
+        .demo-btn:hover {
+            background-color: #0b508b;
+            transform: scale(1.05);
+        }
+        @media (max-width: 768px) {
+    .hero-section {
+        height: 100vh;
+        margin-bottom: 20px;
+        margin-top: 30px;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem; 
+    }
+    }
+
+    @media (max-width: 480px) {
+    .hero-section {
+        height: 70vh; 
+    }
+
+    .hero-content h1 {
+        font-size: 1.8rem; 
+    }
+
+    .hero-content p {
+        font-size: 0.9rem; 
+    }
+    }
+       
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.5s ease-in-out;
+        }
+
+        .carousel-item.active img {
+            filter: blur(0);
+        }
+
+        .carousel-item img {
+            filter: blur(8px);
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: #0c005a; 
+        }
+       
+        .crm-section {
+    padding: 6px 0;
+    border-radius: 10px;
+    margin: 40px 0;
+}
+
+/* Heading Style */
+.crm-heading {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #0c005a; /* Elegant dark blue */
+    text-align: left;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Paragraph Text */
+.crm-description {
+    font-size: 1.1rem;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+/* Key Points List */
+.crm-key-points {
+    list-style-type: none;
+    padding: 0;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.crm-key-points li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.crm-key-points i {
+    color: #0c005a;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* Infographic Style */
+.crm-visual {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.crm-visual:hover {
+    transform: scale(1.05);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .crm-section {
+        padding: 40px 20px;
+    }
+
+    .crm-heading {
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .crm-description {
+        text-align: center;
+    }
+
+    .crm-key-points {
+        text-align: center;
+    }
+
+    .crm-visual {
+        margin-top: 30px;
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+.features-section {
+    background-color: #ebf3fa;
+    padding: 80px 0;
+}
+
+.section-heading h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #0c005a;
+    margin-bottom: 20px;
+}
+
+.section-heading p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.feature-card {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.feature-card i {
+    color: #0c005a;
+}
+
+.feature-card h4 {
+    font-size: 1.2rem;
+    color: #0c005a;
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+.feature-card p {
+    font-size: 1rem;
+    color: #777;
+}
+
+@media (max-width: 767px) {
+    .feature-card {
+        padding: 15px;
+    }
+    
+    .feature-card i {
+        font-size: 2.5rem;
+    }
+
+    .feature-card h4 {
+        font-size: 1.3rem;
+    }
+
+    .feature-card p {
+        font-size: 0.9rem;
+    }
+}
+.image-gallery {
+    padding: 50px 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
+    gap: 20px; /* Space between images */
+    max-width: 100%;
+    justify-items: center; /* Center-align the images */
+    align-items: center; /* Align images vertically in their grid cell */
+}
+
+.image-container {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for images */
+    grid-template-rows: auto auto; /* Allow for automatic row height */
+    width: 100%;
+}
+
+.image-item {
+    width: 390px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, z-index 0s 0.3s;
+    border: 2px solid transparent; /* Optional border effect */
+}
+
+/* Unique positioning effects: slight diagonal offset for some images */
+.image-item:nth-child(1) {
+    transform: translateX(20px);
+}
+
+.image-item:nth-child(2) {
+    transform: translateX(-20px);
+}
+
+.image-item:nth-child(3) {
+    transform: translateY(20px);
+}
+
+.image-item:nth-child(4) {
+    transform: translateY(-20px);
+}
+
+.image-item:nth-child(5) {
+    transform: translateX(10px) translateY(10px);
+}
+
+.image-item:nth-child(6) {
+    transform: translateX(-10px) translateY(-10px);
+}
+
+/* Hover effect */
+.image-item:hover {
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) and (min-width: 768px) {
+    .image-gallery {
+        grid-template-columns: 1fr 1fr; /* 2 columns for tablet-sized screens */
+        gap: 20px; /* Space between images */
+    }
+
+    .image-item {
+        width: 100%; /* Ensure images take full width of their column */
+        height: 220px; /* Keep fixed height */
+    }
+}
+
+@media (max-width: 768px) {
+    .image-gallery {
+        grid-template-columns: 1fr; /* Stack images in one column on smaller screens */
+    }
+
+    .image-item {
+        width: 100%; /* Make each image full width */
+        height: 220px; /* Keep the height consistent */
+    }
+}
+
+/* Workflow Section */
+.workflow-section {
+    padding: 60px 20px;
+    background-color: #ebf3fa;
+    text-align: center;
+}
+
+.workflow-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #0c005a;
+}
+
+.workflow-header p {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.workflow-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.workflow-step {
+    width: 18%;
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.workflow-step:hover {
+    transform: scale(1.05);
+}
+
+.step-icon {
+    font-size: 40px;
+    color: #0c005a;
+    margin-bottom: 15px;
+}
+
+.workflow-step h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #0c005a ;
+}
+
+.workflow-step p {
+    font-size: 1rem;
+    color: #888;
+}
+
+/* Timeline Section */
+.workflow-timeline {
+    position: relative;
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #0c005a;
+    z-index: 1;
+}
+
+.timeline-icons {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 50%;
+    border: 4px solid #0c005a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-icon i {
+    font-size: 24px;
+    color: #0c005a;
+}
+@media (max-width: 1024px) {
+    .workflow-steps {
+        justify-content: space-around;
+    }
+
+    .workflow-step {
+        width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .workflow-steps {
+        flex-direction: column;
+    }
+
+    .workflow-step {
+        width: 100%; 
+        margin: 20px 0; 
+    }
+
+    .workflow-timeline {
+        flex-direction: column; 
+        width: 100%;
+    }
+
+    .timeline-icons {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .timeline-icon {
+        margin: 10px 0; 
+    }
+
+    .step-icon {
+        font-size: 30px; 
+    }
+
+    .workflow-header h2 {
+        font-size: 2rem; 
+    }
+
+    .workflow-header p {
+        font-size: 1rem; 
+    }
+}
+
+@media (max-width: 480px) {
+    .workflow-header h2 {
+        font-size: 1.8rem; 
+    }
+    .workflow-header p {
+        font-size: 0.9rem;
+    }
+
+    .workflow-step h3 {
+        font-size: 1.3rem;
+    }
+
+    .workflow-step p {
+        font-size: 0.9rem;
+    }
+}
+/* Login Process Section */
+.login-process {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.login-process h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #0c005a;
+}
+
+.login-process p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.text-section {
+    flex: 1;
+    text-align: left;
+    padding-right: 20px;
+}
+
+.text-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #0c005a;
+    font-weight: 600;
+}
+
+.text-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.text-section ul li {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.image-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.step-image {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .content-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .text-section {
+        padding-right: 0;
+        text-align: center;
+    }
+
+    .step-image {
+        max-width: 90%;
+    }
+}
+.features-video {
+    padding: 60px 20px;
+    text-align: center;
+    color: #fff; 
+    background: url('https://wp.sfdcdigital.com/en-us/wp-content/uploads/sites/4/2024/08/marquee-crm-software.jpg?w=1024') no-repeat center center/cover; /* Set background image */
+    position: relative;
+}
+
+.features-video::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 1, 61, 0.9); 
+    z-index: 1;
+}
+
+.features-video h2,
+.features-video p,
+.features-video .cta-button {
+    position: relative; 
+    z-index: 2;
+}
+
+.features-video h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff; 
+}
+
+.features-video p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    color: #f5f5f5; 
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    padding-top: 40%;
+    z-index: 2; 
+    border: 5px solid white;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .features-video h2 {
+        font-size: 2rem;
+    }
+
+    .features-video p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        font-size: 0.9rem;
+        padding: 10px 25px;
+    }
+}
+.simple-footer {
+    background-color: #09023a;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 0.9rem;
+}
+
+.simple-footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.simple-footer a {
+    color: #ffcc00; /* Highlighted link color */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.simple-footer a:hover {
+    color: #ffa500; /* Slightly darker hover effect */
+}
+
+.contact-info p {
+    margin: 5px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .simple-footer {
+        font-size: 0.8rem;
+    }
+}
+.start-journey {
+    text-align: center;
+    padding: 40px 20px;
+    color: #333; /* Dark text for contrast */
+}
+
+.start-journey h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #0c005a; /* Brand color for heading */
+}
+
+.start-journey .subheading {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #555; /* Subtle contrast for subheading */
+}
+
+.signup-button {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0c005a; /* Blue text for button */
+    text-decoration: none;
+    border: 2px solid #0c005a;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.signup-button:hover {
+    color: #fff;
+    background-color: #0c005a; /* Blue background on hover */
+}
+
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <img src="{% static 'vindus_logo.png' %}" alt="Company Logo">
+            <span>Vindus Environment Pvt Ltd</span>
+        </div>
+        <div class="login-btn">
+            <a href="login">
+                <button>Login</button>
+            </a>
+                    </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Welcome to Our CRM System</h1>
+            <p>Streamline your business operations and empower your team with our all-in-one solution. With our CRM, experience enhanced productivity, better collaboration, and greater insights into your business performance.</p>
+
+                  <div class="cta-buttons">
+                    <a href="login">
+                <button class="demo-btn">Get Started</button>
+            </a>
+            </div>
+        </div>
+    </section>
+    <section class="crm-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="crm-heading">Why Choose a CRM for Your Business?</h2>
+                    <p class="crm-description">
+                        A CRM system simplifies business operations, enhances customer relationships, and boosts team productivity. It’s not just a tool; it’s the backbone of modern businesses.
+                    </p>
+                    <ul class="crm-key-points">
+                        <li><i class="fa fa-check-circle"></i> Centralized data for better decision-making.</li>
+                        <li><i class="fa fa-check-circle"></i> Improved communication across teams.</li>
+                        <li><i class="fa fa-check-circle"></i> Automated workflows save time and reduce errors.</li>
+                    </ul>
+                </div>
+    
+                <div class="col-lg-6">
+                    <img src="https://thumbs.dreamstime.com/b/business-team-success-concept-vector-illustration-prize-successful-company-project-teamwork-victory-man-character-help-woman-186891921.jpg" alt="CRM Visual" class="crm-visual">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features-section py-5">
+        <div class="container">
+            <div class="section-heading text-center mb-5">
+                <h2 class="display-4">Powerful Features to Revolutionize Your Workflow</h2>
+                <p class="lead">Discover how our CRM system can streamline your processes, enhance team collaboration, and improve business performance.</p>
+            </div>
+    
+            <div class="row justify-content-center">
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="feature-card d-flex flex-column p-4 shadow-lg rounded">
+                        <i class="fas fa-user-shield fa-3x mb-3"></i>
+                        <h4>Role-Based<br> Login</h4>
+                        <p>Secure and tailored access to the CRM system based on user roles.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="feature-card d-flex flex-column p-4 shadow-lg rounded">
+                        <i class="fas fa-tasks fa-3x mb-3"></i>
+                        <h4>Task <br> Management</h4>
+                        <p>Stay organized with effective task management, ensuring deadlines are met.</p>
+                    </div>
+                </div>
+    
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="feature-card d-flex flex-column p-4 shadow-lg rounded">
+                        <i class="fas fa-users-cog fa-3x mb-3"></i>
+                        <h4>Employee Management</h4>
+                        <p>Monitor employee performance, manage HR tasks, and streamline workflows.</p>
+                    </div>
+                </div>
+    
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="feature-card d-flex flex-column p-4 shadow-lg rounded">
+                        <i class="fas fa-project-diagram fa-3x mb-3"></i>
+                        <h4>Project <br>Management</h4>
+                        <p>Track milestones, deadlines, and project progress to ensure seamless execution.</p>
+                    </div>
+                </div>
+    
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="feature-card d-flex flex-column p-4 shadow-lg rounded">
+                        <i class="fas fa-users fa-3x mb-3"></i>
+                        <h4>Client & Lead Management</h4>
+                        <p>Build stronger relationships and manage your leads and clients efficiently.</p>
+                    </div>
+                </div>
+    
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="feature-card d-flex flex-column p-4 shadow-lg rounded">
+                        <i class="fas fa-calendar-check fa-3x mb-3"></i>
+                        <h4>Attendance & Leave Management</h4>
+                        <p>Simplify payroll processes with automated attendance and leave management.</p>
+                    </div>
+                </div>
+    
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="feature-card d-flex flex-column p-4 shadow-lg rounded">
+                        <i class="fas fa-lock fa-3x mb-3"></i>
+                        <h4>Password Management</h4>
+                        <p>Keep your data safe with advanced password management and encryption.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="image-gallery">
+        <div class="image-container">
+            <img src="{% static 'ss1 (11).png' %}" alt="Image 2" class="image-item">
+            <img src="{% static 'ss1 (10).png' %}" alt="Image 3" class="image-item">
+            <img src="{% static 'ss1 (3).png' %}" alt="Image 1" class="image-item">
+            <img src="{% static 'ss1 (9).png' %}" alt="Image 4" class="image-item">
+            <img src="{% static 'ss1 (5).png' %}" alt="Image 5" class="image-item">
+            <img src="{% static 'ss1 (7).png' %}" alt="Image 5" class="image-item">
+
+        </div>
+    </section>
+    <br>
+    <section class="workflow-section">
+        <div class="workflow-header">
+            <h2 >How Our CRM Works</h2>
+            <p >Our step-by-step workflow helps streamline your tasks and boost productivity.</p>
+        </div>
+        <div class="workflow-steps">
+            <div class="workflow-step">
+                <div class="step-icon">
+                    <i class="fas fa-sign-in-alt"></i> 
+                </div>
+                <h3>Login</h3>
+                <p>Secure role-based access.</p>
+            </div>
+            <div class="workflow-step">
+                <div class="step-icon">
+                    <i class="fas fa-tasks"></i> 
+                </div>
+                <h3>Task <br>Assignment</h3>
+                <p>Assign and prioritize tasks.</p>
+            </div>
+            <div class="workflow-step">
+                <div class="step-icon">
+                    <i class="fas fa-chart-line"></i> 
+                </div>
+                <h3>Monitoring Progress</h3>
+                <p>Real-time dashboards for employees, projects, and clients.</p>
+            </div>
+            <div class="workflow-step">
+                <div class="step-icon">
+                    <i class="fas fa-chart-bar"></i> 
+                </div>
+                <h3>Performance Analysis</h3>
+                <p>Generate reports for insights.</p>
+            </div>
+            <div class="workflow-step">
+                <div class="step-icon">
+                    <i class="fas fa-cogs"></i> 
+                </div>
+                <h3>Automation</h3>
+                <p>Automated reminders, task updates, and more.</p>
+            </div>
+        </div>
+        <div class="workflow-timeline">
+            <div class="timeline-line"></div>
+            <div class="timeline-icons">
+                <div class="timeline-icon">
+                    <i class="fas fa-sign-in-alt"></i> 
+                </div>
+                <div class="timeline-icon">
+                    <i class="fas fa-tasks"></i> 
+                </div>
+                <div class="timeline-icon">
+                    <i class="fas fa-chart-line"></i> 
+                </div>
+                <div class="timeline-icon">
+                    <i class="fas fa-chart-bar"></i> 
+                </div>
+                <div class="timeline-icon">
+                    <i class="fas fa-cogs"></i> 
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="login-process">
+        <div class="container">
+            <h2>How Login Works</h2>
+            <p style="background-color: #007bff; padding: 10px;color: white;border-radius: 5px;">Our CRM system ensures secure and personalized access to each user. Here’s how it works:</p>
+    
+            <div class="content-container">
+                <div class="text-section">
+                    <h3>1. Login Page</h3>
+                    <p>User enters their username and password to authenticate.</p>
+                    <h3>2. Role Redirection</h3>
+                    <p>Based on the user’s role, the system redirects them to the correct dashboard:</p>
+                    <ul>
+                        <li>Employees → Employee Dashboard</li>
+                        <li>Team Leads → Team Lead Dashboard</li>
+                        <li>Admins → Admin Dashboard</li>
+                    </ul>
+                    <h3>3. Role-Specific Dashboard</h3>
+                    <p>Features and tools are displayed based on the user’s role.</p>
+                </div>
+                <div class="image-section">
+                    <img src="{% static 'ss1 (12).png' %}" alt="Login Page Screenshot" class="step-image">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="features-video">
+        <div class="container">
+            <h2>Explore Our Complete CRM Features</h2>
+            <p>Watch this quick video to see how our CRM can streamline your operations and drive efficiency for your team.</p>
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/0aoT3Zf-BMs"" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+          
+        </div>
+    </section>
+    <br>
+    <section class="start-journey">
+        <div class="container">
+            <h2>Start Your Journey with Our CRM Today!</h2>
+            <p class="subheading">Simplify your business and focus on what matters most.</p>
+            <a href="#signup" class="signup-button">Sign Up Now</a>
+        </div>
+    </section>
+    
+    <footer class="simple-footer">
+            <p class="copyright">&copy; 2024 <a href="https://vindusenvironment.in/">Vindus.</a> All Rights Reserved.</p>
+            <div class="contact-info">
+                <p><strong>Contact Us:</strong></p>
+                <p>Email: <a href="mailto:info.vindus@gmail.com">info.vindus@gmail.com</a></p>
+                <p>Phone: <a href="tel:+914049525396">+914049525396</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
