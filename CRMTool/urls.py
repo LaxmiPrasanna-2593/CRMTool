@@ -98,6 +98,7 @@ urlpatterns = [
     path('fetch-emails/', fetch_emails_view, name='fetch_emails'), 
     path('reply-email/', reply_email_view, name='reply_email_view'),
     path('compose-email/', compose_email_view, name='compose_email'),
+    
 
 
 
