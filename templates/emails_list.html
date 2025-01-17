@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email List</title>
+</head>
+
+<body>
+    <h1>compose mail</h1>
+    <a href="{% url 'compose_email' %}">Compose mail</a>
+    <h1>Email Categories</h1>
+
+    <h2>Unseen Emails</h2>
+    <ul>
+        {% for email in unseen_emails %}
+        <li>
+            <h3>Subject: {{ email.subject }}</h3>
+            <p><strong>From:</strong> {{ email.sender }}</p>
+            <p><strong>Body:</strong> {{ email.body }}</p>
+            <button onclick="openReplyForm('{{ email.sender }}', '{{ email.subject }}')">Reply</button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Seen Emails</h2>
+    <ul>
+        {% for email in seen_emails %}
+        <li>
+            <h3>Subject: {{ email.subject }}</h3>
+            <p><strong>From:</strong> {{ email.sender }}</p>
+            <p><strong>Body:</strong> {{ email.body }}</p>
+            <button onclick="openReplyForm('{{ email.sender }}', '{{ email.subject }}')">Reply</button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>All Emails</h2>
+    <ul>
+        {% for email in all_emails %}
+        <li>
+            <h3>Subject: {{ email.subject }}</h3>
+            <p><strong>From:</strong> {{ email.sender }}</p>
+            <p><strong>Body:</strong> {{ email.body }}</p>
+            <button onclick="openReplyForm('{{ email.sender }}', '{{ email.subject }}')">Reply</button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div id="replyForm" style="display: none;">
+        <h3>Reply to Email</h3>
+        <form method="post" action="{% url 'reply_email_view' %}">
+            {% csrf_token %}
+            <input type="hidden" id="recipient" name="recipient">
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject"><br><br>
+            <label for="body">Body:</label>
+            <textarea id="body" name="body"></textarea><br><br>
+            <button type="submit">Send Reply</button>
+        </form>
+    </div>
+
+    <script>
+        function openReplyForm(recipient, subject) {
+            document.getElementById('replyForm').style.display = 'block';
+            document.getElementById('recipient').value = recipient;
+            document.getElementById('subject').value = 'Re: ' + subject;
+        }
+    </script>
+</body>
+
+</html>

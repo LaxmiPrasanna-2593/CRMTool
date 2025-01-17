@@ -19,6 +19,9 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 from EmployeeDashboard.views import *
+from Communication.views import *
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -90,11 +93,18 @@ urlpatterns = [
     path('intern_create/', intern_create, name='intern_create'),
     path('intern_update/<int:pk>/', intern_update, name='intern_update'),
 
+    path('emaillogin/', email_login_view, name='emaillogin'),
+    path('fetch-emails/', fetch_emails_view, name='fetch_emails'), 
+    path('reply-email/', reply_email_view, name='reply_email_view'),
+    path('compose-email/', compose_email_view, name='compose_email'),
+
 
 
 ] 
+   
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-# Set custom 404 error handler
-handler404 = 'EmployeeDashboard.views.custom_404_view'
+else:
+    # Only use custom error handlers in production (DEBUG = False)
+    handler404 = 'views.custom_404_view'
